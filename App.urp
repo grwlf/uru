@@ -1,0 +1,9 @@
+database dbname=App.db
+sql App.sql
+allow mime text/plain
+allow url http://tinymce.cachefly.net/*
+script http://lab.dbpmail.net/static/jquery-1.9.1.min.js
+script http://tinymce.cachefly.net/4.0/tinymce.min.js
+library src/static/Static
+
+src/All1
