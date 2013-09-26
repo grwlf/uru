@@ -12,7 +12,5 @@ allow url http://null
 rewrite style Design/*
 library src/static/Static
 
-src/Urllike
-src/Page
-src/menu_jq/Menu_jq
-src/Main
+$/list
+Test

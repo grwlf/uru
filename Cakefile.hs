@@ -13,13 +13,14 @@ main = mdo
 
   static <- let
     urp = file "src/static/Static.urp"
-    dir = takeDirectory urp
+    outdir = takeDirectory urp
     files = map file [
-       "src/Menu.js"
+        "src/menu_jq/menu_jq.js"
+      , "src/menu_jq/menu_jq.css"
       ]
     in ruleM urp $ do
-      depend (dir`rule`(shell [cmd| mkdir -pv $dir |]))
-      shell [cmd| urembed  -c `which gcc` -I $(extvar "HOME")/local/include/urweb -o $urp $files |]
+      depend (outdir `rule`(shell [cmd| mkdir -pv $outdir |]))
+      shell [cmd| urembed -o $outdir -d Static.urp -c `which gcc` -I $(extvar "HOME")/local/include/urweb $files |]
 
   (exe,sql,db) <- urp (file (pname .= "urp")) $ do
     depend static

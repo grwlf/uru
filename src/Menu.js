@@ -1,9 +1,7 @@
 
-function init__unit(css_class, string) {
+function init__unit(css_class) {
   var selector = "." + css_class + " ul li";
   
-  alert(string);
-
   $(selector).hover(
 
       function() {
@@ -18,6 +16,5 @@ function init__unit(css_class, string) {
       }
 
   );
-
 }
 
