@@ -1,20 +1,53 @@
 
-fun runPage (tp : transaction dpage) : transaction page = 
-  p <- tp;
-  h <- (return p.Hdr);
-  b <- p.Bdy;
-  return  <xml>
-            <head>
-              <script type="text/javascript" src={h.JQ}/>
-              <script type="text/javascript" src={h.JQ_UI}/>
-            </head>
-            {b}
-          </xml>
+(*
+signature URLLIKE = sig
+  class urllike
+  val urllike : a ::: Type -> urllike a -> a -> url
+  val mkUrllike : a ::: Type -> (a -> url) -> urllike a
+  val urllike_url : urllike url
+end
 
-(* Aka return *)
-val bdy x = return { Hdr = { JQ = bless "http://null", JQ_UI = bless "http://null"}, Bdy = x }
+structure Urllike : URLLIKE = struct
+  con urllike a = a -> url
 
-(* Monadic operation : adding the header to a page *)
-(* fun addHdr (b : dpage) (h : xhead) : dpage = {Hdr = hs <- b.Hdr ; return <xml>{hs}{h}</xml>, Bdy = b.Bdy} *)
+  fun urllike [a] (f : urllike a) (x : a) : url = f x
+  fun mkUrllike [a] (f : a -> url) : urllike a = f
 
-fun modifyScripts (p : dpage) (f : scripts -> scripts) : dpage = p -- #Hdr ++ {Hdr = f (p.Hdr)}
+  val urllike_url = mkUrllike (fn (x : url) : url => x)
+end
+*)
+
+fun bdy
+  [t ::: {Type}]
+  (b : transaction page)
+  (z : (record (dpage t)))
+     : (record (dpage t)) =
+  z -- #Bdy ++ {Bdy = b}
+ 
+fun listify
+  [ts ::: {Type}]
+  (fl : folder ts)
+  (urlifiers : record (map Urllike.urllike ts))
+  (r : record ts)
+     : list url =
+  @foldR2 [Urllike.urllike] [ident] [fn _ => list url]
+     (fn [nm ::_] [t ::_] [r ::_] [[nm] ~ r] urlifier value acc =>
+         (@Urllike.urllike urlifier value) :: acc )
+     [] fl urlifiers r
+
+fun runPage
+  [t1 ::: {Type}]
+  [t2 ::: {Type}]
+  (fl : folder t2)
+  (urlifiers : record (map Urllike.urllike t2))
+  (i : record (dpage t1))
+  (f : record (dpage t1) -> record (dpage t2))
+     : transaction page =
+  (* l <- (return (listify (f i).Hdr)); *)
+  b <- (f i).Bdy;
+  return
+    <xml>
+      <head/>
+      {b}
+    </xml>
+

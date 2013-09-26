@@ -1,13 +1,12 @@
 
 
-type scripts = { JQ : url, JQ_UI : url }
+con dpage = fn deps => [ Hdr = record deps, Bdy = transaction page]
 
-type dpage = { Hdr : scripts , Bdy : transaction page }
+val bdy : t ::: {Type} -> transaction page -> record (dpage t) -> (record (dpage t))
 
-val modifyScripts : dpage -> (scripts -> scripts) -> dpage
-
-val bdy : transaction page -> transaction dpage
-
-val runPage : transaction dpage -> transaction page
-
-(* val addHdr : dpage -> xhead -> dpage *)
+val runPage : t1 ::: {Type} -> t2 ::: {Type}
+  -> folder t2
+  -> (record (map Urllike.urllike t2))
+  -> record (dpage t1)
+  -> (record (dpage t1) -> record (dpage t2))
+  -> transaction page
