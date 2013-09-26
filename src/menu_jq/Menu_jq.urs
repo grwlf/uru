@@ -1,5 +1,10 @@
 
-type dpage = Page.dpage
+con dpage = Page.dpage
 
-val add : css_class -> transaction dpage -> transaction dpage
+(* con my :: {Type} -> Type *)
+
+val add : t ::: {Type}
+  -> css_class
+  -> [t ~ [JQ]] => record (dpage (t ++ [JQ = url]))
+  -> record (dpage (t ++ [JQ = url]))
 

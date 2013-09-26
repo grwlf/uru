@@ -24,30 +24,49 @@ fun bdy
      : (record (dpage t)) =
   z -- #Bdy ++ {Bdy = b}
  
+fun addScript [t1 ::: {Type}]
+  [n :: Name]
+  (u:url)
+  [t1 ~ [n]]
+  (r : record (dpage t1))
+     : record (dpage (t1++[n=url])) =
+  r -- #Hdr ++ {Hdr = r.Hdr ++ {n = u}}
+
+fun requireScript
+  [t1 ::: {Type}]
+  [n :: Name]
+  [t1 ~ [n]]
+  (r : record (dpage (t1 ++ [n=url])))
+     : record (dpage (t1 ++ [n=url])) =
+  let val x = r.Hdr.n in r end
+
 fun listify
   [ts ::: {Type}]
   (fl : folder ts)
-  (urlifiers : record (map Urllike.urllike ts))
+  (ul : record (map Urllike.urllike ts))
   (r : record ts)
      : list url =
   @foldR2 [Urllike.urllike] [ident] [fn _ => list url]
      (fn [nm ::_] [t ::_] [r ::_] [[nm] ~ r] urlifier value acc =>
          (@Urllike.urllike urlifier value) :: acc )
-     [] fl urlifiers r
+     [] fl ul r
 
 fun runPage
   [t1 ::: {Type}]
   [t2 ::: {Type}]
   (fl : folder t2)
-  (urlifiers : record (map Urllike.urllike t2))
+  (ul : record (map Urllike.urllike t2))
   (i : record (dpage t1))
   (f : record (dpage t1) -> record (dpage t2))
      : transaction page =
-  (* l <- (return (listify (f i).Hdr)); *)
+  l <- (return (@listify fl ul (f i).Hdr));
   b <- (f i).Bdy;
+  xs <- (return (List.mapX (fn u => <xml><a href={u}>link</a></xml>) l));
   return
     <xml>
       <head/>
-      {b}
+      <body>
+      {xs}
+      </body>
     </xml>
 
