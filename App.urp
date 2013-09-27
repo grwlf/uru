@@ -13,7 +13,7 @@ rewrite style Design/*
 library src/static/Static
 
 $/list
-src/Urllike
+src/Xmllike
 src/Page
 src/menu_jq/Menu_jq
 App

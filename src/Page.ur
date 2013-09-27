@@ -1,72 +1,52 @@
 
-(*
-signature URLLIKE = sig
-  class urllike
-  val urllike : a ::: Type -> urllike a -> a -> url
-  val mkUrllike : a ::: Type -> (a -> url) -> urllike a
-  val urllike_url : urllike url
-end
-
-structure Urllike : URLLIKE = struct
-  con urllike a = a -> url
-
-  fun urllike [a] (f : urllike a) (x : a) : url = f x
-  fun mkUrllike [a] (f : a -> url) : urllike a = f
-
-  val urllike_url = mkUrllike (fn (x : url) : url => x)
-end
-*)
-
-fun bdy
-  [t ::: {Type}]
-  (b : transaction page)
-  (z : (record (dpage t)))
-     : (record (dpage t)) =
+fun withBody [t] b z =
   z -- #Bdy ++ {Bdy = b}
- 
-fun addScript [t1 ::: {Type}]
-  [n :: Name]
-  (u:url)
-  [t1 ~ [n]]
-  (r : record (dpage t1))
-     : record (dpage (t1++[n=url])) =
-  r -- #Hdr ++ {Hdr = r.Hdr ++ {n = u}}
 
-fun requireScript
-  [t1 ::: {Type}]
-  [n :: Name]
-  [t1 ~ [n]]
-  (r : record (dpage (t1 ++ [n=url])))
-     : record (dpage (t1 ++ [n=url])) =
+(* fun withHeader [x] [t] (h:record t) = fn p => p -- #Hdr ++ {Hdr = h} *)
+ 
+fun addHeader [t1] [n :: Name] [t1 ~ [n]] h r =
+  r -- #Hdr ++ {Hdr = r.Hdr ++ {n = h}}
+
+fun addScript [t1] [n :: Name] [t1 ~ [n]] (u:url) r =
+  (* FIXME:
+   * Error Substitution in constructor is blocked by a too-deep unification variable
+   *)
+  (* @addHeader [t1] [n] (<xml><script type="text/javascript" src={u}/></xml>) r *)
+  r -- #Hdr ++ {Hdr = r.Hdr ++ {n = (<xml><script type="text/javascript" src={u}/></xml>)}}
+
+fun requireHeader [t1] [n :: Name] [t1 ~ [n]] r =
   let val x = r.Hdr.n in r end
 
 fun listify
   [ts ::: {Type}]
   (fl : folder ts)
-  (ul : record (map Urllike.urllike ts))
+  (ul : record (map Xmllike.xmllike ts))
   (r : record ts)
-     : list url =
-  @foldR2 [Urllike.urllike] [ident] [fn _ => list url]
-     (fn [nm ::_] [t ::_] [r ::_] [[nm] ~ r] urlifier value acc =>
-         (@Urllike.urllike urlifier value) :: acc )
+     : list xhead =
+  @foldR2 [Xmllike.xmllike] [ident] [fn _ => list xhead]
+     (fn [nm ::_] [t ::_] [r ::_] [[nm] ~ r] xmlifier value acc =>
+         (@Xmllike.xmllike xmlifier value) :: acc )
      [] fl ul r
 
-fun runPage
-  [t1 ::: {Type}]
-  [t2 ::: {Type}]
-  (fl : folder t2)
-  (ul : record (map Urllike.urllike t2))
-  (i : record (dpage t1))
-  (f : record (dpage t1) -> record (dpage t2))
-     : transaction page =
-  l <- (return (@listify fl ul (f i).Hdr));
-  b <- (f i).Bdy;
-  xs <- (return (List.mapX (fn u => <xml><a href={u}>link</a></xml>) l));
+val def = { Hdr = {} , Bdy = return <xml><body/></xml> }
+
+fun runPage [t2] fl ul f =
+  h <- (return (List.mapX (fn h => <xml>{h}</xml>) (@listify fl ul (f def).Hdr)));
+  b <- (f def).Bdy;
   return
     <xml>
-      <head/>
-      <body>
-      {xs}
-      </body>
+      <head>
+        {h}
+      </head>
+      {b}
     </xml>
+
+fun javaScript (u:url) : xhead = <xml><script type="text/javascript" src={u}/></xml>
+
+fun addHeaders [t] [x] [r] h f = fn s =>
+  let
+    val s' = s -- #Hdr ++ {Hdr = h}
+  in
+    f s'
+  end
 

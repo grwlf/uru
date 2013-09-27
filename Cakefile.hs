@@ -3,26 +3,23 @@ module Cakefile where
 
 import Development.Cake3
 import Development.Cake3.Rules.UrWeb
-import Cakefile_P (file, cakefiles)
+import Development.Cake3.Utils.Find
+import Cakefile_P
 
 pname = "App"
 
 urflags = makevar "URFLAGS" ""
 
+static_urp = file ("src" </> "static" </> "Static.urp")
+
 main = mdo
 
-  static <- let
-    urp = file "src/static/Static.urp"
-    outdir = takeDirectory urp
-    files = map file [
-        "src/menu_jq/menu_jq.js"
-      , "src/menu_jq/menu_jq.css"
-      ]
-    in ruleM urp $ do
-      depend (outdir `rule`(shell [cmd| mkdir -pv $outdir |]))
-      shell [cmd| urembed -o $outdir -d Static.urp -c `which gcc` -I $(extvar "HOME")/local/include/urweb $files |]
+  static_files <- filterExts [".js", ".css"] <$> getDirectoryContentsRecursive projectroot
 
-  (exe,sql,db) <- urp (file (pname .= "urp")) $ do
+  static <- urembed static_urp static_files $ \urembed_cmd -> do
+    shell [cmd| $(urembed_cmd) -I $(extvar "HOME")/local/include/urweb |]
+
+  (exe,sql,db) <- urweb (file pname) $ do
     depend static
     shell [cmd| urweb -dbms sqlite $urflags $(string pname) |]
     shell [cmd| -rm -rf $db |]

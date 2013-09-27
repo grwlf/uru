@@ -3,27 +3,31 @@
 
 GUARD = .GUARD_$(1)_$(shell echo $($(1)) | md5sum | cut -d ' ' -f 1)
 URFLAGS = 
+URGCC = $(shell urweb -print-ccompiler)
 .PHONY: all
 all: App.exe Makefile
 .PHONY: sql
 sql: App.db Makefile
 	sqlite3 App.db
-Makefile: ./Cakegen
+Makefile: ./App.urp ./Cakegen
 	./Cakegen > Makefile
 App.db App.exe App.sql: stamp1
 .INTERMEDIATE: stamp1
-stamp1: ./App.urp ./src/static/Static.urp Makefile src/Main.ur src/Main.urs src/Page.ur src/Page.urs src/Urllike.ur src/Urllike.urs src/menu_jq/Menu_jq.ur src/menu_jq/Menu_jq.urs $(call GUARD,URFLAGS)
+stamp1: ./App.urp ./src/static/Static.urp App.ur App.urs Makefile src/Page.ur src/Page.urs src/Xmllike.ur src/Xmllike.urs src/menu_jq/Menu_jq.ur src/menu_jq/Menu_jq.urs $(call GUARD,URFLAGS)
 	urweb -dbms sqlite $(URFLAGS) App
 	-rm -rf App.db
 	sqlite3 App.db < App.sql
 ./src/static: Makefile
 	mkdir -pv ./src/static
-./src/static/Static.urp: ./src/menu_jq/menu_jq.css ./src/menu_jq/menu_jq.js ./src/static Makefile $(call GUARD,HOME)
-	urembed -o ./src/static -d Static.urp -c `which gcc` -I $(HOME)/local/include/urweb ./src/menu_jq/menu_jq.js ./src/menu_jq/menu_jq.css
+./src/static/Static.urp: ./src/static Makefile src/Menu.js src/menu_jq/menu_jq.css src/menu_jq/menu_jq.js src/thirdparty/jquery-1.9.1.js src/thirdparty/jquery-ui.css src/thirdparty/jquery-ui.js $(call GUARD,HOME) $(call GUARD,URGCC)
+	urembed -d Static.urp -o ./src/static -c `which $(URGCC)` src/Menu.js src/menu_jq/menu_jq.css src/menu_jq/menu_jq.js src/thirdparty/jquery-1.9.1.js src/thirdparty/jquery-ui.css src/thirdparty/jquery-ui.js -I $(HOME)/local/include/urweb
 $(call GUARD,HOME):
 	rm -f .GUARD_HOME_*
 	touch $@
 $(call GUARD,URFLAGS):
 	rm -f .GUARD_URFLAGS_*
+	touch $@
+$(call GUARD,URGCC):
+	rm -f .GUARD_URGCC_*
 	touch $@
 

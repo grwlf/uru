@@ -65,6 +65,7 @@ fun showRecord [ts ::: {Type}] (fl : folder ts) (shows : $(map show ts)) (names 
            "...}" fl names shows r
 
 val h = showRecord {A = "A", B = "B"} {A = 1, B = 2.3}
+val h2 = showRecord {B = "B", A = "A", D = "D"} {A = 1, D = 0, B = 2.3}
 
 fun showRecordH [ts ::: {Type}] (fl : folder ts) (shows : $(map show ts)) (names : $(map (fn _ => string) ts)) (r : $ts) : string =
     @foldR3 [fn _ => string] [show] [ident] [fn _ => string]
@@ -104,7 +105,9 @@ fun main {} =
     <xml>
       <head/>
       <body>
-      {[e]}
+      <p>{[e]}</p>
+      <p>{[h]}</p>
+      <p>{[h2]}</p>
       </body>
     </xml> 
 
