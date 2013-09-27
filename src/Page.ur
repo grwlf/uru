@@ -4,17 +4,17 @@ fun withBody [t] b z =
 
 (* fun withHeader [x] [t] (h:record t) = fn p => p -- #Hdr ++ {Hdr = h} *)
  
-fun addHeader [t1] [n :: Name] [t1 ~ [n]] h r =
+fun addHeader [t1] [n :: Name] [t1 ~ [n=xhead]] h r =
   r -- #Hdr ++ {Hdr = r.Hdr ++ {n = h}}
 
-fun addScript [t1] [n :: Name] [t1 ~ [n]] (u:url) r =
+fun addScript [t1] [n :: Name] [t1 ~ [n=xhead]] (u:url) r =
   (* FIXME:
    * Error Substitution in constructor is blocked by a too-deep unification variable
    *)
   (* @addHeader [t1] [n] (<xml><script type="text/javascript" src={u}/></xml>) r *)
   r -- #Hdr ++ {Hdr = r.Hdr ++ {n = (<xml><script type="text/javascript" src={u}/></xml>)}}
 
-fun requireHeader [t1] [n :: Name] [t1 ~ [n]] r =
+fun requireHeader [t1] [n :: Name] [t1 ~ [n=xhead]] r =
   let val x = r.Hdr.n in r end
 
 fun listify

@@ -1,5 +1,8 @@
 
-fun add [t] [x] [t~[JQ,JQ_UI,JQM]] f r = 
+con need = [JQ=xhead, JQ_UI=xhead]
+con out = need ++ [JQM=xhead]
+
+fun add [t] [x] [t~out] f r = 
   let
     val r' = Page.requireHeader [#JQ] (
              Page.requireHeader [#JQ_UI] (
