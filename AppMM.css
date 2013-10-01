@@ -1,0 +1,28 @@
+/*
+  jQuery MegaMenu Plugin Examples CSS
+  Author: GeekTantra
+  Author URI: http://www.geektantra.com
+*/
+
+html, body {
+  height: 100%;
+}
+
+ul.AppMM_megamenu {
+  background-color: #888;
+  border-top: 1px solid #888;
+  border-bottom: 1px solid #666;
+  margin: 0px auto;
+  padding: 5px 10px;
+  list-style: none;
+  display: none;
+
+}
+
+
+ul.AppMM_megamenu {
+  /* background-image: url(../images/menu-background.gif); */
+  background-repeat: repeat-x;
+  background-position: 0px 0px;
+}
+

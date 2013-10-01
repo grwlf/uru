@@ -6,29 +6,30 @@ import Development.Cake3.Rules.UrWeb
 import Development.Cake3.Utils.Find
 import Cakefile_P
 
-pname = "App"
-
 urflags = makevar "URFLAGS" ""
 
-static_urp = file ("src" </> "static" </> "Static.urp")
+urp = file "AppMM.urp"
 
 main = mdo
 
-  static_files <- filterExts [".js", ".css"] <$> getDirectoryContentsRecursive projectroot
+  files <- getDirectoryContentsRecursive projectroot
 
-  static <- urembed static_urp static_files $ \urembed_cmd -> do
-    shell [cmd| $(urembed_cmd) -I $(extvar "HOME")/local/include/urweb |]
+  let cfg = defaultConfig {
+        urInclude = makevar "URINCL" "$(HOME)/local/include/urweb",
+        urEmbed = [ ("StaticJS", filterExts [".js"] files)
+                  , ("StaticCSS", filterExts [".css"] files)
+                  , ("StaticImg", filterExts [".jpg"] files)
+                  ]}
 
-  (exe,sql,db) <- urweb (file pname) $ do
-    depend static
-    shell [cmd| urweb -dbms sqlite $urflags $(string pname) |]
+  (exe,sql,db) <- urweb cfg urp $ do
+    shell [cmd| urweb -dbms sqlite $urflags $(string (takeBaseName urp)) |]
     shell [cmd| -rm -rf $db |]
     shell [cmd| sqlite3 $db < $sql |]
     
-  runMake $ do 
+  runMake_ $ do 
     place (phony "all" (depend exe))
-    place (phony "sql" (shell [cmd| sqlite3 $db|]))
+    place (phony "run" (shell [cmd|$exe|]))
+    place (phony "sql" (shell [cmd|sqlite3 $db|]))
     place defaultSelfUpdate
     place db
-
 
