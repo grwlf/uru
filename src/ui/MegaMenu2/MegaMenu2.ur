@@ -1,6 +1,6 @@
 
-con need = [JQ=xhead]
-con out = need ++ [JQ_MM=xhead]
+con need = [JQ={}]
+con out = need ++ [JQ_MM={}]
 
 fun add [t] [x] [t~out] f r = 
   let

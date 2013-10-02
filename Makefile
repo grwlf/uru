@@ -19,7 +19,7 @@ Makefile: ./AppMM.urp ./Cakegen
 	./Cakegen > Makefile
 ./App.db ./App.sql ./AppMM.exe: stamp1
 .INTERMEDIATE: stamp1
-stamp1: ./AppMM.ur ./AppMM.urp ./AppMM.urs ./src/Page.ur ./src/Page.urs ./src/Xmllike.ur ./src/Xmllike.urs ./src/static/StaticCSS.urp ./src/static/StaticImg.urp ./src/static/StaticJS.urp ./src/ui/MegaMenu2/MegaMenu2.ur ./src/ui/MegaMenu2/MegaMenu2.urs ./src/ui/PikaChoose/PikaChoose.ur ./src/ui/PikaChoose/PikaChoose.urs Makefile $(call GUARD,URFLAGS)
+stamp1: ./AppMM.ur ./AppMM.urp ./AppMM.urs ./src/Page.ur ./src/Page.urs ./src/Xmllike.ur ./src/Xmllike.urs ./src/static/StaticCSS.urp ./src/static/StaticImg.urp ./src/static/StaticJS.urp ./src/ui/MegaMenu2/MegaMenu2.ur ./src/ui/MegaMenu2/MegaMenu2.urs Makefile $(call GUARD,URFLAGS)
 	urweb -dbms sqlite $(URFLAGS) AppMM
 	-rm -rf ./App.db
 	sqlite3 ./App.db < ./App.sql

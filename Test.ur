@@ -111,3 +111,6 @@ fun main {} =
       </body>
     </xml> 
 
+
+val x : $([A]) = { A = {} }
+

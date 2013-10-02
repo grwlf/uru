@@ -35,14 +35,14 @@ task initialize = fn {} =>
   anyway ( newSubmenu "Forum" co 4);
   return {}
 
-val headers = {
-  JQ = <xml><script type="text/javascript" src={url (Jquery_1_9_1_js.blobpage {})}/></xml>,
-  MY = (fn (x:xhead) => x)
-    <xml>
-      <title>AppMM</title>
-      <link rel="stylesheet" href={url (AppMM_css.blobpage {})}/>
-    </xml>
-}
+(* val headers = { *)
+(*   JQ = <xml><script type="text/javascript" src={url (Jquery_1_9_1_js.blobpage {})}/></xml>, *)
+(*   MY = (fn (x:xhead) => x) *)
+(*     <xml> *)
+(*       <title>AppMM</title> *)
+(*       <link rel="stylesheet" href={url (AppMM_css.blobpage {})}/> *)
+(*     </xml> *)
+(* } *)
 
 (* val x : css_style = "width : 500px ;" *)
 
@@ -75,15 +75,16 @@ and viewpage (i:int) = main {}
 and viewimg s = StaticImg.blobpage s
 
 and main {} = Page.runPage (
-  Page.addHeaders headers (
+  (* Page.addHeaders headers ( *)
   MegaMenu2.add (fn init =>
-  PikaChoose.add (fn pkch_init =>
+  (* PikaChoose.add (fn pkch_init => *)
   Page.withBody (
-    i <- return (init megamenu);
+    (* i <- return (init megamenu); *)
     m <- mkmenu {};
     return (
       <xml>
         <body onload={init megamenu}>
+        (* <body> *)
           {m}
           The body
           (* <ul class={pkchoose} > *)
@@ -93,7 +94,10 @@ and main {} = Page.runPage (
           (* </ul> *)
         </body>
       </xml>
-    ))))))
+    )))
+  )
+  (* ) *)
+  (* ) *)
 
 
           (* <ul class={megamenu}> *)
