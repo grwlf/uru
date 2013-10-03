@@ -3,7 +3,7 @@ sql App.sql
 allow mime text/plain
 allow mime text/css
 allow mime image/jpeg
-allow mime application/javascript
+allow mime text/javascript
 allow url http://tinymce.cachefly.net/*
 allow url http://lab.dbpmail.net/static/jquery-1.9.1.min.js
 allow url http://code.jquery.com/ui/1.10.3/jquery-ui.js
@@ -20,4 +20,5 @@ $/list
 src/Xmllike
 src/Page
 src/ui/MegaMenu2/MegaMenu2
+src/ui/PikaChoose/PikaChoose
 AppMM

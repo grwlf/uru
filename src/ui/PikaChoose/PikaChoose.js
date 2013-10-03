@@ -1,6 +1,5 @@
 
-function pikaChooseInit__unit(css_class) {
-  var selector = "." + css_class;
-  $(selector).PikaChoose({showTooltips:true});
+function pkch_init__unit(css_class) {
+  $("." + css_class).PikaChoose({showTooltips:true});
 }
 

@@ -2,7 +2,6 @@ fun anyway [t] (c : transaction t) : transaction {} =
   x <- c ;
   return {}
 
-
 sequence page_seq
 table page : { Id : int, MenuText : string }
   PRIMARY KEY Id
@@ -35,25 +34,20 @@ task initialize = fn {} =>
   anyway ( newSubmenu "Forum" co 4);
   return {}
 
-(* val headers = { *)
-(*   JQ = <xml><script type="text/javascript" src={url (Jquery_1_9_1_js.blobpage {})}/></xml>, *)
-(*   MY = (fn (x:xhead) => x) *)
-(*     <xml> *)
-(*       <title>AppMM</title> *)
-(*       <link rel="stylesheet" href={url (AppMM_css.blobpage {})}/> *)
-(*     </xml> *)
-(* } *)
+val headers = {
+  JQ = <xml><script type={blessMime "text/javascript"} src={url (Jquery_1_9_1_js.blobpage {})}/></xml>,
+  MY = 
+    <xml>
+      <title>AppMM</title>
+      <link rel="stylesheet" href={url (AppMM_css.blobpage {})}/>
+    </xml>
+}
 
-(* val x : css_style = "width : 500px ;" *)
-
-val y:css_style = oneProperty noStyle (value (property "width") (atom "500px"))
-
-val k : css_style = STYLE "width:500px;height:1000px"
-
+style pagecss
 style megamenu
 style pkchoose
 
-fun mkmenu {} = 
+fun mkmenu css = 
   r <- queryX' (SELECT * FROM page) (fn r => 
     s <- queryX (SELECT * FROM menusub WHERE (menusub.TopId = {[r.Page.Id]})) (fn r' =>
       <xml>
@@ -68,53 +62,42 @@ fun mkmenu {} =
           </div>
         </li>
       </xml>);
-  return <xml><ul class={megamenu}>{r}</ul></xml>
+  return <xml><ul class={css}>{r}</ul></xml>
 
 and viewpage (i:int) = main {}
 
 and viewimg s = StaticImg.blobpage s
 
-and main {} = Page.runPage (
-  (* Page.addHeaders headers ( *)
-  MegaMenu2.add (fn init =>
-  (* PikaChoose.add (fn pkch_init => *)
+and main {} =
+  Page.runPage (
+  Page.withHeader [#JQ] (headers.JQ) (
+  Page.withHeader [#MY] (headers.MY) (
+  PikaChoose.add pkchoose (
+  MegaMenu2.add megamenu (
   Page.withBody (
-    (* i <- return (init megamenu); *)
-    m <- mkmenu {};
+    m <- mkmenu megamenu;
     return (
-      <xml>
-        <body onload={init megamenu}>
-        (* <body> *)
-          {m}
-          The body
-          (* <ul class={pkchoose} > *)
-          (*   <li><img src={url (Img1_jpg.blobpage {})}/><span>This is an example of the basic theme.</span></li> *)
-          (*   <li><img src={url (Img2_jpg.blobpage {})}/><span>jCarousel is supported and can be integrated with PikaChoose!</span></li> *)
-          (*   <li><img src={url (Img3_jpg.blobpage {})}/><span>Be sure to check out PikaChoose.com for updates.</span></li> *)
-          (* </ul> *)
-        </body>
-      </xml>
-    )))
-  )
-  (* ) *)
-  (* ) *)
+     <xml>
+       <div class={pagecss}>
+         <div>{m}</div>
+         The body
+         <div style="width:520px; margin:0 auto;">
+           <ul class={pkchoose}>
+             <li>
+               <img src={url (Img1_jpg.blobpage {})}/>
+               <span>This is an example of the basic theme.</span>
+             </li>
+             <li>
+               <img src={url (Img2_jpg.blobpage {})}/>
+               <span>jCarousel is supported and can be integrated with PikaChoose!</span>
+             </li>
+             <li>
+               <img src={url (Img3_jpg.blobpage {})}/>
+               <span>Be sure to check out PikaChoose.com for updates.</span>
+             </li>
+           </ul>
+         </div>
+       </div>
+     </xml> 
+    )))))))
 
-
-          (* <ul class={megamenu}> *)
-          (*   <li> *)
-          (*     <a link={main {}}>One Liner</a> *)
-          (*     <div style="width: 500px;"> *)
-          (*       See how the position of the menu gets adjusted to stay within the outer bounds. *)
-          (*     </div> *)
-          (*   </li> *)
-          (*   <li> *)
-          (*     <a link={main {}}>Two Liner</a> *)
-          (*     <div style="width: 500px;"> *)
-          (*       See how the position of the menu gets adjusted to stay within the outer bounds. *)
-          (*     </div> *)
-          (*   </li> *)
-          (*   <li><a link={main {}}>Item1</a></li> *)
-          (*   <li><a link={main {}}>Item2</a></li> *)
-          (*   <li><a link={main {}}>Item3</a></li> *)
-          (*   <li><a link={main {}}>Item4</a></li> *)
-          (* </ul> *)

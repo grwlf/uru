@@ -98,19 +98,94 @@ fun listify [ts ::: {Type}] (fl : folder ts) (shows : $(map intlike ts)) (r : $t
                (@intlike intliker value) :: acc )
            [] fl shows r
 
-val e : list int = listify g
+val m : list int = listify g
+
+(* fun xmlify *)
+(*   [t ::: {Type}] *)
+(*   (fl : folder t) *)
+(*   (r : record t) *)
+(*      : xhead = *)
+(*   @foldR [ident] [fn _ => xhead] (fn [nm ::_] [t ::_] [r ::_] [[nm] ~ r] value acc => <xml>{value}{acc}</xml>) <xml/> fl r *)
+
+(* fun xmlify *) 
+(*   [ctx ::: {Unit}] *)
+(*   [t ::: {Type}] *)
+(*   (fl : folder (map (fn _ => xml ctx [] []) t)) *)
+(*   (r : record (map (fn _ => xml ctx [] []) t)) *)
+(*      : xml ctx [] [] = *)
+(*     @mapX [fn _ => xml ctx [] []] [ctx] *)
+(*       (fn [nm ::_] [t ::_] [r ::_] [[nm]~r] x => <xml>{x}</xml>) *)
+(*         fl r *)
+(* val n : xbody = xmlify { A = (fn (x:xbody) => x) <xml><p>asdasd</p></xml> } *)
+
+fun xmlify 
+  [t ::: {Unit}]
+  (fl : folder (map (fn _ => xhead) t))
+  (r : record (map (fn _ => xhead) t))
+     : xhead =
+    @mapX [fn _ => xhead] [[Head = ()]]
+      (fn [nm ::_] [t ::_] [r ::_] [[nm]~r] x => x)
+        fl r
+
+val n : xhead = xmlify { A = <xml><title>asdasd</title></xml> }
+
+(* fun xmlify *) 
+(*   [t ::: {Type}] *)
+(*   (fl : folder t) *)
+(*   (xl : record (map Xmllike.xmllike t)) *)
+(*   (r : record t) *)
+(*      : xhead = *)
+(*     @mapX2 [Xmllike.xmllike] [ident] [[Head = ()]] *)
+(*       (fn [nm ::_] [t ::_] [r ::_] [[nm]~r] xmlifier x => <xml>{@Xmllike.xmllike xmlifier x}</xml>) *)
+(*         fl xl r *)
+(* val n : xhead = xmlify { A = (fn (x:xhead) => x) <xml><title>asdasd</title></xml> } *)
+
+(* fun xmlify *)
+(*   [ts ::: {Type}] *)
+(*   (fl : folder ts) *)
+(*   (r : record (map (fn _ => xhead) ts)) *)
+(*      : xhead = *)
+(*     @foldR [fn _ => xhead] [fn _ => xhead] *)
+(*            (fn [nm ::_] [t ::_] [r ::_] [[nm] ~ r] value acc => <xml>{value}{acc}</xml>) *)
+(*            <xml/> fl r *)
+
+(* val n : xhead = xmlify { A = (fn (x:xhead) => x) <xml><title>asdasd</title></xml> } *)
+
+
+(* val n_inp = { A = (fn (x:xhead) => x) <xml><title>asdasd</title></xml> } *) 
+
+(* val n : xhead = *)
+(*   foldR *)
+(*     [ident] *)
+(*     [fn _ => xhead] *)
+(*     (fn v a => <xml>{v}{a}</xml>) *)
+(*     (folder n_inp) *)
+(*       n_inp *)
+
+fun intify
+  [ts ::: {Unit}]
+  (fl : folder ts)
+  (r : record (map (fn _ => int) ts))
+     : int =
+    @foldR [fn _ => int] [fn _ => int]
+           (fn [nm ::_] [t ::_] [r ::_] [[nm] ~ r] value acc => value+acc)
+           0 fl r
+
+val o = intify {A=1}
 
 fun main {} = 
   return
     <xml>
-      <head/>
+      <head>
+      {n}
+      </head>
       <body>
       <p>{[e]}</p>
       <p>{[h]}</p>
       <p>{[h2]}</p>
+      <p>{[o]}</p>
       </body>
     </xml> 
 
 
-val x : $([A]) = { A = {} }
 

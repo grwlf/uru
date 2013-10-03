@@ -13,4 +13,5 @@ rewrite style Design/*
 library src/static/Static
 
 $/list
+src/Xmllike
 Test

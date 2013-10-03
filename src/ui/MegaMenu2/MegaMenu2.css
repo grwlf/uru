@@ -3,16 +3,11 @@
   Author: GeekTantra
   Author URI: http://www.geektantra.com
 */
-body {
-  font-family: "Arial";
-  font-size: 13px;
-  margin: 0px;
-}
 
 li.mm-item {
 }
 
-li.clear-fix {
+li.mm-clear-fix {
   float: none;
   clear: both;
   margin: 0px;
@@ -64,6 +59,7 @@ div.mm-item-content {
   z-index: 11;
   padding: 10px;
 }
+
 .mm-js-shadow {
   background: #555;
   position: absolute;
