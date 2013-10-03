@@ -14,6 +14,7 @@ rewrite style Design/*
 library src/static/StaticJS
 library src/static/StaticCSS
 library src/static/StaticImg
+script http://tinymce.cachefly.net/4.0/tinymce.min.js
 debug
 
 $/list
@@ -21,4 +22,5 @@ src/Xmllike
 src/Page
 src/ui/MegaMenu2/MegaMenu2
 src/ui/PikaChoose/PikaChoose
+src/ui/TinyMCE/TinyMCE
 AppMM

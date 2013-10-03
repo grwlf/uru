@@ -46,8 +46,9 @@ val headers = {
 style pagecss
 style megamenu
 style pkchoose
+style tmce
 
-fun mkmenu css = 
+fun mkmenu (css:css_class) : transaction xbody = 
   r <- queryX' (SELECT * FROM page) (fn r => 
     s <- queryX (SELECT * FROM menusub WHERE (menusub.TopId = {[r.Page.Id]})) (fn r' =>
       <xml>
@@ -66,14 +67,13 @@ fun mkmenu css =
 
 and viewpage (i:int) = main {}
 
-and viewimg s = StaticImg.blobpage s
-
 and main {} =
   Page.runPage (
   Page.withHeader [#JQ] (headers.JQ) (
   Page.withHeader [#MY] (headers.MY) (
   PikaChoose.add pkchoose (
   MegaMenu2.add megamenu (
+  TinyMCE.add tmce (url (Img2_jpg.blobpage {}) :: url (Img1_jpg.blobpage {}) :: []) (
   Page.withBody (
     m <- mkmenu megamenu;
     return (
@@ -97,7 +97,8 @@ and main {} =
              </li>
            </ul>
          </div>
+         <form> <textarea{#Zzzzz} class={tmce}/></form>
        </div>
      </xml> 
-    )))))))
+    ))))))))
 

@@ -19,7 +19,7 @@ Makefile: ./AppMM.urp ./Cakegen
 	./Cakegen > Makefile
 ./App.db ./App.sql ./AppMM.exe: stamp1
 .INTERMEDIATE: stamp1
-stamp1: ./AppMM.ur ./AppMM.urp ./AppMM.urs ./src/Page.ur ./src/Page.urs ./src/Xmllike.ur ./src/Xmllike.urs ./src/static/StaticCSS.urp ./src/static/StaticImg.urp ./src/static/StaticJS.urp ./src/ui/MegaMenu2/MegaMenu2.ur ./src/ui/MegaMenu2/MegaMenu2.urs ./src/ui/PikaChoose/PikaChoose.ur ./src/ui/PikaChoose/PikaChoose.urs Makefile $(call GUARD,URFLAGS)
+stamp1: ./AppMM.ur ./AppMM.urp ./AppMM.urs ./src/Page.ur ./src/Page.urs ./src/Xmllike.ur ./src/Xmllike.urs ./src/static/StaticCSS.urp ./src/static/StaticImg.urp ./src/static/StaticJS.urp ./src/ui/MegaMenu2/MegaMenu2.ur ./src/ui/MegaMenu2/MegaMenu2.urs ./src/ui/PikaChoose/PikaChoose.ur ./src/ui/PikaChoose/PikaChoose.urs ./src/ui/TinyMCE/TinyMCE.ur ./src/ui/TinyMCE/TinyMCE.urs Makefile $(call GUARD,URFLAGS)
 	urweb -dbms sqlite $(URFLAGS) AppMM
 	-rm -rf ./App.db
 	sqlite3 ./App.db < ./App.sql
@@ -33,9 +33,9 @@ stamp1: ./AppMM.ur ./AppMM.urp ./AppMM.urs ./src/Page.ur ./src/Page.urs ./src/Xm
 	urembed -o ./src/static/StaticImg.urp img1.jpg img5.jpg img3.jpg img4.jpg img2.jpg
 ./src/static/StaticImg.urp: ./src/static/StaticImg.mk Makefile $(call GUARD,CC) $(call GUARD,LD) $(call GUARD,MAKE) $(call GUARD,URCC) $(call GUARD,URINCL)
 	$(MAKE) -C ./src/static -f StaticImg.mk CC=$(CC) LD=$(LD) UR_INCLUDE_DIR=$(URINCL) urp
-./src/static/StaticJS.mk: Makefile src/Menu.js src/thirdparty/jquery-1.9.1.js src/thirdparty/jquery-ui.js src/ui/MegaMenu2/MegaMenu2.js src/ui/MegaMenu2/jquery.megamenu.js src/ui/MenuUI/menu_jq.js src/ui/PikaChoose/PikaChoose.js src/ui/PikaChoose/jquery.jcarousel.min.js src/ui/PikaChoose/jquery.pikachoose.min.js
+./src/static/StaticJS.mk: Makefile src/Menu.js src/thirdparty/jquery-1.9.1.js src/thirdparty/jquery-ui.js src/ui/MegaMenu2/MegaMenu2.js src/ui/MegaMenu2/jquery.megamenu.js src/ui/MenuUI/menu_jq.js src/ui/PikaChoose/PikaChoose.js src/ui/PikaChoose/jquery.jcarousel.min.js src/ui/PikaChoose/jquery.pikachoose.min.js src/ui/TinyMCE/TinyMCE.js src/ui/TinyMCE/tinymce.min.js
 	mkdir -pv ./src/static
-	urembed -o ./src/static/StaticJS.urp src/Menu.js src/thirdparty/jquery-1.9.1.js src/thirdparty/jquery-ui.js src/ui/PikaChoose/PikaChoose.js src/ui/PikaChoose/jquery.pikachoose.min.js src/ui/PikaChoose/jquery.jcarousel.min.js src/ui/MegaMenu2/jquery.megamenu.js src/ui/MegaMenu2/MegaMenu2.js src/ui/MenuUI/menu_jq.js
+	urembed -o ./src/static/StaticJS.urp src/Menu.js src/thirdparty/jquery-1.9.1.js src/thirdparty/jquery-ui.js src/ui/PikaChoose/PikaChoose.js src/ui/PikaChoose/jquery.pikachoose.min.js src/ui/PikaChoose/jquery.jcarousel.min.js src/ui/MegaMenu2/jquery.megamenu.js src/ui/MegaMenu2/MegaMenu2.js src/ui/TinyMCE/TinyMCE.js src/ui/TinyMCE/tinymce.min.js src/ui/MenuUI/menu_jq.js
 ./src/static/StaticJS.urp: ./src/static/StaticJS.mk Makefile $(call GUARD,CC) $(call GUARD,LD) $(call GUARD,MAKE) $(call GUARD,URCC) $(call GUARD,URINCL)
 	$(MAKE) -C ./src/static -f StaticJS.mk CC=$(CC) LD=$(LD) UR_INCLUDE_DIR=$(URINCL) urp
 $(call GUARD,CC):
