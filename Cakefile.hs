@@ -8,17 +8,21 @@ import Cakefile_P
 
 urflags = makevar "URFLAGS" ""
 
-urp = file "AppMM.urp"
+urp = file "AppNivo.urp"
 
 main = mdo
 
   files <- getDirectoryContentsRecursive projectroot
+  fiml <- getDirectoryContentsRecursive (file "img/eremex")
+  fpls <- getDirectoryContentsRecursive (file "img/pulsonix")
 
   let cfg = defaultConfig {
         urInclude = makevar "URINCL" "$(HOME)/local/include/urweb",
         urEmbed = [ ("StaticJS", filterExts [".js"] files)
                   , ("StaticCSS", filterExts [".css"] files)
-                  , ("StaticImg", filterExts [".jpg"] files)
+                  , ("StaticImg", filterExts [".jpg", ".png", ".gif"] files)
+                  , ("EremexImg", fiml)
+                  , ("PulsonixImg", fpls)
                   ]}
 
   (exe,sql,db) <- urweb cfg urp $ do

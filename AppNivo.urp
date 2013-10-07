@@ -11,6 +11,7 @@ allow url http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css
 allow url http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js
 allow url http://null
 rewrite style Design/*
+rewrite style AppNivo/*
 library src/static/StaticJS
 library src/static/StaticCSS
 library src/static/StaticImg
@@ -18,11 +19,12 @@ library src/static/EremexImg
 library src/static/PulsonixImg
 script http://tinymce.cachefly.net/4.0/tinymce.min.js
 debug
+clientOnly NivoSlider_js_js.nivo_slider_class
 
 $/list
 src/ui/Page
 src/ui/MegaMenu2/MegaMenu2
-src/ui/PikaChoose/PikaChoose
+src/ui/NivoSlider/NivoSlider
 src/ui/TinyMCE/TinyMCE
 src/ui/ThreeColumns/ThreeColumns
-AppMM
+AppNivo

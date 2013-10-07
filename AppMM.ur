@@ -2,6 +2,14 @@ fun anyway [t] (c : transaction t) : transaction {} =
   x <- c ;
   return {}
 
+sequence img_seq
+table imaget : { Nam : string, Data : blob }
+  PRIMARY KEY Nam
+
+fun newImage (n:string) (b:blob) : transaction string =
+  anyway (tryDml (INSERT INTO imaget(Nam, Data) VALUES ({[n]}, {[b]})));
+  return n
+
 sequence page_seq
 table page : { Id : int, MenuText : string }
   PRIMARY KEY Id
@@ -10,28 +18,46 @@ fun newPage (t:string) i : transaction int =
   anyway( tryDml (INSERT INTO page(Id, MenuText) VALUES ({[i]}, {[t]})) );
   return i
 
-sequence menusub_seq
-table menusub : { Id : int, Caption : string, TopId : int }
+sequence product_seq
+table product : { Id : int, Caption : string, Slogan : string, Logo : string, PageId : int }
   PRIMARY KEY Id,
-  CONSTRAINT PageLink FOREIGN KEY TopId REFERENCES page (Id)
+  CONSTRAINT PageLink FOREIGN KEY PageId REFERENCES page(Id)
 
-fun newSubmenu (s:string) (topid:int) i : transaction int =
-  anyway( tryDml (INSERT INTO menusub(Id, Caption, TopId) VALUES ({[i]}, {[s]}, {[topid]})) );
+fun newProduct i c sl l pg : transaction int =
+  anyway( tryDml (INSERT INTO product(Id, Caption, Slogan, Logo, PageId)
+                  VALUES ({[i]},{[c]},{[sl]},{[l]},{[pg]})
+                  ));
   return i
+  
+
 
 task initialize = fn {} => 
-  h <- newPage "Top" 0;
-  p <- newPage "Products" 1;
-  s <- newPage "Sales" 2;
-  c <- newPage "Contact us" 3;
-  co <- newPage "Community" 4;
+  t <- newPage "Top" 0;
 
-  anyway ( newSubmenu "FX-RTOS" p 0);
-  anyway ( newSubmenu "Schematic" p 1);
-  anyway ( newSubmenu "Librarian" p 2);
+  anyway (
+    n <- (return "Topor");
+    s <- (return "Topology editor and automatic router for PCB design");
+    b <- Logo_topor_png.binary {};
+    i <- newImage n b;
+    anyway ( newProduct 0 n s i t)
+  );
 
-  anyway ( newSubmenu "Blog" co 3);
-  anyway ( newSubmenu "Forum" co 4);
+  anyway (
+    n <- (return "FX-RTOS");
+    s <- (return "Real time operating system for embedded applications");
+    b <- Logo_rtos_png.binary {}; 
+    i <- newImage n b;
+    anyway ( newProduct 1 n s i t)
+  );
+
+  anyway (
+    n <- (return "SimONE");
+    s <- (return "Electronic circuit simulator");
+    b <- Logo_simone_png.binary {};
+    i <- newImage n b;
+    anyway ( newProduct 2 n s i t)
+  );
+
   return {}
 
 val headers = {
@@ -48,22 +74,131 @@ style megamenu
 style pkchoose
 style tmce
 
-fun mkmenu (css:css_class) : transaction xbody = 
-  r <- queryX' (SELECT * FROM page) (fn r => 
-    s <- queryX (SELECT * FROM menusub WHERE (menusub.TopId = {[r.Page.Id]})) (fn r' =>
-      <xml>
-        <p>{[r'.Menusub.Caption]}</p>
-      </xml>);
+style imagelist
+style download
+style info
+style work
+style button
+style news
+
+fun fvoid {} = {}
+
+and mkmenu (css:css_class) : transaction xbody = 
+  ps <- queryX' (SELECT * FROM product) (fn prod =>
     return
       <xml>
-        <li>
-          <a link={viewpage r.Page.Id}> {[r.Page.MenuText]} </a>
-          <div>
-          {s}
-          </div>
-        </li>
+        <div>
+        <p>{[prod.Product.Caption]}</p>
+        <img src={url (image prod.Product.Logo)}/>
+        </div>
       </xml>);
-  return <xml><ul class={css}>{r}</ul></xml>
+  return
+   <xml>
+      <ul class={css}>
+        <li><a link={main {}}>Products</a><div>{ps}</div></li>
+        <li><a link={main {}}>Blog</a></li>
+        <li><a link={main {}}>Sales</a></li>
+        <li><a link={main {}}>Contacts</a></li>
+        <li><a link={main {}}>Community</a></li>
+      </ul>
+    </xml> 
+
+and image n : transaction page =
+  b <- oneRow (SELECT * FROM imaget WHERE imaget.Nam = {[n]});
+  returnBlob b.Imaget.Data (blessMime "image/png")
+
+and gennews s : transaction xbody = 
+  let val col1of3 = s.TC_Col1
+      val col2of3 = s.TC_Col2
+      val col3of3 = s.TC_Col3
+  in
+  return
+    <xml>
+      <div style={col1of3}>
+        <h2>Circuit Capture and PCB Layout</h2>
+        <dl class={imagelist}>
+          <dt><a link={main {}}>Download a free trial copy now</a></dt>
+          <dd class={download}>
+            Pulsonix Lite is available as a free trial
+            <a link={main {}}>download</a>
+            . With no set time-limit, this version allows you to test out all the key
+            product features before you buy. And with designs of up to 100 component pins,
+            it even allows you to save them.
+            <a link={main {}}>Download</a>
+            now and see why so many people have switched to Pulsonix.
+          </dd>
+          <dt><a link={main {}}>Easily migrate from another PCB system</a></dt>
+          <dd class={button}>
+            Pulsonix can read designs and libraries from almost every other package. Your
+            legacy data is retained when you make the switch; that's Schematic and PCB
+            designs plus all your libraries. View our impressive list of
+            <a link={main {}}>import filters</a>
+            . If yours isn't listed, send us an
+            <a link={main {}}>email</a>
+            and we'll advised you of your import options.
+          </dd>
+          <dt><a link={main {}}>Work with leading-edge technology</a></dt>
+          <dd class={button}>
+            Pulsonix supports the latest leading-edge technologies including flexi-rigid,
+            embedded components, micro-vias and more. Take advantage of a proficient toolset
+            that keeps you up-to-date with the latest design and manufacturing technologies.
+            Find out
+            <a link={main {}}>More</a>
+          </dd>
+        </dl>
+      </div>
+      <div style={col2of3}>
+        <h2>Get more out of Pulsonix</h2>
+        <dl class={imagelist}>
+          <dt><a link={main {}}>New User Forum</a></dt>
+          <dd class={info}>
+            Visit our new
+            <a link={main {}}>User Forum</a>
+            and read about how you can get the most out of your Pulsonix software. With peer
+            support and lots of hints and tips about using Pulsonix, this Forum is a
+            valuable resource for all Pulsonix users.
+          </dd>
+          <dt><a link={main {}}>Software maintenance</a></dt>
+          <dd class={info}>
+            A Pulsonix maintenance contract represents the most cost effective way of
+            ensuring you and your engineering teams have access to all the assistance needed
+            to keep you operating efficiently and effectively.
+            <a link={main {}}>Read more</a>
+            about the benefits of a maintenance contract.
+          </dd>
+          <dt><a link={main {}}>Keeping up to date</a></dt>
+          <dd class={work}>
+            The latest updates for Pulsonix are listed here, allowing you to quickly check
+            that your existing Pulsonix installation is up-to-date so you can take advantage
+            of all the latest improvements.
+            <p>
+              Latest Updates:
+              <a link={main {}}>8.0.5537</a>
+              and
+              <a link={main {}}>7.6.5226</a>
+            </p>
+          </dd>
+        </dl>
+      </div>
+      <div style={col3of3}>
+        <h2>News and Press</h2>
+        <dl class={imagelist}>
+          <dt><a link={main {}}>Version 8 Available</a></dt>
+          <dd class={news}>
+            The latest edition of Pulsonix is now shipping. Over 45 new and improved
+            features have been added; most of which have been implemented as a direct result
+            of user requests.
+            <p>Read more about the new<a link={main {}}>V8 features</a>.</p>
+            <p>
+              Click
+              <a link={main {}}>here</a>
+              to update your copy of Pulsonix to the latest version.
+            </p>
+          </dd>
+        </dl>
+      </div>
+    </xml> 
+  end
 
 and viewpage (i:int) = main {}
 
@@ -73,32 +208,35 @@ and main {} =
   Page.withHeader [#MY] (headers.MY) (
   PikaChoose.add pkchoose (
   MegaMenu2.add megamenu (
-  TinyMCE.add tmce (url (Img2_jpg.blobpage {}) :: url (Img1_jpg.blobpage {}) :: []) (
+  TinyMCE.add tmce ( Img2_jpg.geturl :: Img1_jpg.geturl :: [] ) (
+  ThreeColumns.add (fn columns =>
   Page.withBody (
     m <- mkmenu megamenu;
+    n <- columns (fn s => gennews s);
     return (
      <xml>
        <div class={pagecss}>
          <div>{m}</div>
          The body
-         <div style="width:520px; margin:0 auto;">
+         <div style="margin:0 auto;">
            <ul class={pkchoose}>
              <li>
-               <img src={url (Img1_jpg.blobpage {})}/>
-               <span>This is an example of the basic theme.</span>
+               <img src={Banner_rtos_jpg.geturl}/>
+               <span>Real time operating system for embedded applications</span>
              </li>
              <li>
-               <img src={url (Img2_jpg.blobpage {})}/>
-               <span>jCarousel is supported and can be integrated with PikaChoose!</span>
+               <img src={Banner_simone_jpg.geturl}/>
+               <span>Electronic circuit simulator</span>
              </li>
              <li>
-               <img src={url (Img3_jpg.blobpage {})}/>
-               <span>Be sure to check out PikaChoose.com for updates.</span>
+               <img src={Banner_topor_jpg.geturl}/>
+               <span>Topology editor and automatic router for PCB design</span>
              </li>
            </ul>
          </div>
+         {n}
          <form> <textarea{#Zzzzz} class={tmce}/></form>
        </div>
      </xml> 
-    ))))))))
+    )))))))))
 
