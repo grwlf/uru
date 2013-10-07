@@ -34,9 +34,10 @@ function nivo_init(
     $('.' + theme__css_class).attr('class', 'slider-wrapper theme-default');
     $('.' + ribbon__css_class).attr('class', 'ribbon');
 
-    $('.theme-default .nivoSlider').css('background','#fff url('+loading__url+') no-repeat 50% 50%');
-    $('.theme-default .nivo-controlNav a').css('background','url('+ bullets__url +') no-repeat');
-    $('.theme-default .nivo-directionNav a').css('background','url('+ arrows__url +') no-repeat');
+    // Doesn't work properly: nivo performs some manipulation with images after loading
+    // $('.theme-default .nivoSlider').css('background','#fff url('+loading__url+') no-repeat 50% 50%');
+    // $('.theme-default .nivo-controlNav a').css('background','url('+ bullets__url +') no-repeat');
+    // $('.theme-default .nivo-directionNav a').css('background','url('+ arrows__url +') no-repeat');
 
   });
 }

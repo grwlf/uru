@@ -5,15 +5,6 @@ con out = need ++ [NIVO={}]
 style nivocls
 style nivoribbon
 
-fun wrapfn (p: xbody) : xbody =
-  <xml>
-    <div class={nivocls}>
-      <div class={nivoribbon}>
-        {p}
-      </div>
-    </div>
-  </xml>
-
 fun mkslide (r:slide) =
   case r.Title of
     Some t =>
@@ -60,10 +51,15 @@ fun add [t] [x] [t~out] css f r =
         s <- mkslide r;
         return (<xml>{x.1}{s.1}</xml>,
                 <xml>{x.2}{s.2}</xml>)) (<xml/>,<xml/>) s;
-      return (wrapfn <xml>
-          <div class={css}> {x.1} </div>
-          <div> {x.2} </div>
-        </xml>)
+      return
+        <xml>
+          <div class={nivocls}>
+            <div class={nivoribbon}>
+                <div class={css}>{x.1}</div>
+                <div style="display:none;">{x.2}</div>
+            </div>
+          </div>
+        </xml>
   in
     f fslides r'
   end
