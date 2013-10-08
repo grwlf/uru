@@ -1,21 +1,16 @@
 
+val css = CSS.css
 
-fun mkcss (n:string) (v:string) (s:css_style) : css_style = oneProperty s (value (property n) (atom v))
-
-fun css (l : list (string * string)) : css_style = 
-  List.foldr (fn (n,v) s => mkcss n v s) noStyle l
-
-val cs = ("text-align","left") ::
+val cs = ("text-align", CSS.Str "left") ::
          []
 
-
-val box = ("overflow","hidden") ::
-          ("display","inline-block") ::
-          ("width","250px") ::
-          ("vertical-align","top") ::
+val box = ("overflow",CSS.Str "hidden") ::
+          ("display",CSS.Str "inline-block") ::
+          ("width",CSS.Str "250px") ::
+          ("vertical-align",CSS.Str "top") ::
           []
 
-val s1 = ("padding-right","20px") ::
+val s1 = ("padding-right",CSS.Str "20px") ::
          box
 
 val s2 = box

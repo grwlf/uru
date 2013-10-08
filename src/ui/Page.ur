@@ -20,6 +20,14 @@ fun withHeader [t] [t2] [n :: Name] [t~[n={}]] (h:xhead) f r =
     f ((r -- #Marks ++ {Marks = r.Marks ++ {n={}}})
           -- #Hdr ++ {Hdr = <xml>{r.Hdr}{h}</xml>})
 
+fun withSettings [t] [t2] [tp] [n :: Name] [t~[n=tp]] (s:tp) f r =
+    f (r -- #Marks ++ {Marks = r.Marks ++ {n=s}})
+
+fun getSettings [t] [tp] [n :: Name] [t~[n=tp]]
+  (r: record (dpage (t++[n=tp])))
+    : tp =
+    r.Marks.n
+
 fun requireHeader [t1] [n :: Name] [t1 ~ [n={}]] r =
   let val x = r.Marks.n in r end
 

@@ -13,6 +13,16 @@ val withHeader : t ::: {Type} -> t2 ::: {Type} -> n :: Name -> [t~[n={}]]
   -> record (dpage t)
   -> record (dpage t2)
 
+val withSettings : t ::: {Type} -> t2 ::: {Type} -> tp ::: Type -> n :: Name -> [t~[n=tp]]
+  => tp
+  -> (record (dpage (t++[n=tp])) -> record (dpage t2))
+  -> record (dpage t)
+  -> record (dpage t2)
+
+val getSettings : t ::: {Type} -> tp ::: Type -> n :: Name -> [t~[n=tp]]
+  => record (dpage (t++[n=tp]))
+  -> tp
+
 val javascript : mimeType
 
 val addHeader : t1 ::: {Type} -> n :: Name -> [t1 ~ [n={}]]

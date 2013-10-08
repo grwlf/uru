@@ -60,15 +60,6 @@ task initialize = fn {} =>
 
   return {}
 
-val headers = {
-  JQ = <xml><script type={blessMime "text/javascript"} src={url (Jquery_1_9_1_js.blobpage {})}/></xml>,
-  MY = 
-    <xml>
-      <title>AppMM</title>
-      <link rel="stylesheet" href={url (AppMM_css.blobpage {})}/>
-    </xml>
-}
-
 style pagecss
 style megamenu
 style pkchoose
@@ -208,38 +199,60 @@ and gennews s : transaction xbody =
 
 and viewpage (i:int) = main {}
 
-and main {} =
+and main {} = let
+    val headers = {
+      JQ = <xml><script type={blessMime "text/javascript"} src={url (Jquery_1_9_1_js.blobpage {})}/></xml>,
+      MY = 
+        <xml>
+          <title>AppMM</title>
+          <link rel="stylesheet" href={url (AppMM_css.blobpage {})}/>
+        </xml>,
+      FW = { Width = 900 }
+    }
+  in
   Page.runPage (
   Page.withHeader [#JQ] (headers.JQ) (
   Page.withHeader [#MY] (headers.MY) (
+  Page.withSettings [#FW] (headers.FW) (
   NivoSlider.add nivosld (fn slider =>
   MegaMenu2.add megamenu (
   TinyMCE.add tmce ( Nemo_jpg.geturl :: Walle_jpg.geturl :: [] ) (
   ThreeColumns.add (fn columns =>
-  Page.withBody (
-    m <- mkmenu megamenu;
-    s <- slider ({
-        Url = Banner_rtos_jpg.geturl,
-        Title = Some <xml><span>Real time operating system for embedded applications</span></xml>
-      } :: {
-        Url = Banner_simone_jpg.geturl,
-        Title = Some <xml><span>Electronic circuit simulator</span></xml>
-      } :: {
-        Url = Nemo_jpg.geturl,
-        Title = Some <xml><span>Surprize!</span></xml>
-      } :: {
-        Url = Banner_topor_jpg.geturl,
-        Title = Some <xml><span>Topology editor and automatic router for PCB design</span></xml>
-      } :: []);
-    c <- columns gennews;
-    return (
-      <xml>
-        <div class={pagecss}>
+  FullWidth.add (fn fw =>
+    let 
+      fun fw1 a b = fw a b
+      fun fw2 a b = fw a b
+    in
+    Page.withBody (
+
+      m <- mkmenu megamenu;
+      s <- slider ({
+          Url = Banner_rtos_jpg.geturl,
+          Title = Some <xml><span>Real time operating system for embedded applications</span></xml>
+        } :: {
+          Url = Banner_simone_jpg.geturl,
+          Title = Some <xml><span>Electronic circuit simulator</span></xml>
+        } :: {
+          Url = Nemo_jpg.geturl,
+          Title = Some <xml><span>Surprize!</span></xml>
+        } :: {
+          Url = Banner_topor_jpg.geturl,
+          Title = Some <xml><span>Topology editor and automatic router for PCB design</span></xml>
+        } :: []);
+      c <- columns gennews;
+
+      e <- (return <xml><form><textarea{#Zzzzz} class={tmce}/></form></xml>);
+
+      return (
+        <xml>
           {m}
-          {s}
-          {c}
-          <form> <textarea{#Zzzzz} class={tmce}/></form>
-        </div>
-      </xml> 
-    )))))))))
+          {fw "#fefefe" s}
+          {fw2 "#fefefe" c}
+          {e}
+        </xml> 
+    ))
+    end
+      
+  )))))))))
+  end
 
