@@ -11,7 +11,7 @@ Requirements
 ============
 
 I've committed some intermediate files so I hope that all that you need in order
-to build URU are the POSIX environment, and the Ur/Web compiler in source form
+to build URU are the POSIX environment, the Ur/Web compiler in source form
 and the sqlite3 database engine.
 
 For the development, [cake3](https://github.com/grwlf/cake3) and
