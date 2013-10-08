@@ -48,5 +48,6 @@ Notes
     Cakefile.hs (in Haskell) defines the rules.
   * src/ui/NivoSlider is the hardest case, since it requires $(window).load()
     event handler and uses tricky urls inside it's CSS.
+  * Main function ends with a smile :)
 
 
