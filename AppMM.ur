@@ -219,10 +219,6 @@ and main {} = let
   TinyMCE.add tmce ( Nemo_jpg.geturl :: Walle_jpg.geturl :: [] ) (
   ThreeColumns.add (fn columns =>
   FullWidth.add (fn fw =>
-    let 
-      fun fw1 a b = fw a b
-      fun fw2 a b = fw a b
-    in
     Page.withBody (
 
       m <- mkmenu megamenu;
@@ -245,13 +241,12 @@ and main {} = let
 
       return (
         <xml>
-          {m}
-          {fw "#fefefe" s}
-          {fw2 "#fefefe" c}
-          {e}
+          {FullWidth.embed fw "#bcbcbc" m}
+          {FullWidth.embed fw "#cdcdcd" s}
+          {FullWidth.embed fw "#fafafa" c}
+          {FullWidth.embed fw "#bcbcbc" e}
         </xml> 
     ))
-    end
       
   )))))))))
   end
