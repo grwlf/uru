@@ -1,0 +1,4 @@
+ffi Arrows_png_c
+include Arrows_png_c.h
+link Arrows_png_c.o
+link Arrows_png_c.data.o

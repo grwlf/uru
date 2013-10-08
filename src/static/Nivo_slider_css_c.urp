@@ -1,0 +1,4 @@
+ffi Nivo_slider_css_c
+include Nivo_slider_css_c.h
+link Nivo_slider_css_c.o
+link Nivo_slider_css_c.data.o

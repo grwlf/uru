@@ -1,0 +1,4 @@
+ffi Nivo_bullets_png_c
+include Nivo_bullets_png_c.h
+link Nivo_bullets_png_c.o
+link Nivo_bullets_png_c.data.o

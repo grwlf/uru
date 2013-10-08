@@ -1,0 +1,4 @@
+ffi Loading_gif_c
+include Loading_gif_c.h
+link Loading_gif_c.o
+link Loading_gif_c.data.o

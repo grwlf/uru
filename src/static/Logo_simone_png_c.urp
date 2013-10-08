@@ -1,0 +1,4 @@
+ffi Logo_simone_png_c
+include Logo_simone_png_c.h
+link Logo_simone_png_c.o
+link Logo_simone_png_c.data.o

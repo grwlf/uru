@@ -1,0 +1,4 @@
+ffi Img1_jpg_c
+include Img1_jpg_c.h
+link Img1_jpg_c.o
+link Img1_jpg_c.data.o

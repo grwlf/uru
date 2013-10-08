@@ -1,0 +1,4 @@
+ffi Jquery_megamenu_js_c
+include Jquery_megamenu_js_c.h
+link Jquery_megamenu_js_c.o
+link Jquery_megamenu_js_c.data.o

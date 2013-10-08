@@ -1,0 +1,3 @@
+ffi MegaMenu2_js_js
+jsFunc MegaMenu2_js_js.mm2_init = mm2_init__unit
+benignEffectful MegaMenu2_js_js.mm2_init

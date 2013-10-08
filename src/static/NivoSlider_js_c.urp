@@ -1,0 +1,4 @@
+ffi NivoSlider_js_c
+include NivoSlider_js_c.h
+link NivoSlider_js_c.o
+link NivoSlider_js_c.data.o

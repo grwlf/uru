@@ -1,0 +1,4 @@
+ffi Banner_rtos_jpg_c
+include Banner_rtos_jpg_c.h
+link Banner_rtos_jpg_c.o
+link Banner_rtos_jpg_c.data.o

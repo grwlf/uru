@@ -1,0 +1,4 @@
+ffi Logo_topor_png_c
+include Logo_topor_png_c.h
+link Logo_topor_png_c.o
+link Logo_topor_png_c.data.o

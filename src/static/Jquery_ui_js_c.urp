@@ -1,0 +1,4 @@
+ffi Jquery_ui_js_c
+include Jquery_ui_js_c.h
+link Jquery_ui_js_c.o
+link Jquery_ui_js_c.data.o

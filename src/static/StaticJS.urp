@@ -1,0 +1,13 @@
+library Jquery_1_9_1_js
+library Jquery_ui_js
+library PikaChoose_js
+library Jquery_pikachoose_min_js
+library Jquery_jcarousel_min_js
+library Jquery_nivo_slider_pack_js
+library NivoSlider_js
+library Jquery_megamenu_js
+library MegaMenu2_js
+library TinyMCE_js
+library Menu_jq_js
+
+StaticJS

@@ -1,0 +1,4 @@
+ffi PikaChoose_css_c
+include PikaChoose_css_c.h
+link PikaChoose_css_c.o
+link PikaChoose_css_c.data.o

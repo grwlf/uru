@@ -1,0 +1,4 @@
+ffi Banner_topor_jpg_c
+include Banner_topor_jpg_c.h
+link Banner_topor_jpg_c.o
+link Banner_topor_jpg_c.data.o

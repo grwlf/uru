@@ -1,0 +1,4 @@
+ffi PikaChoose_js_c
+include PikaChoose_js_c.h
+link PikaChoose_js_c.o
+link PikaChoose_js_c.data.o

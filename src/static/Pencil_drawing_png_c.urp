@@ -1,0 +1,4 @@
+ffi Pencil_drawing_png_c
+include Pencil_drawing_png_c.h
+link Pencil_drawing_png_c.o
+link Pencil_drawing_png_c.data.o
