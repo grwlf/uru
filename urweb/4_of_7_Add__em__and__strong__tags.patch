@@ -1,0 +1,20 @@
+# HG changeset patch
+# User Sergey Mironov <grrwlf@gmail.com>
+# Date 1381140426 -14400
+#      Mon Oct 07 14:07:06 2013 +0400
+# Node ID 71bea53af5ef01c4551e5d74ff8cac453ab18281
+# Parent  748b6b4d60517e9f8098624a741b36c129385fc4
+Add <em> and <strong> tags
+
+diff --git a/lib/ur/basis.urs b/lib/ur/basis.urs
+--- a/lib/ur/basis.urs
++++ b/lib/ur/basis.urs
+@@ -829,6 +829,8 @@
+ val div : bodyTag boxAttrs
+ 
+ val p : bodyTag boxAttrs
++val strong : bodyTag boxAttrs
++val em : bodyTag boxAttrs
+ val b : bodyTag boxAttrs
+ val i : bodyTag boxAttrs
+ val tt : bodyTag boxAttrs

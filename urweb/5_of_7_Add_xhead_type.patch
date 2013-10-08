@@ -1,0 +1,19 @@
+# HG changeset patch
+# User Sergey Mironov <grrwlf@gmail.com>
+# Date 1381140451 -14400
+#      Mon Oct 07 14:07:31 2013 +0400
+# Node ID 84b4f124ad75f38d24da2c331b0141cef2d0c29f
+# Parent  71bea53af5ef01c4551e5d74ff8cac453ab18281
+Add xhead type
+
+diff --git a/lib/ur/basis.urs b/lib/ur/basis.urs
+--- a/lib/ur/basis.urs
++++ b/lib/ur/basis.urs
+@@ -751,6 +751,7 @@
+ con xhtml = xml html
+ con page = xhtml [] []
+ con xbody = xml body [] []
++con xhead = xml head [] []
+ con xtable = xml tabl [] []
+ con xtr = xml tr [] []
+ con xform = xml form [] []

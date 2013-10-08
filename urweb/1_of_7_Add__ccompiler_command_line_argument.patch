@@ -1,0 +1,75 @@
+# HG changeset patch
+# User Sergey Mironov <grrwlf@gmail.com>
+# Date 1377004430 -14400
+#      Tue Aug 20 17:13:50 2013 +0400
+# Node ID c3119c263bd37497175d6b624ca4b9a7eebcf094
+# Parent  434921f54f54f2c6f8ba471e60078f600a1e1429
+Add -ccompiler command line argument
+
+This allows user to overwrite the compiler set during the configure phase
+
+diff --git a/src/compiler.sml b/src/compiler.sml
+--- a/src/compiler.sml
++++ b/src/compiler.sml
+@@ -1479,12 +1479,12 @@
+                   else
+                       " -O3"
+ 
+-        val compile = Config.ccompiler ^ " " ^ Config.ccArgs ^ " " ^ Config.pthreadCflags ^ " -Wimplicit -Werror -Wno-unused-value"
++        val compile = (Settings.getCCompiler ()) ^ " " ^ Config.ccArgs ^ " " ^ Config.pthreadCflags ^ " -Wimplicit -Werror -Wno-unused-value"
+                       ^ opt ^ " -I " ^ !Settings.configInclude
+                       ^ " " ^ #compile proto
+                       ^ " -c " ^ escapeFilename cname ^ " -o " ^ escapeFilename oname
+ 
+-        val linker = Option.getOpt (linker, Config.ccompiler ^ " -Werror" ^ opt ^ " " ^ Config.ccArgs ^ " " ^ Config.pthreadCflags ^ " " ^ Config.pthreadLibs)
++        val linker = Option.getOpt (linker, (Settings.getCCompiler ()) ^ " -Werror" ^ opt ^ " " ^ Config.ccArgs ^ " " ^ Config.pthreadCflags ^ " " ^ Config.pthreadLibs)
+ 
+         val ssl = if Settings.getStaticLinking () then
+                       Config.openssl ^ " -ldl -lz"
+diff --git a/src/main.mlton.sml b/src/main.mlton.sml
+--- a/src/main.mlton.sml
++++ b/src/main.mlton.sml
+@@ -61,12 +61,15 @@
+             case args of
+                 [] => ()
+               | "-version" :: rest => 
+-	        printVersion ()
++                  printVersion ()
+               | "-numeric-version" :: rest =>
+-	        printNumericVersion ()
++                  printNumericVersion ()
+               | "-css" :: rest =>
+                 (css := true;
+                  doArgs rest)
++              | "-ccompiler" :: ccomp :: rest =>
++                (Settings.setCCompiler ccomp;
++                 doArgs rest)
+               | "-demo" :: prefix :: rest =>
+                 (demo := SOME (prefix, false);
+                  doArgs rest)
+diff --git a/src/settings.sig b/src/settings.sig
+--- a/src/settings.sig
++++ b/src/settings.sig
+@@ -256,4 +256,7 @@
+ 
+     val setTimeFormat : string -> unit
+     val getTimeFormat : unit -> string
++
++	val getCCompiler : unit -> string
++	val setCCompiler : string -> unit
+ end
+diff --git a/src/settings.sml b/src/settings.sml
+--- a/src/settings.sml
++++ b/src/settings.sml
+@@ -33,6 +33,11 @@
+ val configInclude = ref Config.includ
+ val configSitelisp = ref Config.sitelisp
+ 
++val configCCompiler = ref Config.ccompiler
++
++fun getCCompiler () = !configCCompiler
++fun setCCompiler cc = configCCompiler := cc
++
+ fun libUr () = OS.Path.joinDirFile {dir = !configSrcLib,
+                                     file = "ur"}
+ fun libC () = OS.Path.joinDirFile {dir = !configSrcLib,
