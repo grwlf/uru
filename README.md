@@ -36,8 +36,10 @@ Notes
 =====
 
   * See the main function from the AppMM.ur for the overview of the approach.
-    src/ui/Page.ur defines the poor man's continuation monad plus some basic
-    combinators.
+    src/ui/Page.ur defines the continuation monad-like structure 'dpage'
+    together with basic combinators. It is not a monad because the dpage is a
+    type function and each combinator changes the final type to record the headers
+    applied.
   * Urembed generates JavaScript FFI interfaces automatically. That is how
     files like src/ui/PikaChoose/PikaChoose.js is handled. Look inside
     src/static/PikaChoose_js.urs for the details.
