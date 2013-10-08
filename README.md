@@ -10,9 +10,8 @@ tools.
 Requirements
 ============
 
-I've committed some intermediate files so I hope that all that you need in order
-to build URU are the POSIX environment, the Ur/Web compiler in source form
-and the sqlite3 database engine.
+The Ur/Web compiler in source form, sqlite3 and the POSIX env are required in
+order to build the demo and watch it running.
 
 For the development, [cake3](https://github.com/grwlf/cake3) and
 [urembed](https://github.com/grwlf/urembed) are needed as well. Both of them
@@ -21,8 +20,8 @@ require the [Haskell platform](http://www.haskell.org/platform/).
 Building
 ========
 
-  1. Patch the Ur/Web with the patches from the urweb/ directory
-  2. Install the patched Ur/Web
+  1. Obtain the Ur/Web from the official repo.
+  2. Patch sources with the patches from the urweb/ directory, build and install.
   3. Unpack the URU sources and run the following commands from the project's
      top directory:
 
