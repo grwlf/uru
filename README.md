@@ -20,7 +20,7 @@ require the [Haskell platform](http://www.haskell.org/platform/).
 Building
 ========
 
-  1. Obtain the Ur/Web from the official repo.
+  1. Obtain the Ur/Web from the [official repo](http://hg.impredicative.com/urweb).
   2. Patch sources with the patches from the urweb/ directory, build and install.
   3. Unpack the URU sources and run the following commands from the project's
      top directory:
