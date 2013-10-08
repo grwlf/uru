@@ -8,19 +8,19 @@ URCC = $(shell urweb -print-ccompiler)
 URFLAGS = 
 URINCL = $(HOME)/local/include/urweb
 .PHONY: all
-all: ./AppNivo.exe Makefile
+all: ./AppMM.exe Makefile
 .PHONY: run
-run: ./AppNivo.exe Makefile
-	 ./AppNivo.exe
+run: ./AppMM.exe Makefile
+	 ./AppMM.exe
 .PHONY: sql
 sql: ./App.db Makefile
 	sqlite3 ./App.db
-Makefile: ./AppNivo.urp ./Cakegen
+Makefile: ./AppMM.urp ./Cakegen
 	./Cakegen > Makefile
-./App.db ./App.sql ./AppNivo.exe: stamp1
+./App.db ./App.sql ./AppMM.exe: stamp1
 .INTERMEDIATE: stamp1
-stamp1: ./AppNivo.ur ./AppNivo.urp ./AppNivo.urs ./src/static/EremexImg.urp ./src/static/PulsonixImg.urp ./src/static/StaticCSS.urp ./src/static/StaticImg.urp ./src/static/StaticJS.urp ./src/ui/MegaMenu2/MegaMenu2.ur ./src/ui/MegaMenu2/MegaMenu2.urs ./src/ui/NivoSlider/NivoSlider.ur ./src/ui/NivoSlider/NivoSlider.urs ./src/ui/Page.ur ./src/ui/Page.urs ./src/ui/ThreeColumns/ThreeColumns.ur ./src/ui/ThreeColumns/ThreeColumns.urs ./src/ui/TinyMCE/TinyMCE.ur ./src/ui/TinyMCE/TinyMCE.urs Makefile $(call GUARD,URFLAGS)
-	urweb -dbms sqlite $(URFLAGS) AppNivo
+stamp1: ./AppMM.ur ./AppMM.urp ./AppMM.urs ./src/static/EremexImg.urp ./src/static/PulsonixImg.urp ./src/static/StaticCSS.urp ./src/static/StaticImg.urp ./src/static/StaticJS.urp ./src/ui/MegaMenu2/MegaMenu2.ur ./src/ui/MegaMenu2/MegaMenu2.urs ./src/ui/NivoSlider/NivoSlider.ur ./src/ui/NivoSlider/NivoSlider.urs ./src/ui/Page.ur ./src/ui/Page.urs ./src/ui/PikaChoose/PikaChoose.ur ./src/ui/PikaChoose/PikaChoose.urs ./src/ui/ThreeColumns/ThreeColumns.ur ./src/ui/ThreeColumns/ThreeColumns.urs ./src/ui/TinyMCE/TinyMCE.ur ./src/ui/TinyMCE/TinyMCE.urs Makefile $(call GUARD,URFLAGS)
+	urweb -dbms sqlite $(URFLAGS) AppMM
 	-rm -rf ./App.db
 	sqlite3 ./App.db < ./App.sql
 ./src/static/EremexImg.mk: ./img/eremex/banner/banner_rtos.jpg ./img/eremex/banner/banner_simone.jpg ./img/eremex/banner/banner_topor.jpg ./img/eremex/logo.gif ./img/eremex/logo/logo_rtos.png ./img/eremex/logo/logo_simone.png ./img/eremex/logo/logo_topor.png Makefile
@@ -38,9 +38,9 @@ stamp1: ./AppNivo.ur ./AppNivo.urp ./AppNivo.urs ./src/static/EremexImg.urp ./sr
 	urembed -o ./src/static/StaticCSS.urp ././AppMM.css ././src/thirdparty/jquery-ui.css ././src/ui/PikaChoose/PikaChoose.css ././src/ui/NivoSlider/nivo-default.css ././src/ui/NivoSlider/nivo-slider.css ././src/ui/MegaMenu2/MegaMenu2.css ././src/ui/MenuUI/menu_jq.css
 ./src/static/StaticCSS.urp: ./src/static/StaticCSS.mk Makefile $(call GUARD,CC) $(call GUARD,LD) $(call GUARD,MAKE) $(call GUARD,URCC) $(call GUARD,URINCL)
 	$(MAKE) -C ./src/static -f StaticCSS.mk CC=$(CC) LD=$(LD) UR_INCLUDE_DIR=$(URINCL) urp
-./src/static/StaticImg.mk: ././img/eremex/banner/banner_rtos.jpg ././img/eremex/banner/banner_simone.jpg ././img/eremex/banner/banner_topor.jpg ././img/eremex/logo.gif ././img/eremex/logo/logo_rtos.png ././img/eremex/logo/logo_simone.png ././img/eremex/logo/logo_topor.png ././img/pulsonix/bluegreen.jpg ././img/pulsonix/flex.png ././img/pulsonix/pencil-drawing.png ././img/pulsonix/pnp.png ././img1.jpg ././img2.jpg ././img3.jpg ././img4.jpg ././img5.jpg ././src/ui/NivoSlider/nivo-arrows.png ././src/ui/NivoSlider/nivo-bullets.png ././src/ui/NivoSlider/nivo-loading.gif Makefile
+./src/static/StaticImg.mk: ././img/eremex/banner/banner_rtos.jpg ././img/eremex/banner/banner_simone.jpg ././img/eremex/banner/banner_topor.jpg ././img/eremex/logo.gif ././img/eremex/logo/logo_rtos.png ././img/eremex/logo/logo_simone.png ././img/eremex/logo/logo_topor.png ././img/nemo.jpg ././img/pulsonix/bluegreen.jpg ././img/pulsonix/flex.png ././img/pulsonix/pencil-drawing.png ././img/pulsonix/pnp.png ././img/walle.jpg ././src/ui/NivoSlider/nivo-arrows.png ././src/ui/NivoSlider/nivo-bullets.png ././src/ui/NivoSlider/nivo-loading.gif Makefile
 	mkdir -pv ./src/static
-	urembed -o ./src/static/StaticImg.urp ././img1.jpg ././img5.jpg ././img3.jpg ././img4.jpg ././img2.jpg ././img/pulsonix/pnp.png ././img/pulsonix/flex.png ././img/pulsonix/pencil-drawing.png ././img/pulsonix/bluegreen.jpg ././img/eremex/logo.gif ././img/eremex/banner/banner_topor.jpg ././img/eremex/banner/banner_simone.jpg ././img/eremex/banner/banner_rtos.jpg ././img/eremex/logo/logo_simone.png ././img/eremex/logo/logo_topor.png ././img/eremex/logo/logo_rtos.png ././src/ui/NivoSlider/nivo-loading.gif ././src/ui/NivoSlider/nivo-bullets.png ././src/ui/NivoSlider/nivo-arrows.png
+	urembed -o ./src/static/StaticImg.urp ././img/walle.jpg ././img/nemo.jpg ././img/pulsonix/pnp.png ././img/pulsonix/flex.png ././img/pulsonix/pencil-drawing.png ././img/pulsonix/bluegreen.jpg ././img/eremex/logo.gif ././img/eremex/banner/banner_topor.jpg ././img/eremex/banner/banner_simone.jpg ././img/eremex/banner/banner_rtos.jpg ././img/eremex/logo/logo_simone.png ././img/eremex/logo/logo_topor.png ././img/eremex/logo/logo_rtos.png ././src/ui/NivoSlider/nivo-loading.gif ././src/ui/NivoSlider/nivo-bullets.png ././src/ui/NivoSlider/nivo-arrows.png
 ./src/static/StaticImg.urp: ./src/static/StaticImg.mk Makefile $(call GUARD,CC) $(call GUARD,LD) $(call GUARD,MAKE) $(call GUARD,URCC) $(call GUARD,URINCL)
 	$(MAKE) -C ./src/static -f StaticImg.mk CC=$(CC) LD=$(LD) UR_INCLUDE_DIR=$(URINCL) urp
 ./src/static/StaticJS.mk: ././src/thirdparty/jquery-1.9.1.js ././src/thirdparty/jquery-ui.js ././src/ui/MegaMenu2/MegaMenu2.js ././src/ui/MegaMenu2/jquery.megamenu.js ././src/ui/MenuUI/menu_jq.js ././src/ui/NivoSlider/NivoSlider.js ././src/ui/NivoSlider/jquery.nivo.slider.pack.js ././src/ui/PikaChoose/PikaChoose.js ././src/ui/PikaChoose/jquery.jcarousel.min.js ././src/ui/PikaChoose/jquery.pikachoose.min.js ././src/ui/TinyMCE/TinyMCE.js Makefile

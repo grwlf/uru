@@ -8,7 +8,7 @@ import Cakefile_P
 
 urflags = makevar "URFLAGS" ""
 
-urp = file "AppNivo.urp"
+urp = file "AppMM.urp"
 
 main = mdo
 

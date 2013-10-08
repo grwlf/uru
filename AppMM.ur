@@ -80,6 +80,7 @@ style info
 style work
 style button
 style news
+style nivosld
 
 fun fvoid {} = {}
 
@@ -93,15 +94,20 @@ and mkmenu (css:css_class) : transaction xbody =
         </div>
       </xml>);
   return
-   <xml>
-      <ul class={css}>
+    <xml>
+      <div>
+        <img src={Logo_gif.geturl}/>
+      </div>
+      <div>
+        <ul class={css}>
         <li><a link={main {}}>Products</a><div>{ps}</div></li>
         <li><a link={main {}}>Blog</a></li>
         <li><a link={main {}}>Sales</a></li>
         <li><a link={main {}}>Contacts</a></li>
         <li><a link={main {}}>Community</a></li>
-      </ul>
-    </xml> 
+        </ul>
+      </div>
+   </xml> 
 
 and image n : transaction page =
   b <- oneRow (SELECT * FROM imaget WHERE imaget.Nam = {[n]});
@@ -206,37 +212,34 @@ and main {} =
   Page.runPage (
   Page.withHeader [#JQ] (headers.JQ) (
   Page.withHeader [#MY] (headers.MY) (
-  PikaChoose.add pkchoose (
+  NivoSlider.add nivosld (fn slider =>
   MegaMenu2.add megamenu (
-  TinyMCE.add tmce ( Img2_jpg.geturl :: Img1_jpg.geturl :: [] ) (
+  TinyMCE.add tmce ( Nemo_jpg.geturl :: Walle_jpg.geturl :: [] ) (
   ThreeColumns.add (fn columns =>
   Page.withBody (
     m <- mkmenu megamenu;
-    n <- columns (fn s => gennews s);
+    s <- slider ({
+        Url = Banner_rtos_jpg.geturl,
+        Title = Some <xml><span>Real time operating system for embedded applications</span></xml>
+      } :: {
+        Url = Banner_simone_jpg.geturl,
+        Title = Some <xml><span>Electronic circuit simulator</span></xml>
+      } :: {
+        Url = Nemo_jpg.geturl,
+        Title = Some <xml><span>Surprize!</span></xml>
+      } :: {
+        Url = Banner_topor_jpg.geturl,
+        Title = Some <xml><span>Topology editor and automatic router for PCB design</span></xml>
+      } :: []);
+    c <- columns gennews;
     return (
-     <xml>
-       <div class={pagecss}>
-         <div>{m}</div>
-         The body
-         <div style="margin:0 auto;">
-           <ul class={pkchoose}>
-             <li>
-               <img src={Banner_rtos_jpg.geturl}/>
-               <span>Real time operating system for embedded applications</span>
-             </li>
-             <li>
-               <img src={Banner_simone_jpg.geturl}/>
-               <span>Electronic circuit simulator</span>
-             </li>
-             <li>
-               <img src={Banner_topor_jpg.geturl}/>
-               <span>Topology editor and automatic router for PCB design</span>
-             </li>
-           </ul>
-         </div>
-         {n}
-         <form> <textarea{#Zzzzz} class={tmce}/></form>
-       </div>
-     </xml> 
+      <xml>
+        <div class={pagecss}>
+          {m}
+          {s}
+          {c}
+          <form> <textarea{#Zzzzz} class={tmce}/></form>
+        </div>
+      </xml> 
     )))))))))
 
