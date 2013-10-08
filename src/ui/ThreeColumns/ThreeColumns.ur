@@ -24,9 +24,9 @@ val s3 = box
 
 val cols = { TC_Col1 = css(s1), TC_Col2 = css(s2), TC_Col3 = css(s3) }
 
-fun add [t]
-  (f:((columns -> transaction xbody) -> transaction xbody) -> record (dpage t) -> record (dpage t))
+fun add [t] [t2]
+  (f:((columns -> transaction xbody) -> transaction xbody) -> record (dpage t) -> record (dpage t2))
   (r:record (dpage t))
-    : record (dpage t) =
+    : record (dpage t2) =
   f (fn tx => x <- tx cols ; return <xml><div style={css(cs)}>{x}</div></xml> ) r
 
