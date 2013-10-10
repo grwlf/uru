@@ -140,7 +140,8 @@ and template (x:transaction xbody) = let
 
     fun padding m tx =
       let
-        val p = ("padding-top", CSS.Str m) :: []
+        val p = ("padding-top", CSS.Str m) ::
+                []
       in
         x <- tx;
         return <xml><div style={css p}>{x}</div></xml>

@@ -9,3 +9,7 @@ type columns = { TC_Col1 : css_style, TC_Col2 : css_style, TC_Col3 : css_style }
 
 val threecols : transaction xbody -> transaction xbody -> transaction xbody -> transaction xbody
 val twocols : transaction xbody -> transaction xbody -> transaction xbody
+
+type cell = {Content : xbody}
+
+val cells : list cell -> transaction xbody

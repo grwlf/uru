@@ -58,3 +58,8 @@ fun twocols tc1 tc2 =
       </div>
     </xml>
   end
+
+
+fun cells (l:list cell) : transaction xbody =
+  return <xml/>
+
