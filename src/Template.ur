@@ -58,148 +58,66 @@ task initialize = fn {} =>
 
   return {}
 
+(* Header *)
+style langmenu
+
+(* Menu *)
+style outermenu
 style megamenu
+
+(* Editor *)
 style tmce
 
-style columnlist
-style download
-style info
-style work
-style button
-style news
+(* Content *)
+style outercolumns
+
+(* Slider *)
+style outerslider
 style nivosld
 
-style outercolumns
-style outerslider
-style outermenu
 
 fun fvoid {} = {}
-
-and mkmenu (css:css_class) : transaction xbody = 
-  ps <- queryX' (SELECT * FROM product) (fn prod =>
-    return
-      <xml>
-        <div>
-        <p>{[prod.Product.Caption]}</p>
-        <img src={url (image prod.Product.Logo)}/>
-        </div>
-      </xml>);
-  return
-    <xml>
-      <div>
-        <img src={Logo_gif.geturl}/>
-      </div>
-      <div>
-        <ul class={css}>
-        <li><a link={template {}}>Products</a><div>{ps}</div></li>
-        <li><a link={template {}}>Blog</a></li>
-        <li><a link={template {}}>Sales</a></li>
-        <li><a link={template {}}>Contacts</a></li>
-        <li><a link={template {}}>Community</a></li>
-        </ul>
-      </div>
-   </xml> 
 
 and image n : transaction page =
   b <- oneRow (SELECT * FROM imaget WHERE imaget.Nam = {[n]});
   returnBlob b.Imaget.Data (blessMime "image/png")
 
-and gennews s : transaction xbody = 
-  let val col1of3 = s.TC_Col1
-      val col2of3 = s.TC_Col2
-      val col3of3 = s.TC_Col3
-  in
-  return
-    <xml>
-      <div style={col1of3}>
-        <h2>Circuit Capture and PCB Layout</h2>
-        <dl class={columnlist}>
-          <dt><a link={template {}}>Download a free trial copy now</a></dt>
-          <dd class={download}>
-            Pulsonix Lite is available as a free trial
-            <a link={template {}}>download</a>
-            . With no set time-limit, this version allows you to test out all the key
-            product features before you buy. And with designs of up to 100 component pins,
-            it even allows you to save them.
-            <a link={template {}}>Download</a>
-            now and see why so many people have switched to Pulsonix.
-          </dd>
-          <dt><a link={template {}}>Easily migrate from another PCB system</a></dt>
-          <dd class={button}>
-            Pulsonix can read designs and libraries from almost every other package. Your
-            legacy data is retained when you make the switch; that's Schematic and PCB
-            designs plus all your libraries. View our impressive list of
-            <a link={template {}}>import filters</a>
-            . If yours isn't listed, send us an
-            <a link={template {}}>email</a>
-            and we'll advised you of your import options.
-          </dd>
-          <dt><a link={template {}}>Work with leading-edge technology</a></dt>
-          <dd class={button}>
-            Pulsonix supports the latest leading-edge technologies including flexi-rigid,
-            embedded components, micro-vias and more. Take advantage of a proficient toolset
-            that keeps you up-to-date with the latest design and manufacturing technologies.
-            Find out
-            <a link={template {}}>More</a>
-          </dd>
-        </dl>
-      </div>
-      <div style={col2of3}>
-        <h2>Get more out of Pulsonix</h2>
-        <dl class={columnlist}>
-          <dt><a link={template {}}>New User Forum</a></dt>
-          <dd class={info}>
-            Visit our new
-            <a link={template {}}>User Forum</a>
-            and read about how you can get the most out of your Pulsonix software. With peer
-            support and lots of hints and tips about using Pulsonix, this Forum is a
-            valuable resource for all Pulsonix users.
-          </dd>
-          <dt><a link={template {}}>Software template</a></dt>
-          <dd class={info}>
-            A Pulsonix template contract represents the most cost effective way of
-            ensuring you and your engineering teams have access to all the assistance needed
-            to keep you operating efficiently and effectively.
-            <a link={template {}}>Read more</a>
-            about the benefits of a template contract.
-          </dd>
-          <dt><a link={template {}}>Keeping up to date</a></dt>
-          <dd class={work}>
-            The latest updates for Pulsonix are listed here, allowing you to quickly check
-            that your existing Pulsonix installation is up-to-date so you can take advantage
-            of all the latest improvements.
-            <p>
-              Latest Updates:
-              <a link={template {}}>8.0.5537</a>
-              and
-              <a link={template {}}>7.6.5226</a>
-            </p>
-          </dd>
-        </dl>
-      </div>
-      <div style={col3of3}>
-        <h2>News and Press</h2>
-        <dl class={columnlist}>
-          <dt><a link={template {}}>Version 8 Available</a></dt>
-          <dd class={news}>
-            The latest edition of Pulsonix is now shipping. Over 45 new and improved
-            features have been added; most of which have been implemented as a direct result
-            of user requests.
-            <p>Read more about the new<a link={template {}}>V8 features</a>.</p>
-            <p>
-              Click
-              <a link={template {}}>here</a>
-              to update your copy of Pulsonix to the latest version.
-            </p>
-          </dd>
-        </dl>
-      </div>
-    </xml> 
-  end
+and template (x:transaction xbody) = let
 
-and viewpage (i:int) = template {}
+  fun viewpage (i:int) = template x
 
-and template {} = let
+  fun mkmenu (css:css_class) : transaction xbody = 
+    ps <- queryX' (SELECT * FROM product) (fn prod =>
+      return
+        <xml>
+          <div>
+          <p>{[prod.Product.Caption]}</p>
+          <img src={url (image prod.Product.Logo)}/>
+          </div>
+        </xml>);
+    c <- ThreeColumns.twocols
+      (return <xml><div><img src={Logo_gif.geturl}/></div></xml>)
+      (return
+        <xml>
+          <div class={langmenu}>
+          <a link={template x}><img src={Flag_ru_gif.geturl}/>Русский</a>
+          <a link={template x}><img src={Flag_uk_gif.geturl}/>English</a>
+          <a link={template x}><img src={Flag_jp_gif.geturl}/>日本語</a>
+          </div>
+        </xml>);
+    return
+      <xml>
+        <div>
+          {c}
+          <ul class={css}>
+          <li><a link={template x}>Products</a><div>{ps}</div></li>
+          <li><a link={template x}>Blog</a></li>
+          <li><a link={template x}>Sales</a></li>
+          <li><a link={template x}>Contacts</a></li>
+          <li><a link={template x}>Community</a></li>
+          </ul>
+        </div>
+     </xml> 
 
     val css = CSS.css
 
@@ -234,6 +152,8 @@ and template {} = let
 
     fun wrap_columns x = indiv outercolumns x
 
+    fun wrap_tabs x = indiv outercolumns x
+
   in
   Page.runPage (
   Page.withHeader [#JQ] (headers.JQ) (
@@ -242,7 +162,7 @@ and template {} = let
   NivoSlider.add nivosld (fn slider =>
   MegaMenu2.add megamenu (
   TinyMCE.add tmce ( Nemo_jpg.geturl :: Walle_jpg.geturl :: [] ) (
-  ThreeColumns.add (fn columns =>
+  RespTabs.add (fn tabs =>
   Page.withBody (
 
     m <- wrap_menu (mkmenu megamenu);
@@ -258,13 +178,23 @@ and template {} = let
         Title = Some <xml><span>Topology editor and automatic router for PCB design</span></xml>
       } :: []));
 
-    c <- wrap_columns (columns gennews);
+    t <- wrap_tabs (tabs ({
+        Caption = <xml>Haha</xml>,
+        Content = <xml>Foobar</xml>
+      } :: {
+        Caption = <xml>Hehe</xml>,
+        Content = <xml>Barfoo</xml>
+      } :: []
+    ));
+
+    x' <- wrap_columns x;
 
     return
       <xml>
         {m}
         {s}
-        {c}
+        {t}
+        {x'}
       </xml>
 
   )))))))))

@@ -8,6 +8,8 @@ library NivoSlider_js
 library Jquery_megamenu_js
 library MegaMenu2_js
 library TinyMCE_js
+library RespTabs_js
+library EasyResponsiveTabs_js
 library Menu_jq_js
 
 StaticJS

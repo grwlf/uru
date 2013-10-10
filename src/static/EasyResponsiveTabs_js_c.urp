@@ -1,0 +1,4 @@
+ffi EasyResponsiveTabs_js_c
+include EasyResponsiveTabs_js_c.h
+link EasyResponsiveTabs_js_c.o
+link EasyResponsiveTabs_js_c.data.o

@@ -1,3 +1,2 @@
 
-val viewpage : int -> transaction page
-val template : unit -> transaction page
+val template : transaction xbody -> transaction page

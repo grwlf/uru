@@ -28,5 +28,6 @@ src/ui/TinyMCE/TinyMCE
 src/ui/NivoSlider/NivoSlider
 src/ui/ThreeColumns/ThreeColumns
 src/ui/FullWidth/FullWidth
+src/ui/RespTabs/RespTabs
 src/Template
 AppMM

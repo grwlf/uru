@@ -1,0 +1,3 @@
+ffi RespTabs_js_js
+jsFunc RespTabs_js_js.rt_init = rt_init__unit
+benignEffectful RespTabs_js_js.rt_init

@@ -9,6 +9,10 @@ body {
   background:#F8F8F4;
 }
 
+.langmenu {
+  margin-left:50%;
+}
+
 .outermenu {
   background:#fdfdfd;
 }

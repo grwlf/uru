@@ -1,0 +1,4 @@
+ffi Easy_responsive_tabs_css_c
+include Easy_responsive_tabs_css_c.h
+link Easy_responsive_tabs_css_c.o
+link Easy_responsive_tabs_css_c.data.o
