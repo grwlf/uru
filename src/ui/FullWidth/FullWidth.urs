@@ -1,17 +1,8 @@
 
-type dpage = Page.dpage
+type color = string
 
-type settings = { Width : int }
+val colorize : int -> color -> xbody -> xbody
 
-con inp = [FW=settings]
+val horsect :  int -> list (color * xbody) -> xbody
 
-(* type fullwidth = string -> xbody -> xbody *)
-
-type cssfw = { Full : string -> css_style , Page : css_style }
-
-val add : t ::: {Type} -> t2 ::: {Type} -> [t~inp]
-  => (cssfw -> record (dpage (t++inp)) -> record (dpage t2))
-  -> (record (dpage (t++inp)))
-  -> record (dpage t2)
-
-val embed : cssfw -> string -> xbody -> xbody
+val margin : string -> xbody -> xbody

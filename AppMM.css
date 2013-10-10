@@ -4,9 +4,40 @@
   Author URI: http://www.geektantra.com
 */
 
-/* html, body { */
-/*   height: 100%; */
-/* } */
+html {
+  height:100%; border:0; padding:0; margin:0;
+}
+
+body {
+  font-family:Open Sans,verdana,arial,tahoma,trebuchet ms;
+  color:#444;
+  font-size:10pt;
+  background:#F8F8F4;
+}
+
+.AppMM_outermenu {
+  background:#fdfdfd;
+}
+
+ul.AppMM_megamenu {
+  background-color: #fdfdfd;
+  font-color:#131313;
+  /* border-top: 1px solid #888; */
+  /* border-bottom: 1px solid #666; */
+  margin: 0px auto;
+  padding: 5px 10px;
+  list-style: none;
+  display: none;
+}
+
+
+.AppMM_outerslider {
+  background:#131313;
+}
+
+.AppMM_outecolumns {
+  background:#efefef;
+}
 
 .AppMM_pagecss {
   width: 900px;
@@ -15,27 +46,14 @@
   margin: auto;
   border-collapse: collapse;
   height: 100%;
-  -moz-box-shadow: 0px 0px 10px #888;
-  -webkit-box-shadow: 0px 0px 10px #888;
+  /* -moz-box-shadow: 0px 0px 10px #888; */
+  /* -webkit-box-shadow: 0px 0px 10px #888; */
 }
 
-ul.AppMM_megamenu {
-  background-color: #888;
-  border-top: 1px solid #888;
-  border-bottom: 1px solid #666;
-  margin: 0px auto;
-  padding: 5px 10px;
-  list-style: none;
-  display: none;
-}
+dl.AppMM_columnlist dt { font-weight:bold; margin-bottom:5px; }
+dl.AppMM_columnlist dt > a { color:#000; border:none; }
+dl.AppMM_columnlist a { color:#26a; border-bottom:1px dotted #ccc; }
+dl.AppMM_columnlist a:hover { color:#000; }
+dl.AppMM_columnlist dd { padding-left:3.0em; margin:0 0 2em 0; min-height:2.5em; text-align:justify; }
 
-ul.AppMM_pkchoose {
-  display:none;
-}
-
-ul.AppMM_megamenu {
-  /* background-image: url(../images/menu-background.gif); */
-  background-repeat: repeat-x;
-  background-position: 0px 0px;
-}
 

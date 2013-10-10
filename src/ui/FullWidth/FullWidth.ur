@@ -1,36 +1,35 @@
 
-type settings = { Width : int }
-
-con inp = [FW=settings]
-
 val css = CSS.css
 
-fun add [t] [t2] [t~inp]
-  (f : cssfw -> record (dpage (t++inp)) -> record (dpage t2))
-  (r : record (dpage (t++inp)))
-     : record (dpage t2) =
-  let 
+fun colorize (w:int) (clr:string) (x:xbody) : xbody =
+  let
+    val inner = ("margin", CSS.Str "0 auto") ::
+                ("width", CSS.Str ((show w) ^ "px")) ::
+                []
 
-    val w = (Page.getSettings [#FW] r).Width
-
-    fun fullwidth clr = css(("width", CSS.Str "100%") :: 
-                        ("background-color", CSS.Str clr) ::
-                        [])
-
-    val workwidth = ("margin", CSS.Str "0 auto") ::
-                    ("width", CSS.Str ((show w) ^ "px")) ::
+    fun outer clr = ("width", CSS.Str "100%") :: 
+                    ("background-color", CSS.Str clr) ::
                     []
-
   in
-    f {Full = (fn x => fullwidth x), Page = css workwidth } r
+    <xml>
+      <div style={css (outer clr)}>
+        <div style={css inner}>
+        {x}
+        </div>
+      </div>
+    </xml>
+  end
+  
+
+fun horsect w (l:list (color * xbody)) = 
+  List.foldr (fn (clr,x) s => <xml>{colorize w clr x}{s}</xml>) <xml/> l
+
+
+fun margin m x =
+  let
+    val marg = ("margin", CSS.Str m) ::
+               []
+  in
+    <xml><div style={css marg}>{x}</div></xml>
   end
 
-fun embed (fw:cssfw) (s:string) (x:xbody) : xbody =
-  <xml>
-    <div style={fw.Full s}>
-      <div style={fw.Page}>
-      {x}
-      </div>
-    </div>
-  </xml>
-  

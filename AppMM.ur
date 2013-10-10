@@ -65,13 +65,17 @@ style megamenu
 style pkchoose
 style tmce
 
-style imagelist
+style columnlist
 style download
 style info
 style work
 style button
 style news
 style nivosld
+
+style outercolumns
+style outerslider
+style outermenu
 
 fun fvoid {} = {}
 
@@ -113,7 +117,7 @@ and gennews s : transaction xbody =
     <xml>
       <div style={col1of3}>
         <h2>Circuit Capture and PCB Layout</h2>
-        <dl class={imagelist}>
+        <dl class={columnlist}>
           <dt><a link={main {}}>Download a free trial copy now</a></dt>
           <dd class={download}>
             Pulsonix Lite is available as a free trial
@@ -146,7 +150,7 @@ and gennews s : transaction xbody =
       </div>
       <div style={col2of3}>
         <h2>Get more out of Pulsonix</h2>
-        <dl class={imagelist}>
+        <dl class={columnlist}>
           <dt><a link={main {}}>New User Forum</a></dt>
           <dd class={info}>
             Visit our new
@@ -179,7 +183,7 @@ and gennews s : transaction xbody =
       </div>
       <div style={col3of3}>
         <h2>News and Press</h2>
-        <dl class={imagelist}>
+        <dl class={columnlist}>
           <dt><a link={main {}}>Version 8 Available</a></dt>
           <dd class={news}>
             The latest edition of Pulsonix is now shipping. Over 45 new and improved
@@ -200,6 +204,9 @@ and gennews s : transaction xbody =
 and viewpage (i:int) = main {}
 
 and main {} = let
+
+    val css = CSS.css
+
     val headers = {
       JQ = <xml><script type={blessMime "text/javascript"} src={url (Jquery_1_9_1_js.blobpage {})}/></xml>,
       MY = 
@@ -209,6 +216,28 @@ and main {} = let
         </xml>,
       FW = { Width = 900 }
     }
+
+    fun indiv c tx =
+      x <- tx;
+      return
+        <xml><div class={c}>
+          <div style="margin:0 auto; width:900px;">{x}</div>
+        </div></xml>
+
+    fun padding m tx =
+      let
+        val p = ("padding-top", CSS.Str m) :: []
+      in
+        x <- tx;
+        return <xml><div style={css p}>{x}</div></xml>
+      end
+
+    fun wrap_menu x = indiv outermenu x
+
+    fun wrap_slider x = indiv outerslider (padding "10%" x)
+
+    fun wrap_columns x = indiv outercolumns x
+
   in
   Page.runPage (
   Page.withHeader [#JQ] (headers.JQ) (
@@ -218,36 +247,30 @@ and main {} = let
   MegaMenu2.add megamenu (
   TinyMCE.add tmce ( Nemo_jpg.geturl :: Walle_jpg.geturl :: [] ) (
   ThreeColumns.add (fn columns =>
-  FullWidth.add (fn fw =>
-    Page.withBody (
+  Page.withBody (
 
-      m <- mkmenu megamenu;
-      s <- slider ({
-          Url = Banner_rtos_jpg.geturl,
-          Title = Some <xml><span>Real time operating system for embedded applications</span></xml>
-        } :: {
-          Url = Banner_simone_jpg.geturl,
-          Title = Some <xml><span>Electronic circuit simulator</span></xml>
-        } :: {
-          Url = Nemo_jpg.geturl,
-          Title = Some <xml><span>Surprize!</span></xml>
-        } :: {
-          Url = Banner_topor_jpg.geturl,
-          Title = Some <xml><span>Topology editor and automatic router for PCB design</span></xml>
-        } :: []);
-      c <- columns gennews;
+    m <- wrap_menu (mkmenu megamenu);
 
-      e <- (return <xml><form><textarea{#Zzzzz} class={tmce}/></form></xml>);
+    s <- wrap_slider (slider ({
+        Url = Banner_rtos_jpg.geturl,
+        Title = Some <xml><span>Real time operating system for embedded applications</span></xml>
+      } :: {
+        Url = Banner_simone_jpg.geturl,
+        Title = Some <xml><span>Electronic circuit simulator</span></xml>
+      } :: {
+        Url = Banner_topor_jpg.geturl,
+        Title = Some <xml><span>Topology editor and automatic router for PCB design</span></xml>
+      } :: []));
 
-      return (
-        <xml>
-          {FullWidth.embed fw "#bcbcbc" m}
-          {FullWidth.embed fw "#cdcdcd" s}
-          {FullWidth.embed fw "#fafafa" c}
-          {FullWidth.embed fw "#bcbcbc" e}
-        </xml> 
-    ))
-      
+    c <- wrap_columns (columns gennews);
+
+    return
+      <xml>
+        {m}
+        {s}
+        {c}
+      </xml>
+
   )))))))))
   end
 
