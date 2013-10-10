@@ -1,0 +1,4 @@
+ffi Whytopor1_gif_c
+include Whytopor1_gif_c.h
+link Whytopor1_gif_c.o
+link Whytopor1_gif_c.data.o

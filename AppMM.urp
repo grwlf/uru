@@ -10,7 +10,7 @@ allow url http://code.jquery.com/ui/1.10.3/jquery-ui.js
 allow url http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css
 allow url http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js
 allow url http://null
-rewrite style Design/*
+rewrite style Template/*
 library src/static/StaticJS
 library src/static/StaticCSS
 library src/static/StaticImg
@@ -28,4 +28,5 @@ src/ui/TinyMCE/TinyMCE
 src/ui/NivoSlider/NivoSlider
 src/ui/ThreeColumns/ThreeColumns
 src/ui/FullWidth/FullWidth
+src/Template
 AppMM

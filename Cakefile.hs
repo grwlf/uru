@@ -31,7 +31,7 @@ main = mdo
     shell [cmd| sqlite3 $db < $sql |]
     
   runMake_ $ do 
-    place (phony "all" (depend exe))
+    place (phony "all" (depend exe >> shell [cmd|ls -lh $exe|]))
     place (phony "run" (shell [cmd|$exe|]))
     place (phony "sql" (shell [cmd|sqlite3 $db|]))
     place defaultSelfUpdate
