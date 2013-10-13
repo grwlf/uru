@@ -1,4 +1,6 @@
 library Jquery_1_9_1_js_c
 library Jquery_1_9_1_js_js
+safeGet Jquery_1_9_1_js/blobpage
+safeGet Jquery_1_9_1_js/blob
 
 Jquery_1_9_1_js

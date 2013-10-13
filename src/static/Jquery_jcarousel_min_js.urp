@@ -1,4 +1,6 @@
 library Jquery_jcarousel_min_js_c
 library Jquery_jcarousel_min_js_js
+safeGet Jquery_jcarousel_min_js/blobpage
+safeGet Jquery_jcarousel_min_js/blob
 
 Jquery_jcarousel_min_js

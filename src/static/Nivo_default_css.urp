@@ -1,4 +1,6 @@
 library Nivo_default_css_c
 library Nivo_default_css_js
+safeGet Nivo_default_css/blobpage
+safeGet Nivo_default_css/blob
 
 Nivo_default_css

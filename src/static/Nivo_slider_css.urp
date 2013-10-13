@@ -1,4 +1,6 @@
 library Nivo_slider_css_c
 library Nivo_slider_css_js
+safeGet Nivo_slider_css/blobpage
+safeGet Nivo_slider_css/blob
 
 Nivo_slider_css

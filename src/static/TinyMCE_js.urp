@@ -1,4 +1,6 @@
 library TinyMCE_js_c
 library TinyMCE_js_js
+safeGet TinyMCE_js/blobpage
+safeGet TinyMCE_js/blob
 
 TinyMCE_js

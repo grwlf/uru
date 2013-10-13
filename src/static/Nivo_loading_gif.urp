@@ -1,4 +1,6 @@
 library Nivo_loading_gif_c
 library Nivo_loading_gif_js
+safeGet Nivo_loading_gif/blobpage
+safeGet Nivo_loading_gif/blob
 
 Nivo_loading_gif

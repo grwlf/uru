@@ -1,4 +1,6 @@
 library Logo_simone_png_c
 library Logo_simone_png_js
+safeGet Logo_simone_png/blobpage
+safeGet Logo_simone_png/blob
 
 Logo_simone_png

@@ -1,4 +1,6 @@
 library Jquery_ui_css_c
 library Jquery_ui_css_js
+safeGet Jquery_ui_css/blobpage
+safeGet Jquery_ui_css/blob
 
 Jquery_ui_css

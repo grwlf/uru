@@ -1,4 +1,6 @@
 library RespTabs_js_c
 library RespTabs_js_js
+safeGet RespTabs_js/blobpage
+safeGet RespTabs_js/blob
 
 RespTabs_js

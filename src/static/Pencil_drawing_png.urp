@@ -1,4 +1,6 @@
 library Pencil_drawing_png_c
 library Pencil_drawing_png_js
+safeGet Pencil_drawing_png/blobpage
+safeGet Pencil_drawing_png/blob
 
 Pencil_drawing_png

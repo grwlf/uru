@@ -1,4 +1,6 @@
 library Jquery_nivo_slider_pack_js_c
 library Jquery_nivo_slider_pack_js_js
+safeGet Jquery_nivo_slider_pack_js/blobpage
+safeGet Jquery_nivo_slider_pack_js/blob
 
 Jquery_nivo_slider_pack_js

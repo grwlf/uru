@@ -1,4 +1,6 @@
 library PikaChoose_css_c
 library PikaChoose_css_js
+safeGet PikaChoose_css/blobpage
+safeGet PikaChoose_css/blob
 
 PikaChoose_css

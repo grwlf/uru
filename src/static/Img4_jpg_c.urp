@@ -1,4 +1,0 @@
-ffi Img4_jpg_c
-include Img4_jpg_c.h
-link Img4_jpg_c.o
-link Img4_jpg_c.data.o

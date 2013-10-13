@@ -1,4 +1,0 @@
-ffi Tinymce_min_js_c
-include Tinymce_min_js_c.h
-link Tinymce_min_js_c.o
-link Tinymce_min_js_c.data.o

@@ -1,4 +1,6 @@
 library MegaMenu2_css_c
 library MegaMenu2_css_js
+safeGet MegaMenu2_css/blobpage
+safeGet MegaMenu2_css/blob
 
 MegaMenu2_css

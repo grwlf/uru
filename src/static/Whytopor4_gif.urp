@@ -1,4 +1,6 @@
 library Whytopor4_gif_c
 library Whytopor4_gif_js
+safeGet Whytopor4_gif/blobpage
+safeGet Whytopor4_gif/blob
 
 Whytopor4_gif

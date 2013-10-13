@@ -1,4 +1,0 @@
-ffi Img5_jpg_c
-include Img5_jpg_c.h
-link Img5_jpg_c.o
-link Img5_jpg_c.data.o

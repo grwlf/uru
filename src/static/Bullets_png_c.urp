@@ -1,4 +1,0 @@
-ffi Bullets_png_c
-include Bullets_png_c.h
-link Bullets_png_c.o
-link Bullets_png_c.data.o

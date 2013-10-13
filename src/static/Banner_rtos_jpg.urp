@@ -1,4 +1,6 @@
 library Banner_rtos_jpg_c
 library Banner_rtos_jpg_js
+safeGet Banner_rtos_jpg/blobpage
+safeGet Banner_rtos_jpg/blob
 
 Banner_rtos_jpg
