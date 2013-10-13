@@ -1,4 +1,3 @@
 ffi Jquery_jcarousel_min_js_c
 include Jquery_jcarousel_min_js_c.h
 link Jquery_jcarousel_min_js_c.o
-link Jquery_jcarousel_min_js_c.data.o

@@ -25,7 +25,7 @@ Building
   3. Unpack the URU sources and run the following commands from the project's
      top directory:
 
-        $ ./fixmake.sh # prevent rebuilding with urembed
+        $ ./fixmake.sh # prevents rebuilding of static data
         $ make
 
   4. Launch ./AppMM.exe and visit http://localhost:8080/AppMM/main

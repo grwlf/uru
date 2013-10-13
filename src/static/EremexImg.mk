@@ -4,71 +4,40 @@
 GUARD = .GUARD_$(1)_$(shell echo $($(1)) | md5sum | cut -d ' ' -f 1)
 .PHONY: urp
 urp: ./EremexImg.urp
-./Banner_rtos_jpg_c.data.o: ./Banner_rtos_jpg_c_blob $(call GUARD,LD)
-	$(LD) -r -b binary -o ./Banner_rtos_jpg_c.data.o ./Banner_rtos_jpg_c_blob
 ./Banner_rtos_jpg_c.o: ./Banner_rtos_jpg_c.c $(call GUARD,CC) $(call GUARD,UR_INCLUDE_DIR)
 	$(CC) -c -I $(UR_INCLUDE_DIR) -o ./Banner_rtos_jpg_c.o ./Banner_rtos_jpg_c.c
-./Banner_simone_jpg_c.data.o: ./Banner_simone_jpg_c_blob $(call GUARD,LD)
-	$(LD) -r -b binary -o ./Banner_simone_jpg_c.data.o ./Banner_simone_jpg_c_blob
 ./Banner_simone_jpg_c.o: ./Banner_simone_jpg_c.c $(call GUARD,CC) $(call GUARD,UR_INCLUDE_DIR)
 	$(CC) -c -I $(UR_INCLUDE_DIR) -o ./Banner_simone_jpg_c.o ./Banner_simone_jpg_c.c
-./Banner_topor_jpg_c.data.o: ./Banner_topor_jpg_c_blob $(call GUARD,LD)
-	$(LD) -r -b binary -o ./Banner_topor_jpg_c.data.o ./Banner_topor_jpg_c_blob
 ./Banner_topor_jpg_c.o: ./Banner_topor_jpg_c.c $(call GUARD,CC) $(call GUARD,UR_INCLUDE_DIR)
 	$(CC) -c -I $(UR_INCLUDE_DIR) -o ./Banner_topor_jpg_c.o ./Banner_topor_jpg_c.c
 ./EremexImg.urp: ./EremexImg.urp.in
 	cp ./EremexImg.urp.in ./EremexImg.urp
 	echo ./EremexImg.urp
-./EremexImg.urp.in: ./Banner_rtos_jpg.ur ./Banner_rtos_jpg.urp ./Banner_rtos_jpg.urs ./Banner_rtos_jpg_c.data.o ./Banner_rtos_jpg_c.h ./Banner_rtos_jpg_c.o ./Banner_rtos_jpg_c.urp ./Banner_rtos_jpg_c.urs ./Banner_rtos_jpg_js.urp ./Banner_rtos_jpg_js.urs ./Banner_simone_jpg.ur ./Banner_simone_jpg.urp ./Banner_simone_jpg.urs ./Banner_simone_jpg_c.data.o ./Banner_simone_jpg_c.h ./Banner_simone_jpg_c.o ./Banner_simone_jpg_c.urp ./Banner_simone_jpg_c.urs ./Banner_simone_jpg_js.urp ./Banner_simone_jpg_js.urs ./Banner_topor_jpg.ur ./Banner_topor_jpg.urp ./Banner_topor_jpg.urs ./Banner_topor_jpg_c.data.o ./Banner_topor_jpg_c.h ./Banner_topor_jpg_c.o ./Banner_topor_jpg_c.urp ./Banner_topor_jpg_c.urs ./Banner_topor_jpg_js.urp ./Banner_topor_jpg_js.urs ./EremexImg.ur ./EremexImg.urs ./Flag_jp_gif.ur ./Flag_jp_gif.urp ./Flag_jp_gif.urs ./Flag_jp_gif_c.data.o ./Flag_jp_gif_c.h ./Flag_jp_gif_c.o ./Flag_jp_gif_c.urp ./Flag_jp_gif_c.urs ./Flag_jp_gif_js.urp ./Flag_jp_gif_js.urs ./Flag_ru_gif.ur ./Flag_ru_gif.urp ./Flag_ru_gif.urs ./Flag_ru_gif_c.data.o ./Flag_ru_gif_c.h ./Flag_ru_gif_c.o ./Flag_ru_gif_c.urp ./Flag_ru_gif_c.urs ./Flag_ru_gif_js.urp ./Flag_ru_gif_js.urs ./Flag_uk_gif.ur ./Flag_uk_gif.urp ./Flag_uk_gif.urs ./Flag_uk_gif_c.data.o ./Flag_uk_gif_c.h ./Flag_uk_gif_c.o ./Flag_uk_gif_c.urp ./Flag_uk_gif_c.urs ./Flag_uk_gif_js.urp ./Flag_uk_gif_js.urs ./Logo_gif.ur ./Logo_gif.urp ./Logo_gif.urs ./Logo_gif_c.data.o ./Logo_gif_c.h ./Logo_gif_c.o ./Logo_gif_c.urp ./Logo_gif_c.urs ./Logo_gif_js.urp ./Logo_gif_js.urs ./Logo_rtos_png.ur ./Logo_rtos_png.urp ./Logo_rtos_png.urs ./Logo_rtos_png_c.data.o ./Logo_rtos_png_c.h ./Logo_rtos_png_c.o ./Logo_rtos_png_c.urp ./Logo_rtos_png_c.urs ./Logo_rtos_png_js.urp ./Logo_rtos_png_js.urs ./Logo_simone_png.ur ./Logo_simone_png.urp ./Logo_simone_png.urs ./Logo_simone_png_c.data.o ./Logo_simone_png_c.h ./Logo_simone_png_c.o ./Logo_simone_png_c.urp ./Logo_simone_png_c.urs ./Logo_simone_png_js.urp ./Logo_simone_png_js.urs ./Logo_topor_png.ur ./Logo_topor_png.urp ./Logo_topor_png.urs ./Logo_topor_png_c.data.o ./Logo_topor_png_c.h ./Logo_topor_png_c.o ./Logo_topor_png_c.urp ./Logo_topor_png_c.urs ./Logo_topor_png_js.urp ./Logo_topor_png_js.urs ./Whytopor1_gif.ur ./Whytopor1_gif.urp ./Whytopor1_gif.urs ./Whytopor1_gif_c.data.o ./Whytopor1_gif_c.h ./Whytopor1_gif_c.o ./Whytopor1_gif_c.urp ./Whytopor1_gif_c.urs ./Whytopor1_gif_js.urp ./Whytopor1_gif_js.urs ./Whytopor2_gif.ur ./Whytopor2_gif.urp ./Whytopor2_gif.urs ./Whytopor2_gif_c.data.o ./Whytopor2_gif_c.h ./Whytopor2_gif_c.o ./Whytopor2_gif_c.urp ./Whytopor2_gif_c.urs ./Whytopor2_gif_js.urp ./Whytopor2_gif_js.urs ./Whytopor3_gif.ur ./Whytopor3_gif.urp ./Whytopor3_gif.urs ./Whytopor3_gif_c.data.o ./Whytopor3_gif_c.h ./Whytopor3_gif_c.o ./Whytopor3_gif_c.urp ./Whytopor3_gif_c.urs ./Whytopor3_gif_js.urp ./Whytopor3_gif_js.urs ./Whytopor4_gif.ur ./Whytopor4_gif.urp ./Whytopor4_gif.urs ./Whytopor4_gif_c.data.o ./Whytopor4_gif_c.h ./Whytopor4_gif_c.o ./Whytopor4_gif_c.urp ./Whytopor4_gif_c.urs ./Whytopor4_gif_js.urp ./Whytopor4_gif_js.urs
-./Flag_jp_gif_c.data.o: ./Flag_jp_gif_c_blob $(call GUARD,LD)
-	$(LD) -r -b binary -o ./Flag_jp_gif_c.data.o ./Flag_jp_gif_c_blob
+./EremexImg.urp.in: ./Banner_rtos_jpg.ur ./Banner_rtos_jpg.urp ./Banner_rtos_jpg.urs ./Banner_rtos_jpg_c.h ./Banner_rtos_jpg_c.o ./Banner_rtos_jpg_c.urp ./Banner_rtos_jpg_c.urs ./Banner_rtos_jpg_js.urp ./Banner_rtos_jpg_js.urs ./Banner_simone_jpg.ur ./Banner_simone_jpg.urp ./Banner_simone_jpg.urs ./Banner_simone_jpg_c.h ./Banner_simone_jpg_c.o ./Banner_simone_jpg_c.urp ./Banner_simone_jpg_c.urs ./Banner_simone_jpg_js.urp ./Banner_simone_jpg_js.urs ./Banner_topor_jpg.ur ./Banner_topor_jpg.urp ./Banner_topor_jpg.urs ./Banner_topor_jpg_c.h ./Banner_topor_jpg_c.o ./Banner_topor_jpg_c.urp ./Banner_topor_jpg_c.urs ./Banner_topor_jpg_js.urp ./Banner_topor_jpg_js.urs ./EremexImg.ur ./EremexImg.urs ./Flag_jp_gif.ur ./Flag_jp_gif.urp ./Flag_jp_gif.urs ./Flag_jp_gif_c.h ./Flag_jp_gif_c.o ./Flag_jp_gif_c.urp ./Flag_jp_gif_c.urs ./Flag_jp_gif_js.urp ./Flag_jp_gif_js.urs ./Flag_ru_gif.ur ./Flag_ru_gif.urp ./Flag_ru_gif.urs ./Flag_ru_gif_c.h ./Flag_ru_gif_c.o ./Flag_ru_gif_c.urp ./Flag_ru_gif_c.urs ./Flag_ru_gif_js.urp ./Flag_ru_gif_js.urs ./Flag_uk_gif.ur ./Flag_uk_gif.urp ./Flag_uk_gif.urs ./Flag_uk_gif_c.h ./Flag_uk_gif_c.o ./Flag_uk_gif_c.urp ./Flag_uk_gif_c.urs ./Flag_uk_gif_js.urp ./Flag_uk_gif_js.urs ./Logo_gif.ur ./Logo_gif.urp ./Logo_gif.urs ./Logo_gif_c.h ./Logo_gif_c.o ./Logo_gif_c.urp ./Logo_gif_c.urs ./Logo_gif_js.urp ./Logo_gif_js.urs ./Logo_rtos_png.ur ./Logo_rtos_png.urp ./Logo_rtos_png.urs ./Logo_rtos_png_c.h ./Logo_rtos_png_c.o ./Logo_rtos_png_c.urp ./Logo_rtos_png_c.urs ./Logo_rtos_png_js.urp ./Logo_rtos_png_js.urs ./Logo_simone_png.ur ./Logo_simone_png.urp ./Logo_simone_png.urs ./Logo_simone_png_c.h ./Logo_simone_png_c.o ./Logo_simone_png_c.urp ./Logo_simone_png_c.urs ./Logo_simone_png_js.urp ./Logo_simone_png_js.urs ./Logo_topor_png.ur ./Logo_topor_png.urp ./Logo_topor_png.urs ./Logo_topor_png_c.h ./Logo_topor_png_c.o ./Logo_topor_png_c.urp ./Logo_topor_png_c.urs ./Logo_topor_png_js.urp ./Logo_topor_png_js.urs ./Whytopor1_gif.ur ./Whytopor1_gif.urp ./Whytopor1_gif.urs ./Whytopor1_gif_c.h ./Whytopor1_gif_c.o ./Whytopor1_gif_c.urp ./Whytopor1_gif_c.urs ./Whytopor1_gif_js.urp ./Whytopor1_gif_js.urs ./Whytopor2_gif.ur ./Whytopor2_gif.urp ./Whytopor2_gif.urs ./Whytopor2_gif_c.h ./Whytopor2_gif_c.o ./Whytopor2_gif_c.urp ./Whytopor2_gif_c.urs ./Whytopor2_gif_js.urp ./Whytopor2_gif_js.urs ./Whytopor3_gif.ur ./Whytopor3_gif.urp ./Whytopor3_gif.urs ./Whytopor3_gif_c.h ./Whytopor3_gif_c.o ./Whytopor3_gif_c.urp ./Whytopor3_gif_c.urs ./Whytopor3_gif_js.urp ./Whytopor3_gif_js.urs ./Whytopor4_gif.ur ./Whytopor4_gif.urp ./Whytopor4_gif.urs ./Whytopor4_gif_c.h ./Whytopor4_gif_c.o ./Whytopor4_gif_c.urp ./Whytopor4_gif_c.urs ./Whytopor4_gif_js.urp ./Whytopor4_gif_js.urs
 ./Flag_jp_gif_c.o: ./Flag_jp_gif_c.c $(call GUARD,CC) $(call GUARD,UR_INCLUDE_DIR)
 	$(CC) -c -I $(UR_INCLUDE_DIR) -o ./Flag_jp_gif_c.o ./Flag_jp_gif_c.c
-./Flag_ru_gif_c.data.o: ./Flag_ru_gif_c_blob $(call GUARD,LD)
-	$(LD) -r -b binary -o ./Flag_ru_gif_c.data.o ./Flag_ru_gif_c_blob
 ./Flag_ru_gif_c.o: ./Flag_ru_gif_c.c $(call GUARD,CC) $(call GUARD,UR_INCLUDE_DIR)
 	$(CC) -c -I $(UR_INCLUDE_DIR) -o ./Flag_ru_gif_c.o ./Flag_ru_gif_c.c
-./Flag_uk_gif_c.data.o: ./Flag_uk_gif_c_blob $(call GUARD,LD)
-	$(LD) -r -b binary -o ./Flag_uk_gif_c.data.o ./Flag_uk_gif_c_blob
 ./Flag_uk_gif_c.o: ./Flag_uk_gif_c.c $(call GUARD,CC) $(call GUARD,UR_INCLUDE_DIR)
 	$(CC) -c -I $(UR_INCLUDE_DIR) -o ./Flag_uk_gif_c.o ./Flag_uk_gif_c.c
-./Logo_gif_c.data.o: ./Logo_gif_c_blob $(call GUARD,LD)
-	$(LD) -r -b binary -o ./Logo_gif_c.data.o ./Logo_gif_c_blob
 ./Logo_gif_c.o: ./Logo_gif_c.c $(call GUARD,CC) $(call GUARD,UR_INCLUDE_DIR)
 	$(CC) -c -I $(UR_INCLUDE_DIR) -o ./Logo_gif_c.o ./Logo_gif_c.c
-./Logo_rtos_png_c.data.o: ./Logo_rtos_png_c_blob $(call GUARD,LD)
-	$(LD) -r -b binary -o ./Logo_rtos_png_c.data.o ./Logo_rtos_png_c_blob
 ./Logo_rtos_png_c.o: ./Logo_rtos_png_c.c $(call GUARD,CC) $(call GUARD,UR_INCLUDE_DIR)
 	$(CC) -c -I $(UR_INCLUDE_DIR) -o ./Logo_rtos_png_c.o ./Logo_rtos_png_c.c
-./Logo_simone_png_c.data.o: ./Logo_simone_png_c_blob $(call GUARD,LD)
-	$(LD) -r -b binary -o ./Logo_simone_png_c.data.o ./Logo_simone_png_c_blob
 ./Logo_simone_png_c.o: ./Logo_simone_png_c.c $(call GUARD,CC) $(call GUARD,UR_INCLUDE_DIR)
 	$(CC) -c -I $(UR_INCLUDE_DIR) -o ./Logo_simone_png_c.o ./Logo_simone_png_c.c
-./Logo_topor_png_c.data.o: ./Logo_topor_png_c_blob $(call GUARD,LD)
-	$(LD) -r -b binary -o ./Logo_topor_png_c.data.o ./Logo_topor_png_c_blob
 ./Logo_topor_png_c.o: ./Logo_topor_png_c.c $(call GUARD,CC) $(call GUARD,UR_INCLUDE_DIR)
 	$(CC) -c -I $(UR_INCLUDE_DIR) -o ./Logo_topor_png_c.o ./Logo_topor_png_c.c
-./Whytopor1_gif_c.data.o: ./Whytopor1_gif_c_blob $(call GUARD,LD)
-	$(LD) -r -b binary -o ./Whytopor1_gif_c.data.o ./Whytopor1_gif_c_blob
 ./Whytopor1_gif_c.o: ./Whytopor1_gif_c.c $(call GUARD,CC) $(call GUARD,UR_INCLUDE_DIR)
 	$(CC) -c -I $(UR_INCLUDE_DIR) -o ./Whytopor1_gif_c.o ./Whytopor1_gif_c.c
-./Whytopor2_gif_c.data.o: ./Whytopor2_gif_c_blob $(call GUARD,LD)
-	$(LD) -r -b binary -o ./Whytopor2_gif_c.data.o ./Whytopor2_gif_c_blob
 ./Whytopor2_gif_c.o: ./Whytopor2_gif_c.c $(call GUARD,CC) $(call GUARD,UR_INCLUDE_DIR)
 	$(CC) -c -I $(UR_INCLUDE_DIR) -o ./Whytopor2_gif_c.o ./Whytopor2_gif_c.c
-./Whytopor3_gif_c.data.o: ./Whytopor3_gif_c_blob $(call GUARD,LD)
-	$(LD) -r -b binary -o ./Whytopor3_gif_c.data.o ./Whytopor3_gif_c_blob
 ./Whytopor3_gif_c.o: ./Whytopor3_gif_c.c $(call GUARD,CC) $(call GUARD,UR_INCLUDE_DIR)
 	$(CC) -c -I $(UR_INCLUDE_DIR) -o ./Whytopor3_gif_c.o ./Whytopor3_gif_c.c
-./Whytopor4_gif_c.data.o: ./Whytopor4_gif_c_blob $(call GUARD,LD)
-	$(LD) -r -b binary -o ./Whytopor4_gif_c.data.o ./Whytopor4_gif_c_blob
 ./Whytopor4_gif_c.o: ./Whytopor4_gif_c.c $(call GUARD,CC) $(call GUARD,UR_INCLUDE_DIR)
 	$(CC) -c -I $(UR_INCLUDE_DIR) -o ./Whytopor4_gif_c.o ./Whytopor4_gif_c.c
 $(call GUARD,CC):
 	rm -f .GUARD_CC_*
-	touch $@
-$(call GUARD,LD):
-	rm -f .GUARD_LD_*
 	touch $@
 $(call GUARD,UR_INCLUDE_DIR):
 	rm -f .GUARD_UR_INCLUDE_DIR_*

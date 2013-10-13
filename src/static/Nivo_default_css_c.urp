@@ -1,4 +1,3 @@
 ffi Nivo_default_css_c
 include Nivo_default_css_c.h
 link Nivo_default_css_c.o
-link Nivo_default_css_c.data.o

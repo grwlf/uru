@@ -1,4 +1,3 @@
 ffi Logo_gif_c
 include Logo_gif_c.h
 link Logo_gif_c.o
-link Logo_gif_c.data.o

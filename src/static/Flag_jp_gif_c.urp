@@ -1,4 +1,3 @@
 ffi Flag_jp_gif_c
 include Flag_jp_gif_c.h
 link Flag_jp_gif_c.o
-link Flag_jp_gif_c.data.o

@@ -1,4 +1,3 @@
 ffi Nivo_loading_gif_c
 include Nivo_loading_gif_c.h
 link Nivo_loading_gif_c.o
-link Nivo_loading_gif_c.data.o

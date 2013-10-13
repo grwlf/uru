@@ -1,4 +1,3 @@
 ffi Walle_jpg_c
 include Walle_jpg_c.h
 link Walle_jpg_c.o
-link Walle_jpg_c.data.o

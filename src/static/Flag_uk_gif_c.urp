@@ -1,4 +1,3 @@
 ffi Flag_uk_gif_c
 include Flag_uk_gif_c.h
 link Flag_uk_gif_c.o
-link Flag_uk_gif_c.data.o

@@ -1,4 +1,3 @@
 ffi Whytopor4_gif_c
 include Whytopor4_gif_c.h
 link Whytopor4_gif_c.o
-link Whytopor4_gif_c.data.o

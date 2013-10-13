@@ -1,4 +1,3 @@
 ffi Nemo_jpg_c
 include Nemo_jpg_c.h
 link Nemo_jpg_c.o
-link Nemo_jpg_c.data.o
