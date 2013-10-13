@@ -17,7 +17,7 @@ main = mdo
   fpls <- getDirectoryContentsRecursive (file "img/pulsonix")
 
   let cfg = defaultConfig {
-        urInclude = makevar "URINCL" "$(HOME)/local/include/urweb",
+        urInclude = makevar "URINCL" "$(shell dirname `which urweb`)/../include/urweb",
         urEmbed = [ ("StaticJS", filterExts [".js"] files)
                   , ("StaticCSS", filterExts [".css"] files)
                   , ("StaticImg", filterExts [".jpg", ".png", ".gif"] files)

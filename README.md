@@ -25,8 +25,7 @@ Building
   3. Unpack the URU sources and run the following commands from the project's
      top directory:
 
-        $ touch Cakegen
-        $ touch Makefile
+        $ ./fixmake.sh # prevent rebuilding with urembed
         $ make
 
   4. Launch ./AppMM.exe and visit http://localhost:8080/AppMM/main

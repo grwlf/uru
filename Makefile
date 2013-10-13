@@ -6,7 +6,7 @@ CC = $(shell $(URCC) -print-prog-name=gcc)
 LD = $(shell $(URCC) -print-prog-name=ld)
 URCC = $(shell urweb -print-ccompiler)
 URFLAGS = 
-URINCL = $(HOME)/local/include/urweb
+URINCL = $(shell dirname `which urweb`)/../include/urweb
 .PHONY: all
 all: ./AppMM.exe Makefile
 	ls -lh ./AppMM.exe
