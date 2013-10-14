@@ -1,0 +1,55 @@
+# HG changeset patch
+# User Sergey Mironov <grrwlf@gmail.com>
+# Date 1381751520 -14400
+#      Mon Oct 14 15:52:00 2013 +0400
+# Node ID 81961d960956f7f6419d15b9417d5fc2c16392a7
+# Parent  bebfcb78ac223ad43b967187a52cce534ffeef53
+Allow spaces and '-'s in the CSS style names
+
+It allows valid styles like
+
+-webkit-box-sizing:border-box;
+margin:0 auto;
+
+diff --git a/lib/js/urweb.js b/lib/js/urweb.js
+--- a/lib/js/urweb.js
++++ b/lib/js/urweb.js
+@@ -1908,7 +1908,7 @@
+ function atom(s) {
+     for (var i = 0; i < s.length; ++i) {
+         var c = s[i];
+-        if (!isAlnum(c) && c != '+' && c != '-' && c != '.' && c != '%' && c != '#')
++        if (!isAlnum(c) && c != '+' && c != '-' && c != '.' && c != '%' && c != '#' && c != ' ')
+             er("Disallowed character in CSS atom");
+     }
+ 
+@@ -1930,7 +1930,7 @@
+     if (s.length <= 0)
+         er("Empty CSS property");
+ 
+-    if (!isLower(s[0]) && s[0] != '_')
++    if (!isLower(s[0]) && s[0] != '_' && s[0] != '-')
+         er("Bad initial character in CSS property");
+ 
+     for (var i = 0; i < s.length; ++i) {
+diff --git a/src/c/urweb.c b/src/c/urweb.c
+--- a/src/c/urweb.c
++++ b/src/c/urweb.c
+@@ -4096,7 +4096,7 @@
+ 
+   for (p = s; *p; ++p) {
+     char c = *p;
+-    if (!isalnum((int)c) && c != '+' && c != '-' && c != '.' && c != '%' && c != '#')
++    if (!isalnum((int)c) && c != '+' && c != '-' && c != '.' && c != '%' && c != '#' && c != ' ')
+       uw_error(ctx, FATAL, "Disallowed character in CSS atom");
+   }
+ 
+@@ -4122,7 +4122,7 @@
+   if (!*s)
+     uw_error(ctx, FATAL, "Empty CSS property");
+ 
+-  if (!islower((int)s[0]) && s[0] != '_')
++  if (!islower((int)s[0]) && s[0] != '_' && s[0] != '-')
+     uw_error(ctx, FATAL, "Bad initial character in CSS property");
+ 
+   for (p = s; *p; ++p) {
