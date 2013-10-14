@@ -21,7 +21,8 @@ Building
 ========
 
   1. Obtain the Ur/Web from the [official repo](http://hg.impredicative.com/urweb).
-  2. Patch sources with the patches from the urweb/ directory, build and install.
+  2. Patch the sources with the patches from the urweb/ directory, build and
+     install. Apply CYGWIN HACK patch only if you are using Cygwin.
   3. Unpack the URU sources and run the following commands from the project's
      top directory:
 
