@@ -75,6 +75,36 @@ style outercolumns
 style outerslider
 style nivosld
 
+fun twocols tc1 tc2 =
+  let 
+    val css = CSS.css
+    val cs = ("text-align", CSS.Str "left") ::
+             []
+
+    fun box w = ("overflow",CSS.Str "hidden") ::
+                ("display",CSS.Str "inline-block") ::
+                ("width",CSS.Str w) ::
+                ("vertical-align",CSS.Str "top") ::
+                ("padding-left",CSS.Str "20px") ::
+                ("-webkit-box-sizing",CSS.Str "border-box") ::
+                ("-moz-box-sizing",CSS.Str "border-box") ::
+                ("box-sizing",CSS.Str "border-box") ::
+                []
+
+    val s1 = box "49%"
+    val s2 = 
+      ("text-align", CSS.Str "right") ::
+      box "49%"
+  in
+  c1 <- tc1;
+  c2 <- tc2;
+  return <xml>
+      <div style={css cs}>
+        <div style={css s1}> {c1} </div>
+        <div style={css s2}> {c2} </div>
+      </div>
+    </xml>
+  end
 
 fun fvoid {} = {}
 
@@ -95,7 +125,7 @@ and template (x:transaction xbody) = let
           <img src={url (image prod.Product.Logo)}/>
           </div>
         </xml>);
-    c <- ThreeColumns.twocols
+    c <- twocols
       (return <xml><div><img src={Logo_gif.geturl}/></div></xml>)
       (return
         <xml>

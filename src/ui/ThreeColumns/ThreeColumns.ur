@@ -7,7 +7,7 @@ val brd2 = ("border",CSS.Str "1px dotted black")
 val cs = ("text-align", CSS.Str "left") ::
          []
 
-val box w = ("overflow",CSS.Str "hidden") ::
+fun box w = ("overflow",CSS.Str "hidden") ::
             ("display",CSS.Str "inline-block") ::
             ("width",CSS.Str w) ::
             ("vertical-align",CSS.Str "top") ::
@@ -44,7 +44,6 @@ fun twocols tc1 tc2 =
     val s2 = 
       ("text-align", CSS.Str "right") ::
       box "49%"
-
   in
   c1 <- tc1;
   c2 <- tc2;
@@ -58,5 +57,29 @@ fun twocols tc1 tc2 =
 
 
 fun cells (l:list cell) : transaction xbody =
-  return <xml/>
+  let
+    val cs = ("text-align", CSS.Str "left") ::
+             []
+
+    fun box w = ("overflow",CSS.Str "hidden") ::
+                ("display",CSS.Str "inline-block") ::
+                ("width",CSS.Str w) ::
+                ("vertical-align",CSS.Str "top") ::
+                ("padding-left",CSS.Str "20px") ::
+                ("-webkit-box-sizing",CSS.Str "border-box") ::
+                ("-moz-box-sizing",CSS.Str "border-box") ::
+                ("box-sizing",CSS.Str "border-box") ::
+                []
+
+    val b = box "25%"
+
+    val boxes : xbody = List.mapX (fn x => <xml><div style={css b}>{x.Content}</div></xml>) l
+  in
+  return
+    <xml>
+      <div style={css cs}>
+        {boxes}
+      </div>
+    </xml>
+  end
 

@@ -27,8 +27,8 @@ src/ui/MegaMenu2/MegaMenu2
 src/ui/PikaChoose/PikaChoose
 src/ui/TinyMCE/TinyMCE
 src/ui/NivoSlider/NivoSlider
-src/ui/ThreeColumns/ThreeColumns
 src/ui/FullWidth/FullWidth
 src/ui/RespTabs/RespTabs
 src/Template
+Columns
 AppMM
