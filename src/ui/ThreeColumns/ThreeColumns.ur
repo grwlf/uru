@@ -11,14 +11,11 @@ val box w = ("overflow",CSS.Str "hidden") ::
             ("display",CSS.Str "inline-block") ::
             ("width",CSS.Str w) ::
             ("vertical-align",CSS.Str "top") ::
+            ("padding-left",CSS.Str "20px") ::
+            ("-webkit-box-sizing",CSS.Str "border-box") ::
+            ("-moz-box-sizing",CSS.Str "border-box") ::
+            ("box-sizing",CSS.Str "border-box") ::
             []
-
-(* val cols = { TC_Col1 = css(s1), TC_Col2 = css(s2), TC_Col3 = css(s3) } *)
-(* fun add [t] [t2] *)
-(*   (f:((columns -> transaction xbody) -> transaction xbody) -> record (dpage t) -> record (dpage t2)) *)
-(*   (r:record (dpage t)) *)
-(*     : record (dpage t2) = *)
-(*   f (fn tx => x <- tx cols ; return <xml><div style={css(cs)}>{x}</div></xml> ) r *)
 
 fun threecols tc1 tc2 tc3 =
   let
