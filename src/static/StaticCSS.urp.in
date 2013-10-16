@@ -1,5 +1,6 @@
 library AppMM_css
 library Jquery_ui_css
+library Bootstrap_css
 library PikaChoose_css
 library Nivo_default_css
 library Nivo_slider_css

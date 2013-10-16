@@ -12,4 +12,5 @@ val twocols : transaction xbody -> transaction xbody -> transaction xbody
 
 type cell = {Content : xbody}
 
-val cells : list cell -> transaction xbody
+val mkcell : xbody -> cell
+val cells : (transaction (list cell)) -> transaction xbody

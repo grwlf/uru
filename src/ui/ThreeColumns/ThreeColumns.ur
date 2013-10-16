@@ -56,14 +56,14 @@ fun twocols tc1 tc2 =
   end
 
 
-fun cells (l:list cell) : transaction xbody =
+fun cells (tl:transaction (list cell)) : transaction xbody =
   let
     val cs = ("text-align", CSS.Str "left") ::
              []
 
     fun box w = ("overflow",CSS.Str "hidden") ::
                 ("display",CSS.Str "inline-block") ::
-                ("width",CSS.Str w) ::
+                ("min-width",CSS.Str w) ::
                 ("vertical-align",CSS.Str "top") ::
                 ("padding-left",CSS.Str "20px") ::
                 ("-webkit-box-sizing",CSS.Str "border-box") ::
@@ -73,13 +73,16 @@ fun cells (l:list cell) : transaction xbody =
 
     val b = box "25%"
 
-    val boxes : xbody = List.mapX (fn x => <xml><div style={css b}>{x.Content}</div></xml>) l
+    fun boxes l : xbody = List.mapX (fn x => <xml><div style={css b}>{x.Content}</div></xml>) l
   in
+  l <- tl;
   return
     <xml>
       <div style={css cs}>
-        {boxes}
+        {boxes l}
       </div>
     </xml>
   end
+
+fun mkcell (x:xbody) = { Content = x }
 

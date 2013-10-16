@@ -11,6 +11,8 @@ allow url http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css
 allow url http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js
 allow url http://null
 rewrite style Template/*
+rewrite style Bootstrap/* [-]
+rewrite style Bootstrap/table_ table
 rewrite style AppMM/*
 library src/static/StaticJS
 library src/static/StaticCSS
@@ -29,6 +31,7 @@ src/ui/TinyMCE/TinyMCE
 src/ui/NivoSlider/NivoSlider
 src/ui/FullWidth/FullWidth
 src/ui/RespTabs/RespTabs
+src/ui/Bootstrap/Bootstrap
+src/ui/ThreeColumns/ThreeColumns
 src/Template
-Columns
 AppMM

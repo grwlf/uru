@@ -23,9 +23,7 @@ a.mm-item-link:link, a.mm-item-link:visited {
   color: #000;
   padding: 8px 15px;
   margin: 0px 3px 0px 0px;
-  text-decoration: none;
   z-index: 10;
-  font-size: 20px;
   /* border-top: 1px solid transparent; */
   /* border-left: 1px solid transparent; */
   /* border-right: 1px solid transparent; */
@@ -36,8 +34,8 @@ a.mm-item-link:link, a.mm-item-link:visited {
 }
 
 a.mm-item-link-hover:link, a.mm-item-link-hover:visited {
-  color: #444;
-  background: #FFF;
+  /* color: #444; */
+  /* background: #FFF; */
   /* border-top: 1px solid #777; */
   /* border-left: 1px solid #777; */
   /* border-right: 1px solid #777; */
@@ -46,7 +44,7 @@ a.mm-item-link-hover:link, a.mm-item-link-hover:visited {
 }
 
 div.mm-item-content {
-  background: #FFF;
+  /* background: #FFF; */
   padding: 0px;
   position: absolute;
   /* border: 1px solid #777; */
@@ -54,7 +52,7 @@ div.mm-item-content {
 }
 
 .mm-content-base {
-  background: #FFF;
+  /* background: #FFF; */
   position: relative;
   z-index: 11;
   padding: 10px;

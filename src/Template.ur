@@ -64,6 +64,7 @@ style langmenu
 (* Menu *)
 style outermenu
 style megamenu
+style menucolumn
 
 (* Editor *)
 style tmce
@@ -106,6 +107,57 @@ fun twocols tc1 tc2 =
     </xml>
   end
 
+
+val css = CSS.css
+
+fun indiv c tx =
+  x <- tx;
+  return
+    <xml><div class={c}>
+      <div class={Bootstrap.container}>{x}</div>
+    </div></xml>
+
+fun takeByN [t ::: Type] (n:int) (l:list t) : list (list t) =
+  case l of
+    _ :: _ => (List.take n l) :: (takeByN n (List.drop n l))
+    | []  => []
+
+fun wrap_menu x = indiv outermenu x
+
+fun wrap_slider x = indiv outerslider x
+
+fun wrap_tabs x = indiv outercolumns x
+
+fun mkcell (x:xbody) : cell = { Content = x }
+
+fun cellsByN n spancss boxcss (l:list cell) : transaction xbody =
+  let
+    val x : xbody =
+      List.mapX (fn l =>
+        let
+          val x = List.mapX (fn x => <xml><div class={classes boxcss spancss}>{x.Content}</div></xml>) l
+        in
+          <xml><div class={Bootstrap.row_fluid}>{x}</div></xml>
+        end) (takeByN n l)
+  in
+  indiv outercolumns (return x)
+  end
+
+val cellsBy3 = cellsByN 3 Bootstrap.span4
+val cellsBy4 = cellsByN 4 Bootstrap.span3
+
+val js = Page.javascript
+
+val headers = {
+  JQ = <xml><script type={js} src={Jquery_1_9_1_js.geturl}/></xml>,
+  MY = 
+    <xml>
+      <title>AppMM</title>
+      <link rel="stylesheet" href={AppMM_css.geturl}/>
+    </xml>,
+  FW = { Width = 900 }
+}
+
 fun fvoid {} = {}
 
 and image n : transaction page =
@@ -114,18 +166,9 @@ and image n : transaction page =
 
 and template (x:transaction xbody) = let
 
-  fun viewpage (i:int) = template x
+  fun mkheader (css:css_class) : transaction xbody = 
 
-  fun mkmenu (css:css_class) : transaction xbody = 
-    ps <- queryX' (SELECT * FROM product) (fn prod =>
-      return
-        <xml>
-          <div>
-          <p>{[prod.Product.Caption]}</p>
-          <img src={url (image prod.Product.Logo)}/>
-          </div>
-        </xml>);
-    c <- twocols
+    h <- twocols
       (return <xml><div><img src={Logo_gif.geturl}/></div></xml>)
       (return
         <xml>
@@ -135,12 +178,37 @@ and template (x:transaction xbody) = let
           <a link={template x}><img src={Flag_jp_gif.geturl}/>日本語</a>
           </div>
         </xml>);
+
+    ps <- ThreeColumns.cells (
+      List.mapQuery (SELECT * FROM product) (fn prod =>
+        ThreeColumns.mkcell
+          <xml>
+            <div class={menucolumn}>
+              <div style="height:65px;display:table">
+                <div style="display:table-cell; vertical-align:middle;">
+                  <img style="width:60%" src={url (image prod.Product.Logo)}/>
+                </div>
+              </div>
+              <dl>
+                (* <dt>{[prod.Product.Caption]}</dt> *)
+                <dd>About</dd>
+                <dd>Tour</dd>
+                <dd>Links</dd>
+                <dd>Downloads</dd>
+                <dd>Feedback</dd>
+              </dl>
+            </div>
+          </xml>
+        ));
+
     return
       <xml>
         <div>
-          {c}
-          <ul class={css}>
-          <li><a link={template x}>Products</a><div>{ps}</div></li>
+          {h}
+          <ul class={css} style="list-style:none;display:none">
+          <li><a link={template x}>Products</a>
+            <div style="width:800px">{ps}</div>
+          </li>
           <li><a link={template x}>Blog</a></li>
           <li><a link={template x}>Sales</a></li>
           <li><a link={template x}>Contacts</a></li>
@@ -149,54 +217,19 @@ and template (x:transaction xbody) = let
         </div>
      </xml> 
 
-    val css = CSS.css
-
-    val headers = {
-      JQ = <xml><script type={blessMime "text/javascript"} src={url (Jquery_1_9_1_js.blobpage {})}/></xml>,
-      MY = 
-        <xml>
-          <title>AppMM</title>
-          <link rel="stylesheet" href={url (AppMM_css.blobpage {})}/>
-        </xml>,
-      FW = { Width = 900 }
-    }
-
-    fun indiv c tx =
-      x <- tx;
-      return
-        <xml><div class={c}>
-          <div style="margin:0 auto; width:900px;">{x}</div>
-        </div></xml>
-
-    fun padding m tx =
-      let
-        val p = ("padding-top", CSS.Str m) ::
-                []
-      in
-        x <- tx;
-        return <xml><div style={css p}>{x}</div></xml>
-      end
-
-    fun wrap_menu x = indiv outermenu x
-
-    fun wrap_slider x = indiv outerslider (padding "10%" x)
-
-    fun wrap_columns x = indiv outercolumns x
-
-    fun wrap_tabs x = indiv outercolumns x
 
   in
   Page.runPage (
   Page.withHeader [#JQ] (headers.JQ) (
-  Page.withHeader [#MY] (headers.MY) (
   Page.withSettings [#FW] (headers.FW) (
   NivoSlider.add nivosld (fn slider =>
   MegaMenu2.add megamenu (
-  TinyMCE.add tmce ( Nemo_jpg.geturl :: Walle_jpg.geturl :: [] ) (
   RespTabs.add (fn tabs =>
+  Bootstrap.add (
+  Page.withHeader [#MY] (headers.MY) (
   Page.withBody (
 
-    m <- wrap_menu (mkmenu megamenu);
+    m <- wrap_menu (mkheader megamenu);
 
     s <- wrap_slider (slider ({
         Url = Banner_rtos_jpg.geturl,
@@ -209,7 +242,7 @@ and template (x:transaction xbody) = let
         Title = Some <xml><span>Topology editor and automatic router for PCB design</span></xml>
       } :: []));
 
-    t <- wrap_tabs (tabs ({
+    t <- wrap_tabs(tabs ({
         Caption = <xml>Haha</xml>,
         Content = <xml>Foobar</xml>
       } :: {
@@ -218,7 +251,7 @@ and template (x:transaction xbody) = let
       } :: []
     ));
 
-    x' <- wrap_columns x;
+    x' <- x;
 
     return
       <xml>

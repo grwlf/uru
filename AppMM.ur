@@ -2,27 +2,21 @@
 
 style columnlist
 style download
-style info
 style work
 style button
 style news
 
 style box
-style box3
-style box4
 
-val box3 = classes box box3
-val box4 = classes box box4
+val btn = classes (classes Bootstrap.btn Bootstrap.btn_large) Bootstrap.btn_success
 
-val mkcell = Columns.mkcell
-
-val cells = Columns.cells
+val mkcell = Template.mkcell
 
 fun gennews {} : transaction xbody = 
-  cells box3 (
+  Template.cellsBy3 box (
     (mkcell <xml>
       <div class={columnlist}>
-        <h2>Circuit Capture and PCB Layout</h2>
+        <h4>Circuit Capture and PCB Layout</h4>
         <dl>
           <dt><a link={main {}}>Download a free trial copy now</a></dt>
           <dd class={download}>
@@ -58,10 +52,10 @@ fun gennews {} : transaction xbody =
     (mkcell
       <xml>
        <div class={columnlist}>
-          <h2>Get more out of Pulsonix</h2>
+          <h4>Get more out of Pulsonix</h4>
           <dl>
             <dt><a link={main {}}>New User Forum</a></dt>
-            <dd class={info}>
+            <dd>
               Visit our new
               <a link={main {}}>User Forum</a>
               and read about how you can get the most out of your Pulsonix software. With peer
@@ -69,7 +63,7 @@ fun gennews {} : transaction xbody =
               valuable resource for all Pulsonix users.
             </dd>
             <dt><a link={main {}}>Software main</a></dt>
-            <dd class={info}>
+            <dd>
               A Pulsonix main contract represents the most cost effective way of ensuring you
               and your engineering teams have access to all the assistance needed to keep you
               operating efficiently and effectively.
@@ -81,12 +75,12 @@ fun gennews {} : transaction xbody =
               The latest updates for Pulsonix are listed here, allowing you to quickly check
               that your existing Pulsonix installation is up-to-date so you can take advantage
               of all the latest improvements.
-              <p>
+              <div>
                 Latest Updates:
                 <a link={main {}}>8.0.5537</a>
                 and
                 <a link={main {}}>7.6.5226</a>
-              </p>
+              </div>
             </dd>
           </dl>
         </div> 
@@ -94,14 +88,14 @@ fun gennews {} : transaction xbody =
     (mkcell 
       <xml>
         <div class={columnlist}>
-        <h2>News and Press</h2>
+        <h4>News and Press</h4>
         <dl>
           <dt><a link={main {}}>Version 8 Available</a></dt>
           <dd class={news}>
             The latest edition of Pulsonix is now shipping. Over 45 new and improved
             features have been added; most of which have been implemented as a direct result
             of user requests.
-            <p>Read more about the new<a link={main {}}>V8 features</a>.</p>
+            <div>Read more about the new<a link={main {}}>V8 features</a>.</div>
             <p>
               Click
               <a link={main {}}>here</a>
@@ -115,10 +109,10 @@ fun gennews {} : transaction xbody =
     [])
 
 and genboxes {} : transaction xbody = 
-  cells box4 (
+  Template.cellsBy4 box (
     (mkcell
       <xml>
-        <h2>Blabl Instrument Dashboard</h2>
+        <h4>Blabl Instrument Dashboard</h4>
         <img src={Whytopor1_gif.geturl}/>
         <p>Enhances the data exchange capabilities of Altium Designer by giving
         non-designers secure access to essential design data, including the ability to
@@ -127,7 +121,7 @@ and genboxes {} : transaction xbody =
       </xml>) ::
     (mkcell
       <xml>
-        <h2>A free application</h2>
+        <h4>A free application</h4>
         <img src={Whytopor2_gif.geturl}/>
         <p>A stand-alone, custom instrument viewer that lets you remotely control and test
         FPGA designs using wireless or Internet technology, without having Altium
@@ -136,7 +130,7 @@ and genboxes {} : transaction xbody =
       </xml>) ::
     (mkcell
       <xml>
-        <h2>Blablabla hehe</h2>
+        <h4>Blablabla hehe</h4>
         <img src={Whytopor4_gif.geturl}/>
         <p>Explore all the features and benefits Altium products have to offer, get a taste
         for what is possible - no strings attached. We are here every step of the way to
@@ -144,7 +138,7 @@ and genboxes {} : transaction xbody =
       </xml>) ::
     (mkcell
       <xml>
-        <h2>Altium Instrument Dashboard</h2>
+        <h4>Altium Instrument Dashboard</h4>
         <img src={Whytopor3_gif.geturl}/>
         <p>for what is possible - no strings attached. We are here every step of the way to
         Explore all the features and benefits Altium products have to offer, get a taste
@@ -152,7 +146,7 @@ and genboxes {} : transaction xbody =
       </xml>) ::
     (mkcell
       <xml>
-        <h2>Blabl Instrument Dashboard</h2>
+        <h4>Blabl Instrument Dashboard</h4>
         <img src={Whytopor2_gif.geturl}/>
         <p>Explore all the features and benefits Altium products have to offer, get a taste
         FPGA designs using wireless or Internet technology, without having Altium for
@@ -162,7 +156,7 @@ and genboxes {} : transaction xbody =
       </xml>) ::
     (mkcell 
       <xml>
-        <h2>Explore all the features</h2>
+        <h4>Explore all the features</h4>
         <img src={Whytopor1_gif.geturl}/>
         <p>Explore all the features and benefits Altium products have to offer, get a taste
         FPGA designs using wireless or Internet technology, without having Altium for
@@ -172,12 +166,13 @@ and genboxes {} : transaction xbody =
       </xml>) ::
     (mkcell 
       <xml>
-        <h2>And here comes text wo img</h2>
+        <h4>And here comes text wo img</h4>
         <p>Explore all the features and benefits Altium products have to offer, get a taste
         FPGA designs using wireless or Internet technology, without having Altium for
         what is possible - no strings attached. We are here every step of the way to
         help you. generate reports and printouts. A free application that can be
         installed on any</p>
+        <a link={main {}} class={btn}>Get started with Contiki &raquo;</a>
       </xml>) ::
     [])
 
