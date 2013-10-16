@@ -164,7 +164,9 @@ and image n : transaction page =
   b <- oneRow (SELECT * FROM imaget WHERE imaget.Nam = {[n]});
   returnBlob b.Imaget.Data (blessMime "image/png")
 
-and template (x:transaction xbody) = let
+and template (ismain:bool) (self:url) (x:transaction xbody) = let
+
+  (* val self = url (template ismain x) *)
 
   fun mkheader (css:css_class) : transaction xbody = 
 
@@ -173,9 +175,9 @@ and template (x:transaction xbody) = let
       (return
         <xml>
           <div class={langmenu}>
-          <a link={template x}><img src={Flag_ru_gif.geturl}/>Русский</a>
-          <a link={template x}><img src={Flag_uk_gif.geturl}/>English</a>
-          <a link={template x}><img src={Flag_jp_gif.geturl}/>日本語</a>
+          <a href={self}><img src={Flag_ru_gif.geturl}/>Русский</a>
+          <a href={self}><img src={Flag_uk_gif.geturl}/>English</a>
+          <a href={self}><img src={Flag_jp_gif.geturl}/>日本語</a>
           </div>
         </xml>);
 
@@ -206,13 +208,13 @@ and template (x:transaction xbody) = let
         <div>
           {h}
           <ul class={css} style="list-style:none;display:none">
-          <li><a link={template x}>Products</a>
+          <li><a href={self}>Products</a>
             <div style="width:800px">{ps}</div>
           </li>
-          <li><a link={template x}>Blog</a></li>
-          <li><a link={template x}>Sales</a></li>
-          <li><a link={template x}>Contacts</a></li>
-          <li><a link={template x}>Community</a></li>
+          <li><a href={self}>Blog</a></li>
+          <li><a href={self}>Sales</a></li>
+          <li><a href={self}>Contacts</a></li>
+          <li><a href={self}>Community</a></li>
           </ul>
         </div>
      </xml> 
@@ -231,16 +233,19 @@ and template (x:transaction xbody) = let
 
     m <- wrap_menu (mkheader megamenu);
 
-    s <- wrap_slider (slider ({
-        Url = Banner_rtos_jpg.geturl,
-        Title = Some <xml><span>Real time operating system for embedded applications</span></xml>
-      } :: {
-        Url = Banner_simone_jpg.geturl,
-        Title = Some <xml><span>Electronic circuit simulator</span></xml>
-      } :: {
-        Url = Banner_topor_jpg.geturl,
-        Title = Some <xml><span>Topology editor and automatic router for PCB design</span></xml>
-      } :: []));
+    s <- (case ismain of
+      True =>
+        wrap_slider (slider ({
+          Url = Banner_rtos_jpg.geturl,
+          Title = Some <xml><span>Real time operating system for embedded applications</span></xml>
+        } :: {
+          Url = Banner_simone_jpg.geturl,
+          Title = Some <xml><span>Electronic circuit simulator</span></xml>
+        } :: {
+          Url = Banner_topor_jpg.geturl,
+          Title = Some <xml><span>Topology editor and automatic router for PCB design</span></xml>
+        } :: []))
+      |False => return <xml/>);
 
     t <- wrap_tabs(tabs ({
         Caption = <xml>Haha</xml>,

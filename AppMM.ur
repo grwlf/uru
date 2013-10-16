@@ -6,11 +6,16 @@ style work
 style button
 style news
 
+val template = Template.template
+
 style box
 
 val btn = classes (classes Bootstrap.btn Bootstrap.btn_large) Bootstrap.btn_success
 
 val mkcell = Template.mkcell
+
+fun learnmore (x : transaction page) : xbody =
+  <xml><p><a link={x}>Learn more &raquo;</a></p></xml>
 
 fun gennews {} : transaction xbody = 
   Template.cellsBy3 box (
@@ -118,6 +123,7 @@ and genboxes {} : transaction xbody =
         non-designers secure access to essential design data, including the ability to
         generate reports and printouts. A free application that can be installed on any
         PC.</p>
+        <a link={topor {}}>Learn more >> </a>
       </xml>) ::
     (mkcell
       <xml>
@@ -176,11 +182,42 @@ and genboxes {} : transaction xbody =
       </xml>) ::
     [])
 
-and topor {} = Template.template
+and toporboxes {} : transaction xbody = 
+  Template.cellsBy4 box (
+    (mkcell
+      <xml>
+        <h4>PCB design time reduced up to several times</h4>
+        <img src={Whytopor1_gif.geturl}/>
+        <p>TopoR provides extremely fast comprehensive routing with unsurpassed quality</p>
+        {learnmore (main {})}
+      </xml>) ::
+    (mkcell
+      <xml>
+        <h4>PCB design time reduced up to several times</h4>
+        <img src={Whytopor2_gif.geturl}/>
+        <p>Autorouting quality is comparable to manual routing or exceeds it.</p>
+        {learnmore (main {})}
+      </xml>) ::
+    (mkcell
+      <xml>
+        <h4>Design of complex and high-speed PCBs</h4>
+        <img src={Whytopor3_gif.geturl}/>
+        <p>TopoR allows to avoid wire parallelism reducing electromagnetic crosstalks.</p>
+        {learnmore (main {})}
+      </xml>) ::
+    [])
 
-and main {} = Template.template (
-  n <- gennews {};
-  b <- genboxes {};
-  return <xml>{n}{b}</xml>)
+and topor {} = 
+  template False (url (topor {})) (
+    b <- toporboxes {};
+    return <xml>{b}</xml>
+  )
+
+and main {} = 
+  template True (url (main {})) (
+    n <- gennews {};
+    b <- genboxes {};
+    return <xml>{n}{b}</xml>
+  )
 
 
