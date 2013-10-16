@@ -1,0 +1,3 @@
+ffi Bootstrap_css_c
+include Bootstrap_css_c.h
+link Bootstrap_css_c.o

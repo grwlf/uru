@@ -1,0 +1,6 @@
+library Bootstrap_min_js_c
+library Bootstrap_min_js_js
+safeGet Bootstrap_min_js/blobpage
+safeGet Bootstrap_min_js/blob
+
+Bootstrap_min_js
