@@ -1,6 +1,7 @@
-datatype content = Walle_jpg | Nemo_jpg | Pnp_png | Flex_png | Pencil_drawing_png | Bluegreen_jpg | Logo_gif | Flag_uk_gif | Flag_ru_gif | Flag_jp_gif | Whytopor2_gif | Whytopor4_gif | Whytopor1_gif | Whytopor3_gif | Logo_rtos_png | Banner_topor_jpg | Banner_simone_jpg | Banner_rtos_jpg | Logo_simone_png | Logo_topor_png | Nivo_loading_gif | Nivo_bullets_png | Nivo_arrows_png
+datatype content = Banner1_png | Walle_jpg | Nemo_jpg | Pnp_png | Flex_png | Pencil_drawing_png | Bluegreen_jpg | Logo_gif | Flag_uk_gif | Flag_ru_gif | Flag_jp_gif | Whytopor2_gif | Whytopor4_gif | Whytopor1_gif | Whytopor3_gif | Logo_rtos_png | Banner_topor_jpg | Banner_simone_jpg | Banner_rtos_jpg | Logo_simone_png | Logo_topor_png | Nivo_loading_gif | Nivo_bullets_png | Nivo_arrows_png
 fun binary c = case c of
-      Walle_jpg => Walle_jpg.binary ()
+      Banner1_png => Banner1_png.binary ()
+    | Walle_jpg => Walle_jpg.binary ()
     | Nemo_jpg => Nemo_jpg.binary ()
     | Pnp_png => Pnp_png.binary ()
     | Flex_png => Flex_png.binary ()
@@ -24,7 +25,8 @@ fun binary c = case c of
     | Nivo_bullets_png => Nivo_bullets_png.binary ()
     | Nivo_arrows_png => Nivo_arrows_png.binary ()
 fun blobpage c = case c of
-      Walle_jpg => Walle_jpg.blobpage ()
+      Banner1_png => Banner1_png.blobpage ()
+    | Walle_jpg => Walle_jpg.blobpage ()
     | Nemo_jpg => Nemo_jpg.blobpage ()
     | Pnp_png => Pnp_png.blobpage ()
     | Flex_png => Flex_png.blobpage ()
@@ -48,7 +50,8 @@ fun blobpage c = case c of
     | Nivo_bullets_png => Nivo_bullets_png.blobpage ()
     | Nivo_arrows_png => Nivo_arrows_png.blobpage ()
 fun text c = case c of
-      Walle_jpg => Walle_jpg.text ()
+      Banner1_png => Banner1_png.text ()
+    | Walle_jpg => Walle_jpg.text ()
     | Nemo_jpg => Nemo_jpg.text ()
     | Pnp_png => Pnp_png.text ()
     | Flex_png => Flex_png.text ()
@@ -72,6 +75,7 @@ fun text c = case c of
     | Nivo_bullets_png => Nivo_bullets_png.text ()
     | Nivo_arrows_png => Nivo_arrows_png.text ()
 val urls =
+     Banner1_png.geturl :: 
      Walle_jpg.geturl :: 
      Nemo_jpg.geturl :: 
      Pnp_png.geturl :: 

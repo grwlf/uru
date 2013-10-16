@@ -5,6 +5,7 @@ style download
 style work
 style button
 style news
+style jumbotron
 
 val template = Template.template
 
@@ -13,6 +14,12 @@ style box
 val btn = classes (classes Bootstrap.btn Bootstrap.btn_large) Bootstrap.btn_success
 
 val mkcell = Template.mkcell
+
+fun demo (u:url) : xbody = <xml>
+  <p style="text-align:center;margin:20px;">
+    <a class={btn} href={u}>Download demo version &raquo;</a>
+  </p>
+  </xml>
 
 fun learnmore (x : transaction page) : xbody =
   <xml><p><a link={x}>Learn more &raquo;</a></p></xml>
@@ -182,39 +189,213 @@ and genboxes {} : transaction xbody =
       </xml>) ::
     [])
 
-and toporboxes {} : transaction xbody = 
-  Template.cellsBy4 box (
-    (mkcell
-      <xml>
-        <h4>PCB design time reduced up to several times</h4>
-        <img src={Whytopor1_gif.geturl}/>
-        <p>TopoR provides extremely fast comprehensive routing with unsurpassed quality</p>
-        {learnmore (main {})}
-      </xml>) ::
-    (mkcell
-      <xml>
-        <h4>PCB design time reduced up to several times</h4>
-        <img src={Whytopor2_gif.geturl}/>
-        <p>Autorouting quality is comparable to manual routing or exceeds it.</p>
-        {learnmore (main {})}
-      </xml>) ::
-    (mkcell
-      <xml>
-        <h4>Design of complex and high-speed PCBs</h4>
-        <img src={Whytopor3_gif.geturl}/>
-        <p>TopoR allows to avoid wire parallelism reducing electromagnetic crosstalks.</p>
-        {learnmore (main {})}
-      </xml>) ::
-    [])
-
 and topor {} = 
-  template False (url (topor {})) (
-    b <- toporboxes {};
-    return <xml>{b}</xml>
+  template {Main = (url (main {})), Self = (url (topor {})), IsMain = False } (fn tabs =>
+
+    news <- (Template.cellsBy1 news (
+      (mkcell
+        <xml>
+          <img src={Logo_topor_png.geturl}/>
+          <dl>
+            <dt>Downlowads </dt>
+            <dd>Demo</dd>
+            <dd>Manual</dd>
+
+            <dt>Support</dt>
+            <dd>Forum</dd>
+            <dd>Contact</dd>
+            <dd>FAQ</dd>
+          </dl>
+        </xml>
+      ) :: []));
+
+    caption <- (return
+      <xml>
+        <div class={Bootstrap.row_fluid}>
+          <h2 class={Bootstrap.lead}>
+            Topology editor and automatic router for PCB design
+          </h2> 
+          <img style="width:100%" src={Banner1_png.geturl}/>
+          <div style="margin:10px">The product is successfully used for many plants and facilities in the following
+            Russian cities: Arzamas, Volgograd, Vologda, Ekaterinburg, Zhytomir, Irkutsk,
+            Kazan, Kiev, Lipetsk, Moscow, Murom, Nizhniy Novgorod, Saint-Petersburg,
+            Severodonetsk, Tula, Ulyanovsk and many others.
+          </div>
+        </div>
+      </xml>);
+
+    feat <- Template.cellsBy3 box (
+          (mkcell
+            <xml>
+              <h4>PCB design time reduced up to several times</h4>
+              <img src={Whytopor1_gif.geturl}/>
+              <p>
+                TopoR topological router is distinguished by having no preferred routing
+                directions, which are divisible by 45 degrees. Any-angle routing ensures more
+                efficient space usage.
+              </p> 
+              {learnmore (main {})}
+            </xml>) ::
+          (mkcell
+            <xml>
+              <h4>High-quality autorouting</h4>
+              <img src={Whytopor2_gif.geturl}/>
+              <p>
+                TopoR provides 100% routed layout almost instantly within a few seconds. All
+                connections are routed even if technological constraints are violated.
+                Autorouting is followed by the multiobjective optimization by calculating
+                different variants of laying wires.
+              </p> 
+              {learnmore (main {})}
+            </xml>) ::
+          (mkcell
+            <xml>
+              <h4>Improved electro-magnetic compatibility</h4>
+              <img src={Whytopor3_gif.geturl}/>
+              TopoR allows to avoid wire parallelism reducing electromagnetic crosstalks.
+              {learnmore (main {})}
+            </xml>) ::
+          (mkcell
+            <xml>
+              <h4>Design of complex and high-speed PCBs</h4>
+              <img src={Whytopor4_gif.geturl}/>
+              TopoR ensures full support for complex and high-speed PCBs design. 
+              {learnmore (main {})}
+            </xml>) ::
+          []);
+
+    tabcont <- tabs ({
+        Caption = <xml>Features</xml>,
+        Content = <xml>{feat}</xml>
+        } :: {
+        Caption = <xml>FAQ</xml>,
+        Content =
+         <xml>
+          <div>
+            <h4>Introduction to TopoR and first steps</h4>
+            <p>
+              We will keep constantly updating the Frequently Asked Questions section of the
+              website. If you did not find the answers to your questions in this section,
+              please feel free to
+              <a link={main {}}>contact us</a>
+            </p>
+            <h5>
+              Is TopoR similar to other PCB design software? Can my previous experience in
+              using other CAD systems help study TopoR faster?
+            </h5>
+            <p>
+              TopoR is fundamentally different from other CAD systems. And the skills
+              necessary to master the program will be quite different.
+            </p>
+            <h5>Which is the maximum PCB complexity can be routed by TopoR?</h5>
+            <p>Existing TopoR configurations allow to route boards up to 32 layers.</p>
+            <h5>
+              Who is already using TopoR? Do they have successful experience of using it?
+            </h5>
+            <p>
+              The product is successfully used for many plants and facilities in the following
+              Russian cities: Arzamas, Volgograd, Vologda, Ekaterinburg, Zhytomir, Irkutsk,
+              Kazan, Kiev, Lipetsk, Moscow, Murom, Nizhniy Novgorod, Saint-Petersburg,
+              Severodonetsk, Tula, Ulyanovsk and many others.
+            </p>
+            <h5>Is it possible to export TopoR projects to other CAD systems?</h5>
+            <p>Yes, you can perform import/export of the following file formats:</p>
+            <p>PCAD ASCII PCB ver. 2000, 2002, 2004, 2006</p>
+            <p>PADS ASCII PCB ver. 3.5, 4.0, 5.0, 2005.0</p>
+            <p>DSN/SES (SPECCTRA, Electra)</p>
+            <p>DXF, GERBER, DRILL</p>
+            <h4>Education and support</h4>
+            <h5>
+              I haven’t found answers to my questions in the documentation. How else can I
+              study TopoR CAD system?
+            </h5>
+            <p>
+              The easiest way is to address you questions to our Forum or refer to us
+              directly. You can find our contact details
+              <a link={main {}}>here</a>
+              .
+            </p>
+            <h5>
+              You can also find our video tutorials in the
+              <a link={main {}}>Tutorials section</a>
+              .
+            </h5>
+            <p>
+              We can also provide training for more efficient insight on our product. For more
+              details on trainings please
+              <a link={main {}}>contact us</a>
+              .
+            </p>
+            <h5>
+              What support options will I receive after purchasing any version of TopoR?
+            </h5>
+            <p>
+              You will receive all updates and support for free during the first year after
+              the product purchase. The support period can be prolonged. For additional
+              support conditions please
+              <a link={main {}}>refer to us</a>
+              .
+            </p>
+            <p>
+              We are also providing online support both to our customers and users of free
+              Light and Demo versions. However requests from the customers who have purchased
+              our product will have higher priority.
+            </p>
+            <h5>What is the program lifetime?</h5>
+            <p>The license is not limited in time.</p>
+            <h4>Compatible systems and recommended system requirements</h4>
+            <h5>
+              What are the minimum system and software requirements for TopoR CAD system
+              effective operation?
+            </h5>
+            <p>The requirements are as follows:</p>
+            <ul>
+              <li>
+                a PC-compatible computer with an Intel Pentium III-1000 MHz processor and above
+              </li>
+              <li>Microsoft Windows operating system: 2000 (SP3), XP (SP2)</li>
+              <li>Microsoft Internet Explorer 5.0 and above</li>
+              <li>At least 256Mb RAM</li>
+              <li>15MB of hard disk space</li>
+              <li>
+                SVGA monitor and graphics adapter, with support for at least 256 colors a
+                resolution of 1024x768 and above
+              </li>
+              <li>A mouse with a scrolling wheel</li>
+            </ul>
+            <h5>
+              Can I use TopoR with operating systems other than Windows, for example Linux or
+              UNIX?
+            </h5>
+            <p>Currently only Lite version can work with Wine.</p>
+            <p>We plan to add Linux support for the future versions of TopoR.</p>
+            </div>
+          </xml> 
+        }  :: {
+        Caption = <xml>Screenshots</xml>,
+        Content = <xml></xml>
+        } :: {
+        Caption = <xml>Support</xml>,
+        Content = <xml></xml>
+        }:: []);
+
+    return
+      <xml>
+        <div class={Bootstrap.row}>
+          <div class={Bootstrap.span2}>
+            {news}
+          </div>
+          <div class={Bootstrap.span10}>
+            {caption}
+            {tabcont}
+            {demo (url (main {}))}
+          </div>
+        </div>
+      </xml>
   )
 
 and main {} = 
-  template True (url (main {})) (
+  template {Main = (url (main {})), Self = (url (main {})), IsMain = True}  (fn tabs =>
     n <- gennews {};
     b <- genboxes {};
     return <xml>{n}{b}</xml>

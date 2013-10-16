@@ -1,0 +1,3 @@
+ffi Banner1_png_c
+include Banner1_png_c.h
+link Banner1_png_c.o

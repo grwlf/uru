@@ -140,11 +140,12 @@ fun cellsByN n spancss boxcss (l:list cell) : transaction xbody =
           <xml><div class={Bootstrap.row_fluid}>{x}</div></xml>
         end) (takeByN n l)
   in
-  indiv outercolumns (return x)
+  (return x)
   end
 
 val cellsBy3 = cellsByN 3 Bootstrap.span4
 val cellsBy4 = cellsByN 4 Bootstrap.span3
+val cellsBy1 = cellsByN 1 Bootstrap.span12
 
 val js = Page.javascript
 
@@ -164,20 +165,22 @@ and image n : transaction page =
   b <- oneRow (SELECT * FROM imaget WHERE imaget.Nam = {[n]});
   returnBlob b.Imaget.Data (blessMime "image/png")
 
-and template (ismain:bool) (self:url) (x:transaction xbody) = let
+and template (s:settings) (x:RespTabs.tabs -> transaction xbody) = let
 
   (* val self = url (template ismain x) *)
 
   fun mkheader (css:css_class) : transaction xbody = 
 
     h <- twocols
-      (return <xml><div><img src={Logo_gif.geturl}/></div></xml>)
+      (return <xml><div>
+          <a href={s.Main}> <img src={Logo_gif.geturl}/> </a>
+        </div></xml>)
       (return
         <xml>
           <div class={langmenu}>
-          <a href={self}><img src={Flag_ru_gif.geturl}/>Русский</a>
-          <a href={self}><img src={Flag_uk_gif.geturl}/>English</a>
-          <a href={self}><img src={Flag_jp_gif.geturl}/>日本語</a>
+          <a href={s.Self}><img src={Flag_ru_gif.geturl}/>Русский</a>
+          <a href={s.Self}><img src={Flag_uk_gif.geturl}/>English</a>
+          <a href={s.Self}><img src={Flag_jp_gif.geturl}/>日本語</a>
           </div>
         </xml>);
 
@@ -207,15 +210,17 @@ and template (ismain:bool) (self:url) (x:transaction xbody) = let
       <xml>
         <div>
           {h}
-          <ul class={css} style="list-style:none;display:none">
-          <li><a href={self}>Products</a>
-            <div style="width:800px">{ps}</div>
-          </li>
-          <li><a href={self}>Blog</a></li>
-          <li><a href={self}>Sales</a></li>
-          <li><a href={self}>Contacts</a></li>
-          <li><a href={self}>Community</a></li>
-          </ul>
+          <div style="text-align:right">
+            <ul class={css} style="list-style:none;display:none">
+              <li><a href={s.Self}>Products</a>
+                <div style="width:800px">{ps}</div>
+              </li>
+              <li><a href={s.Self}>Sales</a></li>
+              <li><a href={s.Self}>Contacts</a></li>
+              <li><a href={s.Self}>Community</a></li>
+              <li><a href={s.Self}>Blog</a></li>
+            </ul>
+          </div>
         </div>
      </xml> 
 
@@ -233,7 +238,7 @@ and template (ismain:bool) (self:url) (x:transaction xbody) = let
 
     m <- wrap_menu (mkheader megamenu);
 
-    s <- (case ismain of
+    s <- (case s.IsMain of
       True =>
         wrap_slider (slider ({
           Url = Banner_rtos_jpg.geturl,
@@ -247,22 +252,13 @@ and template (ismain:bool) (self:url) (x:transaction xbody) = let
         } :: []))
       |False => return <xml/>);
 
-    t <- wrap_tabs(tabs ({
-        Caption = <xml>Haha</xml>,
-        Content = <xml>Foobar</xml>
-      } :: {
-        Caption = <xml>Hehe</xml>,
-        Content = <xml>Barfoo</xml>
-      } :: []
-    ));
-
-    x' <- x;
+    x' <- wrap_tabs (x tabs);
 
     return
       <xml>
         {m}
         {s}
-        {t}
+        (* {t} *)
         {x'}
       </xml>
 

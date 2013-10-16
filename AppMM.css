@@ -34,7 +34,7 @@ body {
 
 /* Slider customisation */
 .outerslider {
-  background:#131313;
+  //background:#131313;
   padding-top:50px;
 }
 
@@ -46,7 +46,12 @@ body {
 
 /* Menu customisations */
 .outermenu {
-  background:#fdfdfd;
+  background:#03274b;
+  padding-bottom:20px;
+}
+
+ul.megamenu {
+  float:right;
 }
 
 li.mm-item {
@@ -54,16 +59,47 @@ li.mm-item {
 }
 
 div.mm-item-content {
-  background:rgba(211,217,222,0.95);
+  background:rgba(240,240,240,0.95);
 }
 
 a.mm-item-link:link, a.mm-item-link:visited {
+  color: #f6f7f7;
   font-size: 20px;
   text-transform:uppercase;
+  text-decoration: none;
 }
 
 a.mm-item-link-hover:link, a.mm-item-link-hover:visited {
-  background:rgba(211,217,222,0.95);
+  background:rgba(240,240,240,0.95);
+  color: #323232;
+}
+
+
+/* Jumbotron */
+.jumbotron {
+  margin: 60px 0;
+  text-align: center;
+}
+
+.jumbotron img {
+  /* float:left; */
+}
+
+.jumbotron h1 {
+  font-size: 32px;
+}
+
+/* News boxes */
+
+.box {
+  text-align:justify;
+}
+
+.box img {
+  width:38%; 
+  padding-right:15px;
+  padding-bottom:10px;
+  float:left;
 }
 
 /* .box p:first-letter { */
@@ -74,15 +110,4 @@ a.mm-item-link-hover:link, a.mm-item-link-hover:visited {
 /*   padding-right:5px; */
 /*   padding-top:5px; */
 /* } */
-
-
-/* News boxes */
-
-.box img {
-  width:45%; 
-  padding-bottom:20px;
-  padding-right:20px;
-  float:left;
-}
-
 
