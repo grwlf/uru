@@ -71,7 +71,7 @@ fun cells (tl:transaction (list cell)) : transaction xbody =
                 ("box-sizing",CSS.Str "border-box") ::
                 []
 
-    val b = box "25%"
+    val b = box "33%"
 
     fun boxes l : xbody = List.mapX (fn x => <xml><div style={css b}>{x.Content}</div></xml>) l
   in

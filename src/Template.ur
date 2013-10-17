@@ -191,7 +191,9 @@ and template (s:settings) (x:RespTabs.tabs -> transaction xbody) = let
             <div class={menucolumn}>
               <div style="height:65px;display:table">
                 <div style="display:table-cell; vertical-align:middle;">
+                  <a link={s.Product prod.Product.Caption}>
                   <img style="width:60%" src={url (image prod.Product.Logo)}/>
+                  </a>
                 </div>
               </div>
               <dl>
@@ -222,7 +224,7 @@ and template (s:settings) (x:RespTabs.tabs -> transaction xbody) = let
             </ul>
           </div>
         </div>
-     </xml> 
+     </xml>
 
 
   in

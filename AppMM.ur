@@ -189,8 +189,13 @@ and genboxes {} : transaction xbody =
       </xml>) ::
     [])
 
+and product (s:string) =
+  case (String.mp tolower s) of
+    "topor" => topor {}
+    | _ => main {}
+
 and topor {} = 
-  template {Main = (url (main {})), Self = (url (topor {})), IsMain = False } (fn tabs =>
+  template {Product = product, Main = (url (main {})), Self = (url (topor {})), IsMain = False } (fn tabs =>
 
     news <- (Template.cellsBy1 news (
       (mkcell
@@ -395,7 +400,7 @@ and topor {} =
   )
 
 and main {} = 
-  template {Main = (url (main {})), Self = (url (main {})), IsMain = True}  (fn tabs =>
+  template {Product = product, Main = (url (main {})), Self = (url (main {})), IsMain = True}  (fn tabs =>
     n <- gennews {};
     b <- genboxes {};
     return <xml>{n}{b}</xml>

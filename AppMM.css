@@ -49,6 +49,13 @@ body {
   background:#03274b;
   padding-bottom:20px;
 }
+.menucolumn {
+  font-weight:bold;
+  font-size:medium;
+}
+.menucolumn dd {
+  margin:5px;
+}
 
 ul.megamenu {
   float:right;

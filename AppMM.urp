@@ -23,6 +23,7 @@ script http://tinymce.cachefly.net/4.0/tinymce.min.js
 debug
 
 $/list
+$/string
 src/ui/Page
 src/ui/CSS
 src/ui/MegaMenu2/MegaMenu2
