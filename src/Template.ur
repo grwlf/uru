@@ -58,6 +58,8 @@ task initialize = fn {} =>
 
   return {}
 
+style designnote
+
 (* Header *)
 style langmenu
 
@@ -197,10 +199,9 @@ and template (s:settings) (x:RespTabs.tabs -> transaction xbody) = let
                 </div>
               </div>
               <dl>
-                (* <dt>{[prod.Product.Caption]}</dt> *)
-                <dd>About</dd>
-                <dd>Tour</dd>
-                <dd>Links</dd>
+                <dd>Features</dd>
+                <dd>Faq</dd>
+                <dd>Screenshots</dd>
                 <dd>Downloads</dd>
                 <dd>Feedback</dd>
               </dl>
@@ -214,10 +215,16 @@ and template (s:settings) (x:RespTabs.tabs -> transaction xbody) = let
           {h}
           <div style="text-align:right">
             <ul class={css} style="list-style:none;display:none">
-              <li><a href={s.Self}>Products</a>
-                <div style="width:800px">{ps}</div>
+              <li>
+                <a href={s.Self}>Products</a>
+                <div style="width:800px">
+                  {ps}
+                  <p class={designnote}>Note: Each product menu item corresponds to a tab on the product's page</p>
+                </div>
               </li>
-              <li><a href={s.Self}>Sales</a></li>
+              <li>
+                <a href={s.Self}>Sales</a>
+              </li>
               <li><a href={s.Self}>Contacts</a></li>
               <li><a href={s.Self}>Community</a></li>
               <li><a href={s.Self}>Blog</a></li>

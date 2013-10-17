@@ -118,3 +118,6 @@ a.mm-item-link-hover:link, a.mm-item-link-hover:visited {
 /*   padding-top:5px; */
 /* } */
 
+.designnote {
+  color:red;
+}

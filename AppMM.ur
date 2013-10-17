@@ -7,6 +7,7 @@ style button
 style news
 style jumbotron
 
+val designnote = Template.designnote
 val template = Template.template
 
 style box
@@ -202,15 +203,25 @@ and topor {} =
         <xml>
           <img src={Logo_topor_png.geturl}/>
           <dl>
-            <dt>Downlowads </dt>
-            <dd>Demo</dd>
-            <dd>Manual</dd>
+            <dt>Downlowads</dt>
+            <dd><a link={topor {}}>Manual.pdf</a></dd>
+            <dd><a link={topor {}}>Book.pdf</a></dd>
+            <dd><a link={topor {}}>Demo_installer.exe</a></dd>
+            <dd><a link={topor {}}>Full version (contact sales)</a></dd>
 
-            <dt>Support</dt>
-            <dd>Forum</dd>
-            <dd>Contact</dd>
-            <dd>FAQ</dd>
+            <dt>Learn more articles</dt>
+            <dd><a link={topor {}}>PCB design guidelines</a></dd>
+            <dd><a link={topor {}}>High-quality autorouting</a></dd>
+            <dd><a link={topor {}}>Improved electro-magnetic compatibility</a></dd>
+            <dd><a link={topor {}}>Design of complex and high-speed PCBs</a></dd>
+            <dd><a link={topor {}}>How to do stuff like that</a></dd>
+            <dd><a link={topor {}}>How to upgrade to later versions</a></dd>
+            <dd><a link={topor {}}>What's the trick 42</a></dd>
           </dl>
+          <p class={designnote}>
+            Side menu contains some links related to a specific product as well
+            as links to other products
+          </p>
         </xml>
       ) :: []));
 
@@ -221,15 +232,28 @@ and topor {} =
             Topology editor and automatic router for PCB design
           </h2> 
           <img style="width:100%" src={Banner1_png.geturl}/>
-          <div style="margin:10px">The product is successfully used for many plants and facilities in the following
+          <div style="margin:10px">
+            <p class={designnote}>Here comes the marketing info, like slogan or something. For example:</p>
+
+            <p>The product is successfully used for many plants and facilities in the following
             Russian cities: Arzamas, Volgograd, Vologda, Ekaterinburg, Zhytomir, Irkutsk,
             Kazan, Kiev, Lipetsk, Moscow, Murom, Nizhniy Novgorod, Saint-Petersburg,
-            Severodonetsk, Tula, Ulyanovsk and many others.
+            Severodonetsk, Tula, Ulyanovsk and many others.</p>
           </div>
         </div>
       </xml>);
 
     feat <- Template.cellsBy3 box (
+          (mkcell
+            <xml>
+              <h4>Features related to the current product</h4>
+              <img src={Whytopor1_gif.geturl}/>
+              <p class={designnote}>
+                Basically, the image, some text, and 'Learn more' link. 'Learn more' link points to the page
+                whith an article
+              </p> 
+              {learnmore (main {})}
+            </xml>) ::
           (mkcell
             <xml>
               <h4>PCB design time reduced up to several times</h4>
@@ -378,10 +402,13 @@ and topor {} =
           </xml> 
         }  :: {
         Caption = <xml>Screenshots</xml>,
-        Content = <xml></xml>
+        Content = <xml>Custom page aka gallery</xml>
         } :: {
-        Caption = <xml>Support</xml>,
-        Content = <xml></xml>
+        Caption = <xml>Download</xml>,
+        Content = <xml>List of downloadable items</xml>
+        } :: {
+        Caption = <xml>Feedback</xml>,
+        Content = <xml>The feedback form</xml>
         }:: []);
 
     return

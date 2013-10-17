@@ -15,3 +15,5 @@ type settings = {
   }
 
 val template : settings -> (RespTabs.tabs -> transaction xbody) -> transaction page
+
+style designnote
