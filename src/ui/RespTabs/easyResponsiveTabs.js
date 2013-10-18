@@ -9,11 +9,12 @@
                 width: 'auto',
                 fit: true,
                 closed: false,
+                forceTab : '',
                 activate: function(){}
             }
             //Variables
             var options = $.extend(defaults, options);            
-            var opt = options, jtype = opt.type, jfit = opt.fit, jwidth = opt.width, vtabs = 'vertical', accord = 'accordion';
+            var opt = options, jtype = opt.type, jfit = opt.fit, jwidth = opt.width, vtabs = 'vertical', accord = 'accordion', ft = opt.forceTab;
 
             //Events
             $(this).bind('tabactivate', function(e, currentTab) {
@@ -118,6 +119,12 @@
                         $respTabs.find('.resp-accordion-closed').removeAttr('style');
                     });
                 });
+
+                if(ft != '') {
+                  $respTabs.find(ft).each(function () {
+                      $(this).click();
+                  });
+                }
             });
         }
     });

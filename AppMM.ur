@@ -9,12 +9,13 @@ style jumbotron
 
 val designnote = Template.designnote
 val template = Template.template
+val mktab = RespTabs.mktab
+val mkcell = Template.mkcell
 
 style box
 
 val btn = classes (classes Bootstrap.btn Bootstrap.btn_large) Bootstrap.btn_success
 
-val mkcell = Template.mkcell
 
 fun demo (u:url) : xbody = <xml>
   <p style="text-align:center;margin:20px;">
@@ -131,7 +132,7 @@ and genboxes {} : transaction xbody =
         non-designers secure access to essential design data, including the ability to
         generate reports and printouts. A free application that can be installed on any
         PC.</p>
-        <a link={topor {}}>Learn more >> </a>
+        <a link={topor ""}>Learn more >> </a>
       </xml>) ::
     (mkcell
       <xml>
@@ -190,13 +191,17 @@ and genboxes {} : transaction xbody =
       </xml>) ::
     [])
 
-and product (s:string) =
+and fxrtos s2 = 
+  Fxrtos.product {Product = product, Main = (url (main {})), Self = (url (fxrtos s2)), IsMain = False } s2
+
+and product (s:string) (s2:string) =
   case (String.mp tolower s) of
-    "topor" => topor {}
+      "topor" => topor s2
+    | "fx-rtos" => fxrtos s2
     | _ => main {}
 
-and topor {} = 
-  template {Product = product, Main = (url (main {})), Self = (url (topor {})), IsMain = False } (fn tabs =>
+and topor s2 = 
+  template {Product = product, Main = (url (main {})), Self = (url (topor s2)), IsMain = False } (fn tabs =>
 
     news <- (Template.cellsBy1 news (
       (mkcell
@@ -204,19 +209,19 @@ and topor {} =
           <img src={Logo_topor_png.geturl}/>
           <dl>
             <dt>Downlowads</dt>
-            <dd><a link={topor {}}>Manual.pdf</a></dd>
-            <dd><a link={topor {}}>Book.pdf</a></dd>
-            <dd><a link={topor {}}>Demo_installer.exe</a></dd>
-            <dd><a link={topor {}}>Full version (contact sales)</a></dd>
+            <dd><a link={topor s2}>Manual.pdf</a></dd>
+            <dd><a link={topor s2}>Book.pdf</a></dd>
+            <dd><a link={topor s2}>Demo_installer.exe</a></dd>
+            <dd><a link={topor s2}>Full version (contact sales)</a></dd>
 
             <dt>Learn more articles</dt>
-            <dd><a link={topor {}}>PCB design guidelines</a></dd>
-            <dd><a link={topor {}}>High-quality autorouting</a></dd>
-            <dd><a link={topor {}}>Improved electro-magnetic compatibility</a></dd>
-            <dd><a link={topor {}}>Design of complex and high-speed PCBs</a></dd>
-            <dd><a link={topor {}}>How to do stuff like that</a></dd>
-            <dd><a link={topor {}}>How to upgrade to later versions</a></dd>
-            <dd><a link={topor {}}>What's the trick 42</a></dd>
+            <dd><a link={topor s2}>PCB design guidelines</a></dd>
+            <dd><a link={topor s2}>High-quality autorouting</a></dd>
+            <dd><a link={topor s2}>Improved electro-magnetic compatibility</a></dd>
+            <dd><a link={topor s2}>Design of complex and high-speed PCBs</a></dd>
+            <dd><a link={topor s2}>How to do stuff like that</a></dd>
+            <dd><a link={topor s2}>How to upgrade to later versions</a></dd>
+            <dd><a link={topor s2}>What's the trick 42</a></dd>
           </dl>
           <p class={designnote}>
             Side menu contains some links related to a specific product as well
@@ -293,13 +298,10 @@ and topor {} =
             </xml>) ::
           []);
 
-    tabcont <- tabs ({
-        Caption = <xml>Features</xml>,
-        Content = <xml>{feat}</xml>
-        } :: {
-        Caption = <xml>FAQ</xml>,
-        Content =
-         <xml>
+    tabcont <- tabs (
+        (mktab s2 "Features" <xml>{feat}</xml>) :: 
+        (mktab s2 "FAQ" 
+        <xml>
           <div>
             <h4>Introduction to TopoR and first steps</h4>
             <p>
@@ -399,17 +401,11 @@ and topor {} =
             <p>Currently only Lite version can work with Wine.</p>
             <p>We plan to add Linux support for the future versions of TopoR.</p>
             </div>
-          </xml> 
-        }  :: {
-        Caption = <xml>Screenshots</xml>,
-        Content = <xml>Custom page aka gallery</xml>
-        } :: {
-        Caption = <xml>Download</xml>,
-        Content = <xml>List of downloadable items</xml>
-        } :: {
-        Caption = <xml>Feedback</xml>,
-        Content = <xml>The feedback form</xml>
-        }:: []);
+          </xml>)  ::
+        ( mktab s2 "Screenshots" <xml>Custom page aka gallery</xml>) ::
+        ( mktab s2 "Downloads" <xml>List of downloadable items</xml>) ::
+        ( mktab s2 "Feedback" <xml>The feedback form</xml>) ::
+        []);
 
     return
       <xml>

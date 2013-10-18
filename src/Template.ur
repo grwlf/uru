@@ -171,6 +171,8 @@ and template (s:settings) (x:RespTabs.tabs -> transaction xbody) = let
 
   (* val self = url (template ismain x) *)
 
+  fun prodlink s1 s2 = <xml><a link={s.Product s1 s2}>{[s2]}</a></xml>
+
   fun mkheader (css:css_class) : transaction xbody = 
 
     h <- twocols
@@ -193,17 +195,16 @@ and template (s:settings) (x:RespTabs.tabs -> transaction xbody) = let
             <div class={menucolumn}>
               <div style="height:65px;display:table">
                 <div style="display:table-cell; vertical-align:middle;">
-                  <a link={s.Product prod.Product.Caption}>
+                  <a link={s.Product prod.Product.Caption ""}>
                   <img style="width:60%" src={url (image prod.Product.Logo)}/>
                   </a>
                 </div>
               </div>
               <dl>
-                <dd>Features</dd>
-                <dd>Faq</dd>
-                <dd>Screenshots</dd>
-                <dd>Downloads</dd>
-                <dd>Feedback</dd>
+                <dd>{prodlink prod.Product.Caption "FAQ"}</dd>
+                <dd>{prodlink prod.Product.Caption "Screenshots"}</dd>
+                <dd>{prodlink prod.Product.Caption "Downloads"}</dd>
+                <dd>{prodlink prod.Product.Caption "Feedback"}</dd>
               </dl>
             </div>
           </xml>

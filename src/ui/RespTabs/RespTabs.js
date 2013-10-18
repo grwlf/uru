@@ -1,5 +1,5 @@
 
-function rt_init__unit(l__css_class, c__css_class, rt__css_class) {
+function rt_init__unit(l__css_class, c__css_class, rt__css_class, act__css_class) {
 
   $('.' + l__css_class).attr('class', 'resp-tabs-list');
   $('.' + c__css_class).attr('class', 'resp-tabs-container');
@@ -13,10 +13,10 @@ function rt_init__unit(l__css_class, c__css_class, rt__css_class) {
                 var $tab = $(this);
                 var $info = $('#tabInfo');
                 var $name = $('span', $info);
-
                 $name.text($tab.text());
-
                 $info.show();
-            }
+            },
+
+            forceTab: ('.' + act__css_class)
         });
 }

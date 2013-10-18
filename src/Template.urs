@@ -8,7 +8,7 @@ val cellsBy4 : css_class -> list cell -> transaction xbody
 val cellsBy1 : css_class -> list cell -> transaction xbody
 
 type settings = {
-  Product: string -> transaction page,
+  Product: string -> string -> transaction page,
   Self : url,
   Main : url,
   IsMain : bool
