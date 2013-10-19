@@ -12,7 +12,7 @@ val template = Template.template
 val mktab = RespTabs.mktab
 val mkcell = Template.mkcell
 
-style box
+val box = Template.box
 
 val btn = classes (classes Bootstrap.btn Bootstrap.btn_large) Bootstrap.btn_success
 

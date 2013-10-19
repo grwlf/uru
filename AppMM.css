@@ -121,3 +121,11 @@ a.mm-item-link-hover:link, a.mm-item-link-hover:visited {
 .designnote {
   color:red;
 }
+
+/* Footer */
+
+.outerfooter {
+  background: rgb(34, 34, 34);
+  padding-top:20px;
+}
+

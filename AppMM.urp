@@ -19,7 +19,6 @@ library src/static/StaticCSS
 library src/static/StaticImg
 library src/static/EremexImg
 library src/static/PulsonixImg
-script http://tinymce.cachefly.net/4.0/tinymce.min.js
 debug
 
 $/list

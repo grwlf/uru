@@ -58,6 +58,7 @@ task initialize = fn {} =>
 
   return {}
 
+style box
 style designnote
 
 (* Header *)
@@ -77,6 +78,9 @@ style outercolumns
 (* Slider *)
 style outerslider
 style nivosld
+
+(* Footer *)
+style outerfooter
 
 fun twocols tc1 tc2 =
   let 
@@ -130,6 +134,8 @@ fun wrap_slider x = indiv outerslider x
 
 fun wrap_tabs x = indiv outercolumns x
 
+fun wrap_footer x = indiv outerfooter x
+
 fun mkcell (x:xbody) : cell = { Content = x }
 
 fun cellsByN n spancss boxcss (l:list cell) : transaction xbody =
@@ -162,6 +168,8 @@ val headers = {
 }
 
 fun mkcrumb (u:url) (s:string) = {Url = u, Caption=s}
+
+fun mkcrumb2 (x:transaction page) (s:string) = {Url = url x, Caption=s}
 
 fun fvoid {} = {}
 
@@ -277,15 +285,15 @@ and template (s:settings) (cs:list crumb) (x:RespTabs.tabs -> transaction xbody)
           </li>
           {x}
         </xml>) <xml/> (crumbs));
-      return <xml><ul class={Bootstrap.breadcrumb}>{l}</ul></xml>
+      return <xml><ul class={Bootstrap.breadcrumb}>{l}</ul></xml>);
 
-      (* <xml> *)
-      (*   <ul class={Bootstrap.breadcrumb}> *)
-      (*     <li><a href={s.Main}>Home</a><span class={Bootstrap.divider}>/</span></li> *)
-      (*     <li class={Bootstrap.active}>FX-RTOS</li> *)
-      (*   </ul> *)
-      (* </xml> *)
-      );
+    ft <- wrap_footer (
+      return
+        <xml>
+          <p>
+            © 2008—2013 ООО "ЭРЕМЕКС"
+          </p>
+        </xml>);
 
     return
       <xml>
@@ -294,6 +302,7 @@ and template (s:settings) (cs:list crumb) (x:RespTabs.tabs -> transaction xbody)
         {cr}
         (* {t} *)
         {x'}
+        {ft}
       </xml>
 
   )))))))))

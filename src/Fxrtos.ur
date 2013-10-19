@@ -1,11 +1,12 @@
 style news
-style box
 
+val box = Template.box
 val designnote = Template.designnote
 val template = Template.template
 val mktab = RespTabs.mktab
 val mkcell = Template.mkcell
 val mkcrumb = Template.mkcrumb
+val mkcrumb2 = Template.mkcrumb2
 type crumb = Template.crumb
 val btn = classes (classes Bootstrap.btn Bootstrap.btn_large) Bootstrap.btn_success
 
@@ -19,53 +20,55 @@ fun demo (u:url) : xbody = <xml>
   </xml>
 
 fun ptempl (s:Template.settings) (cs:list crumb) (f:RespTabs.tabs -> transaction xbody) : transaction page =
-  template s cs (fn tabs =>
-    news <- (Template.cellsBy1 news (
-      (mkcell
+  let
+    val crumb = mkcrumb2 (product s "") "FX-RTOS"
+  in
+    template s (crumb :: cs) (fn tabs =>
+      news <- (Template.cellsBy1 news (
+        (mkcell
+          <xml>
+            <img src={Logo_topor_png.geturl}/>
+            <dl>
+              <dt>Downlowads</dt>
+              <dd><a link={learn1 s}>Manual.pdf</a></dd>
+              <dd><a href={s.Self}>Book.pdf</a></dd>
+              <dd><a href={s.Self}>Demo_installer.exe</a></dd>
+              <dd><a href={s.Self}>Full version (contact sales)</a></dd>
+
+              <dt>Learn more articles</dt>
+              <dd><a href={s.Self}>PCB design guidelines</a></dd>
+              <dd><a href={s.Self}>High-quality autorouting</a></dd>
+              <dd><a href={s.Self}>Improved electro-magnetic compatibility</a></dd>
+              <dd><a href={s.Self}>Design of complex and high-speed PCBs</a></dd>
+              <dd><a href={s.Self}>How to do stuff like that</a></dd>
+              <dd><a href={s.Self}>How to upgrade to later versions</a></dd>
+              <dd><a href={s.Self}>What's the trick 42</a></dd>
+            </dl>
+            <p class={designnote}>
+              Side menu contains some links related to a specific product as well
+              as links to other products
+            </p>
+          </xml>
+        ) :: []));
+
+      x <- f tabs;
+
+      return
         <xml>
-          <img src={Logo_topor_png.geturl}/>
-          <dl>
-            <dt>Downlowads</dt>
-            <dd><a link={learn1 s}>Manual.pdf</a></dd>
-            <dd><a href={s.Self}>Book.pdf</a></dd>
-            <dd><a href={s.Self}>Demo_installer.exe</a></dd>
-            <dd><a href={s.Self}>Full version (contact sales)</a></dd>
-
-            <dt>Learn more articles</dt>
-            <dd><a href={s.Self}>PCB design guidelines</a></dd>
-            <dd><a href={s.Self}>High-quality autorouting</a></dd>
-            <dd><a href={s.Self}>Improved electro-magnetic compatibility</a></dd>
-            <dd><a href={s.Self}>Design of complex and high-speed PCBs</a></dd>
-            <dd><a href={s.Self}>How to do stuff like that</a></dd>
-            <dd><a href={s.Self}>How to upgrade to later versions</a></dd>
-            <dd><a href={s.Self}>What's the trick 42</a></dd>
-          </dl>
-          <p class={designnote}>
-            Side menu contains some links related to a specific product as well
-            as links to other products
-          </p>
+          <div class={Bootstrap.row}>
+            <div class={Bootstrap.span2}>
+              {news}
+            </div>
+            <div class={Bootstrap.span10}>
+              {x}
+            </div>
+          </div>
         </xml>
-      ) :: []));
-
-    x <- f tabs;
-
-    return
-      <xml>
-        <div class={Bootstrap.row}>
-          <div class={Bootstrap.span2}>
-            {news}
-          </div>
-          <div class={Bootstrap.span10}>
-            {x}
-          </div>
-        </div>
-      </xml>
-  )
-
-and pcrumb s = mkcrumb (url (product s "")) "FX-RTOS"
+    )
+  end
 
 and product s s2 = 
-  ptempl s ((pcrumb s) :: []) (fn tabs =>
+  ptempl s [] (fn tabs =>
     caption <- (return
       <xml>
         <div class={Bootstrap.row_fluid}>
@@ -83,7 +86,6 @@ and product s s2 =
           </div>
         </div>
       </xml>);
-
     feat <- Template.cellsBy3 box (
           (mkcell
             <xml>
@@ -133,7 +135,6 @@ and product s s2 =
               {learnmore (s.Main)}
             </xml>) ::
           []);
-
     tabcont <- tabs (
         (mktab s2 "Features" <xml>{feat}</xml>) :: 
         (mktab s2 "FAQ" 
@@ -251,106 +252,109 @@ and product s s2 =
       </xml>
   )
 
-and l1crumb s = mkcrumb (url (learn1 s)) "Learn1"
-and learn1 s = 
-  ptempl s ((pcrumb s) :: (l1crumb s) :: []) (fn tabs =>
-    return
-     <xml>
-        <h1>PCB design time reduction</h1>
-        <h2>TopoR allows to reduce design time up to several times</h2>
-        <h3>«Instant routing» of 100% of wires on a board</h3>
-        <p>
-          TopoR provides 100% routed layout almost instantly within a few seconds. All
-          connections are routed even if technological constraints are violated.
-          Autorouting is followed by the multiobjective optimization by calculating
-          different variants of laying wires. During the optimization process the overall
-          wire length is optimized as well as the number of vias and places with smaller
-          clearance.&nbsp;
-        </p>
-        <p>
-          The routing process can be stopped at any moment, and the engineer can
-          immediately define the technical possibility of routing the board within the
-          limits of the specified number of layers, defined clearance size and other
-          technical limitations based on the routing density and the amount of technical
-          constraints violations. This helps to avoid waiting for many hours which is
-          typical for the traditional autorouters. Engineers using the traditional systems
-          can spend significant amount of their time trying to get the suitable results
-          for different variants of routing strategy.
-        </p>
-        <h3>
-          TopoR is capable of performing parallel computing, speeding up the result
-          achievement by many times
-        </h3>
-        <p>
-          TopoR can perform parallel optimization of several alternative topology
-          variants, which differ in optimized parameters, while a user is offered a choice
-          of selecting one or several variants. This feature allows for organizing the
-          distributed routing – parallel topology optimization by using several processor
-          cores and/or several computers within one local network. This allows to
-          significantly reduce machine time especially for routing complex multi-layer
-          boards.
-        </p>
-        <h3>
-          The innovative topology router significantly increases engineers' productivity
-        </h3>
-        <p>
-          TopoR support two types of manual topology routing of PCBs – graphical and
-          topological. Topology router automatically calculates the optimal shape and wire
-          positioning in terms of the defined topology. This allows engineers to
-          concentrate on the topological aspects of design without paying attention to the
-          wires shape and observing technological restrictions. Touching or even number or
-          wires intersections is not considered a violation. It is sufficient to push a
-          button and move to the topological mode to “string” the wires automatically and
-          move them to the necessary distance.
-        </p>
-        <p>Topology fragment:</p>
-        <p>
-          a) Touching or even number or wires intersections is not considered a violation;
-        </p>
-        <p>
-          b) With a push of a button the wires automatically “strung” and moved to the
-          necessary distance;
-        </p>
-        <p>
-          One of the unique features of TopoR is its capability to move components on the
-          routed board while preserving the connections topology. Geometry&nbsp; and
-          positioning of components are automatically calculated to comply with the new
-          components position.
-        </p>
-        <p/>
-        <p>
-          <strong><em>PCB fragment before and after moving a capacitor.</em></strong>
-        </p>
-        <p>
-          Movement of components, vias and wire branching is used to decrease wires
-          length, provide the utmost clearance space which should be not less than
-          required (to eliminate the narrow spaces). Movement can be performed both
-          manually and automatically, and the most effective wires shape is defined
-          immediately. &nbsp;
-        </p>
-        <p>
-          During the automatic movement of the board components, the wires branching
-          points and vias are set to optimal positions.
-        </p>
-        <p>
-          All this significantly simplifies and speeds up the routing process, allowing to
-          avoid necessity of constantly observing technical limitations.
-        </p>
-        <div>
+and learn1 s =
+  let
+    val crumb = mkcrumb2 (learn1 s) "Learn1"
+  in
+    ptempl s (crumb :: []) (fn tabs =>
+      return
+       <xml>
+          <h1>PCB design time reduction</h1>
+          <h2>TopoR allows to reduce design time up to several times</h2>
+          <h3>«Instant routing» of 100% of wires on a board</h3>
           <p>
-            “One of our boards has been routed by a qualified engineer for 2 weeks. In order
-            to study the capabilities of TopoR CAD system we passed this task to Eremex
-            specialists and were impressed to learn that they have done this job within an
-            hour. Moreover the majority of work was done by automatic routing with minor
-            manual corrections. However the routing quality was better then the quality of
-            our variant.”
-            <p>- Our Customer.</p>
+            TopoR provides 100% routed layout almost instantly within a few seconds. All
+            connections are routed even if technological constraints are violated.
+            Autorouting is followed by the multiobjective optimization by calculating
+            different variants of laying wires. During the optimization process the overall
+            wire length is optimized as well as the number of vias and places with smaller
+            clearance.&nbsp;
           </p>
-        </div>
-        <p>
-          The board routed by TopoR within an hour (20 min for autorouting and 40 min for
-          manual routing). The number of vias - 432. Trace length –5,11м.
-        </p>
-      </xml> 
-  )
+          <p>
+            The routing process can be stopped at any moment, and the engineer can
+            immediately define the technical possibility of routing the board within the
+            limits of the specified number of layers, defined clearance size and other
+            technical limitations based on the routing density and the amount of technical
+            constraints violations. This helps to avoid waiting for many hours which is
+            typical for the traditional autorouters. Engineers using the traditional systems
+            can spend significant amount of their time trying to get the suitable results
+            for different variants of routing strategy.
+          </p>
+          <h3>
+            TopoR is capable of performing parallel computing, speeding up the result
+            achievement by many times
+          </h3>
+          <p>
+            TopoR can perform parallel optimization of several alternative topology
+            variants, which differ in optimized parameters, while a user is offered a choice
+            of selecting one or several variants. This feature allows for organizing the
+            distributed routing – parallel topology optimization by using several processor
+            cores and/or several computers within one local network. This allows to
+            significantly reduce machine time especially for routing complex multi-layer
+            boards.
+          </p>
+          <h3>
+            The innovative topology router significantly increases engineers' productivity
+          </h3>
+          <p>
+            TopoR support two types of manual topology routing of PCBs – graphical and
+            topological. Topology router automatically calculates the optimal shape and wire
+            positioning in terms of the defined topology. This allows engineers to
+            concentrate on the topological aspects of design without paying attention to the
+            wires shape and observing technological restrictions. Touching or even number or
+            wires intersections is not considered a violation. It is sufficient to push a
+            button and move to the topological mode to “string” the wires automatically and
+            move them to the necessary distance.
+          </p>
+          <p>Topology fragment:</p>
+          <p>
+            a) Touching or even number or wires intersections is not considered a violation;
+          </p>
+          <p>
+            b) With a push of a button the wires automatically “strung” and moved to the
+            necessary distance;
+          </p>
+          <p>
+            One of the unique features of TopoR is its capability to move components on the
+            routed board while preserving the connections topology. Geometry&nbsp; and
+            positioning of components are automatically calculated to comply with the new
+            components position.
+          </p>
+          <p/>
+          <p>
+            <strong><em>PCB fragment before and after moving a capacitor.</em></strong>
+          </p>
+          <p>
+            Movement of components, vias and wire branching is used to decrease wires
+            length, provide the utmost clearance space which should be not less than
+            required (to eliminate the narrow spaces). Movement can be performed both
+            manually and automatically, and the most effective wires shape is defined
+            immediately. &nbsp;
+          </p>
+          <p>
+            During the automatic movement of the board components, the wires branching
+            points and vias are set to optimal positions.
+          </p>
+          <p>
+            All this significantly simplifies and speeds up the routing process, allowing to
+            avoid necessity of constantly observing technical limitations.
+          </p>
+          <div>
+            <p>
+              “One of our boards has been routed by a qualified engineer for 2 weeks. In order
+              to study the capabilities of TopoR CAD system we passed this task to Eremex
+              specialists and were impressed to learn that they have done this job within an
+              hour. Moreover the majority of work was done by automatic routing with minor
+              manual corrections. However the routing quality was better then the quality of
+              our variant.”
+              <p>- Our Customer.</p>
+            </p>
+          </div>
+          <p>
+            The board routed by TopoR within an hour (20 min for autorouting and 40 min for
+            manual routing). The number of vias - 432. Trace length –5,11м.
+          </p>
+        </xml> 
+    )
+  end
 
