@@ -5,6 +5,8 @@ val designnote = Template.designnote
 val template = Template.template
 val mktab = RespTabs.mktab
 val mkcell = Template.mkcell
+val mkcrumb = Template.mkcrumb
+type crumb = Template.crumb
 val btn = classes (classes Bootstrap.btn Bootstrap.btn_large) Bootstrap.btn_success
 
 fun learnmore (u : url) : xbody =
@@ -16,8 +18,8 @@ fun demo (u:url) : xbody = <xml>
   </p>
   </xml>
 
-fun ptempl (s:Template.settings) (f:RespTabs.tabs -> transaction xbody) : transaction page =
-  template s (fn tabs =>
+fun ptempl (s:Template.settings) (cs:list crumb) (f:RespTabs.tabs -> transaction xbody) : transaction page =
+  template s cs (fn tabs =>
     news <- (Template.cellsBy1 news (
       (mkcell
         <xml>
@@ -60,8 +62,10 @@ fun ptempl (s:Template.settings) (f:RespTabs.tabs -> transaction xbody) : transa
       </xml>
   )
 
+and pcrumb s = mkcrumb (url (product s "")) "FX-RTOS"
+
 and product s s2 = 
-  ptempl s (fn tabs =>
+  ptempl s ((pcrumb s) :: []) (fn tabs =>
     caption <- (return
       <xml>
         <div class={Bootstrap.row_fluid}>
@@ -247,8 +251,9 @@ and product s s2 =
       </xml>
   )
 
+and l1crumb s = mkcrumb (url (learn1 s)) "Learn1"
 and learn1 s = 
-  ptempl s (fn tabs =>
+  ptempl s ((pcrumb s) :: (l1crumb s) :: []) (fn tabs =>
     return
      <xml>
         <h1>PCB design time reduction</h1>

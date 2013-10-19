@@ -7,6 +7,10 @@ val cellsBy3 : css_class -> list cell -> transaction xbody
 val cellsBy4 : css_class -> list cell -> transaction xbody
 val cellsBy1 : css_class -> list cell -> transaction xbody
 
+type crumb = { Url : url , Caption : string }
+
+val mkcrumb : url -> string -> crumb
+
 type settings = {
   Product: string -> string -> transaction page,
   Self : url,
@@ -14,6 +18,6 @@ type settings = {
   IsMain : bool
   }
 
-val template : settings -> (RespTabs.tabs -> transaction xbody) -> transaction page
+val template : settings -> list crumb -> (RespTabs.tabs -> transaction xbody) -> transaction page
 
 style designnote

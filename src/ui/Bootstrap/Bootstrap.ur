@@ -104,6 +104,7 @@ style tabs_left
 style tabs_right
 style tab_content
 style brand
+style divider
 style divider_vertical
 style pull_left
 style pull_right

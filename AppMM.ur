@@ -192,7 +192,7 @@ and genboxes {} : transaction xbody =
     [])
 
 and fxrtos s2 = 
-  Fxrtos.product {Product = product, Main = (url (main {})), Self = (url (fxrtos s2)), IsMain = False } s2
+  Fxrtos.product {Product = product, Main = (url (main {})), Self = (url (fxrtos s2)), IsMain = False} s2
 
 and product (s:string) (s2:string) =
   case (String.mp tolower s) of
@@ -201,7 +201,8 @@ and product (s:string) (s2:string) =
     | _ => main {}
 
 and topor s2 = 
-  template {Product = product, Main = (url (main {})), Self = (url (topor s2)), IsMain = False } (fn tabs =>
+  template {Product = product, Main = (url (main {})),
+            Self = (url (topor s2)), IsMain = False} [] (fn tabs =>
 
     news <- (Template.cellsBy1 news (
       (mkcell
@@ -423,10 +424,8 @@ and topor s2 =
   )
 
 and main {} = 
-  template {Product = product, Main = (url (main {})), Self = (url (main {})), IsMain = True}  (fn tabs =>
+  template {Product = product, Main = (url (main {})), Self = (url (main {})), IsMain = True} [] (fn tabs =>
     n <- gennews {};
     b <- genboxes {};
     return <xml>{n}{b}</xml>
   )
-
-

@@ -161,13 +161,17 @@ val headers = {
   FW = { Width = 900 }
 }
 
+fun mkcrumb (u:url) (s:string) = {Url = u, Caption=s}
+
 fun fvoid {} = {}
 
 and image n : transaction page =
   b <- oneRow (SELECT * FROM imaget WHERE imaget.Nam = {[n]});
   returnBlob b.Imaget.Data (blessMime "image/png")
 
-and template (s:settings) (x:RespTabs.tabs -> transaction xbody) = let
+and template (s:settings) (cs:list crumb) (x:RespTabs.tabs -> transaction xbody) = let
+  
+  val crumbs = (mkcrumb s.Main "Home") :: cs
 
   (* val self = url (template ismain x) *)
 
@@ -248,7 +252,7 @@ and template (s:settings) (x:RespTabs.tabs -> transaction xbody) = let
 
     m <- wrap_menu (mkheader megamenu);
 
-    s <- (case s.IsMain of
+    sl <- (case s.IsMain of
       True =>
         wrap_slider (slider ({
           Url = Banner_rtos_jpg.geturl,
@@ -264,10 +268,30 @@ and template (s:settings) (x:RespTabs.tabs -> transaction xbody) = let
 
     x' <- wrap_tabs (x tabs);
 
+    cr <- wrap_tabs (
+      l <- return (List.foldr (fn c x =>
+        <xml>
+          <li>
+            <a href={c.Url}>{[c.Caption]}</a>
+            <span class={Bootstrap.divider}>/</span>
+          </li>
+          {x}
+        </xml>) <xml/> (crumbs));
+      return <xml><ul class={Bootstrap.breadcrumb}>{l}</ul></xml>
+
+      (* <xml> *)
+      (*   <ul class={Bootstrap.breadcrumb}> *)
+      (*     <li><a href={s.Main}>Home</a><span class={Bootstrap.divider}>/</span></li> *)
+      (*     <li class={Bootstrap.active}>FX-RTOS</li> *)
+      (*   </ul> *)
+      (* </xml> *)
+      );
+
     return
       <xml>
         {m}
-        {s}
+        {sl}
+        {cr}
         (* {t} *)
         {x'}
       </xml>
