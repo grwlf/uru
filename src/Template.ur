@@ -276,16 +276,18 @@ and template (s:settings) (cs:list crumb) (x:RespTabs.tabs -> transaction xbody)
 
     x' <- wrap_tabs (x tabs);
 
-    cr <- wrap_tabs (
-      l <- return (List.foldr (fn c x =>
-        <xml>
-          <li>
-            <a href={c.Url}>{[c.Caption]}</a>
-            <span class={Bootstrap.divider}>/</span>
-          </li>
-          {x}
-        </xml>) <xml/> (crumbs));
-      return <xml><ul class={Bootstrap.breadcrumb}>{l}</ul></xml>);
+    cr <- (case s.IsMain of
+      False => wrap_tabs (
+          l <- return (List.foldr (fn c x =>
+                <xml>
+                  <li>
+                  <a href={c.Url}>{[c.Caption]}</a>
+                  <span class={Bootstrap.divider}>/</span>
+                  </li>
+                  {x}
+                </xml>) <xml/> (crumbs));
+          return <xml><ul class={Bootstrap.breadcrumb}>{l}</ul></xml>)
+      |True => return <xml/>);
 
     ft <- wrap_footer (
       return

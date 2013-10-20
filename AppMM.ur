@@ -17,11 +17,13 @@ val box = Template.box
 val btn = classes (classes Bootstrap.btn Bootstrap.btn_large) Bootstrap.btn_success
 
 
+(*
 fun demo (u:url) : xbody = <xml>
   <p style="text-align:center;margin:20px;">
     <a class={btn} href={u}>Download demo version &raquo;</a>
   </p>
   </xml>
+*)
 
 fun learnmore (x : transaction page) : xbody =
   <xml><p><a link={x}>Learn more &raquo;</a></p></xml>
@@ -187,7 +189,7 @@ and genboxes {} : transaction xbody =
         what is possible - no strings attached. We are here every step of the way to
         help you. generate reports and printouts. A free application that can be
         installed on any</p>
-        <a link={main {}} class={btn}>Get started with Contiki &raquo;</a>
+        (* <a link={main {}} class={btn}>Get started with Contiki &raquo;</a> *)
       </xml>) ::
     [])
 
@@ -417,7 +419,6 @@ and topor s2 =
           <div class={Bootstrap.span10}>
             {caption}
             {tabcont}
-            {demo (url (main {}))}
           </div>
         </div>
       </xml>
