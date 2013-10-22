@@ -14,129 +14,109 @@ fun learnmore (u : url) : xbody =
   <xml><p><a href={u}>Learn more &raquo;</a></p></xml>
 
 fun demo (u:url) : xbody = <xml>
-  <p style="text-align:center;margin:20px;">
-    <a class={btn} href={u}>Download demo version &raquo;</a>
-  </p>
+  <div style="text-align:center;margin:20px;">
+    <h2> Need more convincing? </h2>
+    <div style="margin:20px">Try out FX-RTOS yourself!</div> 
+    <a class={btn} href={u}>Get started with FX-RTOS &raquo;</a>
+  </div>
   </xml>
 
-fun ptempl (s:Template.settings) (cs:list crumb) (f:RespTabs.tabs -> transaction xbody) : transaction page =
-  let
-    val crumb = mkcrumb2 (product s "") "FX-RTOS"
-  in
-    template s (crumb :: cs) (fn tabs =>
-      news <- (Template.cellsBy1 news (
-        (mkcell
-          <xml>
-            <img src={Logo_topor_png.geturl}/>
-            <dl>
-              <dt>Downlowads</dt>
-              <dd><a link={learn1 s}>Manual.pdf</a></dd>
-              <dd><a href={s.Self}>Book.pdf</a></dd>
-              <dd><a href={s.Self}>Demo_installer.exe</a></dd>
-              <dd><a href={s.Self}>Full version (contact sales)</a></dd>
-
-              <dt>Learn more articles</dt>
-              <dd><a href={s.Self}>PCB design guidelines</a></dd>
-              <dd><a href={s.Self}>High-quality autorouting</a></dd>
-              <dd><a href={s.Self}>Improved electro-magnetic compatibility</a></dd>
-              <dd><a href={s.Self}>Design of complex and high-speed PCBs</a></dd>
-              <dd><a href={s.Self}>How to do stuff like that</a></dd>
-              <dd><a href={s.Self}>How to upgrade to later versions</a></dd>
-              <dd><a href={s.Self}>What's the trick 42</a></dd>
-            </dl>
-            <p class={designnote}>
-              Side menu contains some links related to a specific product as well
-              as links to other products
-            </p>
-          </xml>
-        ) :: []));
-
-      x <- f tabs;
-
-      return
-        <xml>
-          <div class={Bootstrap.row}>
-            <div class={Bootstrap.span2}>
-              {news}
-            </div>
-            <div class={Bootstrap.span10}>
-              {x}
-            </div>
-          </div>
-        </xml>
-    )
-  end
-
-and product s s2 = 
+fun product s s2 = 
   ptempl s [] (fn tabs =>
     caption <- (return
       <xml>
         <div class={Bootstrap.row_fluid}>
           <h2 class={Bootstrap.lead}>
-            FXRTOS blablabla
+            FX-RTOS — real-time operating system for embedded applications
           </h2> 
-          <img style="width:100%" src={Banner1_png.geturl}/>
+          <div style="width:100%;text-align:center;">
+            <img style="width:94%" src={Banner2_png.geturl}/>
+          </div>
           <div style="margin:10px">
             <p class={designnote}>Here comes the marketing info, like slogan or something. For example:</p>
-
-            <p>The product is successfully used for many plants and facilities in the following
-            Russian cities: Arzamas, Volgograd, Vologda, Ekaterinburg, Zhytomir, Irkutsk,
-            Kazan, Kiev, Lipetsk, Moscow, Murom, Nizhniy Novgorod, Saint-Petersburg,
-            Severodonetsk, Tula, Ulyanovsk and many others.</p>
+             <ul>
+                <li>
+                  Component architecture without mandatory elements. Unused components are not
+                  included into the target image
+                </li>
+                <li>Symmetric multiprocessing is supported</li>
+                <li>
+                  The system scales down to simple preemptive event handlers without full-fledged
+                  threads
+                </li>
+                <li>
+                  The operating system is configurable using dependency injection technique.
+                </li>
+                <li>Reusable components can be combined in various configurations.</li>
+                <li>
+                  Various scheduling policies are supported (priority-based, FIFO, round-robin and
+                  their combinations)
+                </li>
+                <li>Extensibility with user-defined components.</li>
+                <li>Effective interrupt handling.</li>
+                <li>Easy cross-platform portability.</li>
+                <li>POSIX support (optional).</li>
+                <li>Cross-platform utilities for configuring and building the OS.</li>
+                <li>Source code is provided.</li>
+              </ul> 
           </div>
         </div>
       </xml>);
+
     feat <- Template.cellsBy3 box (
           (mkcell
             <xml>
-              <h4>Features related to the current product</h4>
-              <img src={Whytopor1_gif.geturl}/>
-              <p class={designnote}>
-                Basically, the image, some text, and 'Learn more' link. 'Learn more' link points to the page
-                whith an article
-              </p> 
-              {learnmore (s.Main)}
-            </xml>) ::
-          (mkcell
-            <xml>
-              <h4>PCB design time reduced up to several times</h4>
-              <img src={Whytopor1_gif.geturl}/>
+              <h4>Component-based architecture</h4>
+              <img src={Whyrtos1_jpg.geturl}/>
               <p>
-                TopoR topological router is distinguished by having no preferred routing
-                directions, which are divisible by 45 degrees. Any-angle routing ensures more
-                efficient space usage.
+                FX-RTOS is a set of loosely coupled software components. Dependencies between them are created as a result of configuring.
               </p> 
               {learnmore (s.Main)}
             </xml>) ::
           (mkcell
             <xml>
-              <h4>High-quality autorouting</h4>
-              <img src={Whytopor2_gif.geturl}/>
+              <h4>Сonfigurability</h4>
+              <img src={Whyrtos2_jpg.geturl}/>
               <p>
-                TopoR provides 100% routed layout almost instantly within a few seconds. All
-                connections are routed even if technological constraints are violated.
-                Autorouting is followed by the multiobjective optimization by calculating
-                different variants of laying wires.
+                The OS is configurable using dependency injection technique. Configuring is performed at compile-time, so resulting machine code is almost optimal and doesn't contain any overhead.
               </p> 
               {learnmore (s.Main)}
             </xml>) ::
           (mkcell
             <xml>
-              <h4>Improved electro-magnetic compatibility</h4>
-              <img src={Whytopor3_gif.geturl}/>
-              TopoR allows to avoid wire parallelism reducing electromagnetic crosstalks.
+              <h4>Multiprocessing support</h4>
+              <img src={Whyrtos3_jpg.geturl}/>
+              <p>
+                FX-RTOS was initially designed with multiprocessing in mind. Thus, the amount of global variables shared between processors is reduced to minimum, there are no global system-wide locks. Therefore, the system performance scales well with number of processors.
+              </p>
               {learnmore (s.Main)}
             </xml>) ::
           (mkcell
             <xml>
-              <h4>Design of complex and high-speed PCBs</h4>
-              <img src={Whytopor4_gif.geturl}/>
-              TopoR ensures full support for complex and high-speed PCBs design. 
+              <h4>Special support for event driven systems</h4>
+              <img src={Whyrtos4_jpg.geturl}/>
+              <p>
+                Special profile for such systems is provided. Threads are removed and replaced with event service routines (ESR) similar in some aspects to program interrupts. Using ESR instead of threads reduces code size by 40%, increases performance and reduces RAM usage (in contrast with threads, ESR may share a single stack).
+              </p>
+              {learnmore (s.Main)}
+            </xml>) ::
+          (mkcell
+            <xml>
+              <h4>Extensibility</h4>
+              <img src={Whyrtos5_jpg.geturl}/>
+              <p>
+                As several implementations of a single component interface are allowed, the kernel functionality may be extended or modified with components, developed by OS user or community.
+              </p>
               {learnmore (s.Main)}
             </xml>) ::
           []);
+
     tabcont <- tabs (
-        (mktab s2 "Features" <xml>{feat}</xml>) :: 
+        (mktab s2 "Features"
+        <xml>
+          {feat}
+          {demo s.Main}
+        </xml>) :: 
         (mktab s2 "FAQ" 
         <xml>
           <div>
@@ -248,7 +228,6 @@ and product s s2 =
       <xml>
         {caption}
         {tabcont}
-        {demo s.Main}
       </xml>
   )
 
@@ -258,103 +237,116 @@ and learn1 s =
   in
     ptempl s (crumb :: []) (fn tabs =>
       return
-       <xml>
-          <h1>PCB design time reduction</h1>
-          <h2>TopoR allows to reduce design time up to several times</h2>
-          <h3>«Instant routing» of 100% of wires on a board</h3>
-          <p>
-            TopoR provides 100% routed layout almost instantly within a few seconds. All
-            connections are routed even if technological constraints are violated.
-            Autorouting is followed by the multiobjective optimization by calculating
-            different variants of laying wires. During the optimization process the overall
-            wire length is optimized as well as the number of vias and places with smaller
-            clearance.&nbsp;
-          </p>
-          <p>
-            The routing process can be stopped at any moment, and the engineer can
-            immediately define the technical possibility of routing the board within the
-            limits of the specified number of layers, defined clearance size and other
-            technical limitations based on the routing density and the amount of technical
-            constraints violations. This helps to avoid waiting for many hours which is
-            typical for the traditional autorouters. Engineers using the traditional systems
-            can spend significant amount of their time trying to get the suitable results
-            for different variants of routing strategy.
-          </p>
-          <h3>
-            TopoR is capable of performing parallel computing, speeding up the result
-            achievement by many times
-          </h3>
-          <p>
-            TopoR can perform parallel optimization of several alternative topology
-            variants, which differ in optimized parameters, while a user is offered a choice
-            of selecting one or several variants. This feature allows for organizing the
-            distributed routing – parallel topology optimization by using several processor
-            cores and/or several computers within one local network. This allows to
-            significantly reduce machine time especially for routing complex multi-layer
-            boards.
-          </p>
-          <h3>
-            The innovative topology router significantly increases engineers' productivity
-          </h3>
-          <p>
-            TopoR support two types of manual topology routing of PCBs – graphical and
-            topological. Topology router automatically calculates the optimal shape and wire
-            positioning in terms of the defined topology. This allows engineers to
-            concentrate on the topological aspects of design without paying attention to the
-            wires shape and observing technological restrictions. Touching or even number or
-            wires intersections is not considered a violation. It is sufficient to push a
-            button and move to the topological mode to “string” the wires automatically and
-            move them to the necessary distance.
-          </p>
-          <p>Topology fragment:</p>
-          <p>
-            a) Touching or even number or wires intersections is not considered a violation;
-          </p>
-          <p>
-            b) With a push of a button the wires automatically “strung” and moved to the
-            necessary distance;
-          </p>
-          <p>
-            One of the unique features of TopoR is its capability to move components on the
-            routed board while preserving the connections topology. Geometry&nbsp; and
-            positioning of components are automatically calculated to comply with the new
-            components position.
-          </p>
-          <p/>
-          <p>
-            <strong><em>PCB fragment before and after moving a capacitor.</em></strong>
-          </p>
-          <p>
-            Movement of components, vias and wire branching is used to decrease wires
-            length, provide the utmost clearance space which should be not less than
-            required (to eliminate the narrow spaces). Movement can be performed both
-            manually and automatically, and the most effective wires shape is defined
-            immediately. &nbsp;
-          </p>
-          <p>
-            During the automatic movement of the board components, the wires branching
-            points and vias are set to optimal positions.
-          </p>
-          <p>
-            All this significantly simplifies and speeds up the routing process, allowing to
-            avoid necessity of constantly observing technical limitations.
-          </p>
-          <div>
-            <p>
-              “One of our boards has been routed by a qualified engineer for 2 weeks. In order
-              to study the capabilities of TopoR CAD system we passed this task to Eremex
-              specialists and were impressed to learn that they have done this job within an
-              hour. Moreover the majority of work was done by automatic routing with minor
-              manual corrections. However the routing quality was better then the quality of
-              our variant.”
-              <p>- Our Customer.</p>
-            </p>
+      <xml>
+         <h1>Feature List</h1>
+         <h2>Component architecture</h2>
+         <p>
+           FX-RTOS is not a monolithic program. It defines a set of loosely coupled
+           components for building your own OS. Configuration utility analyses components
+           dependencies and builds an image (library) that exactly matches application
+           needs without any extra overhead.
+         </p>
+         <p>
+           Multiple implementations of a single component interface are allowed. An
+           appropriate implementation may be chosen during configuration to fit application
+           system requirements. Some of the components may be used separately, without the
+           OS itself.
+         </p>
+         <p>
+           Configuration process relays on special dependency injection technique. A
+           component source code is not affected by configuring the OS.
+         </p>
+         <p>
+           Configuring is performed at compile time, so resulting machine code is almost
+           optimal.
+         </p>
+         <h2>Multiprocessor support</h2>
+         <p>
+           FX-RTOS was initially designed with multiprocessing in mind. Thus, the amount of
+           global variables shared between processors is reduced to minimum, there are no
+           global system-wide locks. Therefore, the system performance scales well with
+           number of processors.
+         </p>
+         <p>
+           For multiprocessor case specially designed components are used, so it does not
+           affect performance of uniprocessor systems.
+         </p>
+         <h2>Special support for simple event driven systems</h2>
+         <p>
+           Many embedded systems are event-driven and may be represented as a set of event
+           handlers. A handler, if already running, never waits. Such systems may be
+           implemented with threads, but threads are too heavyweight and have redundant
+           functionality that isn’t used in this simple case.
+         </p>
+         <p>
+           FX-RTOS provides a special profile for such systems. Threads are removed and
+           replaced with event service routines (ESR) similar in some aspects to program
+           interrupts. Using ESR instead of threads reduces code size by 40%, increases
+           performance and reduces RAM usage (in contrast with threads, ESR may share a
+           single stack)
+         </p>
+         <h2>Extensibility</h2>
+         <p>
+           As several implementations of a single component interface are allowed, the
+           kernel functionality may be extended or modified with components, developed by
+           OS user or community.
+         </p>
+         <h2>Effective interrupt handling</h2>
+         <p>FX-RTOS supports several techniques facilitating interrupt handling:</p>
+         <ol>
+           <li>interrupt service routines (ISR)</li>
+           <li>deferred procedure call, DPC</li>
+           <li>threads (interrupt service threads, IST)</li>
+           <li>event service routines (ESR)</li>
+         </ol>
+         <p>
+           By configuring the OS, the system designer may decide to include an appropriate
+           combination of these facilities into the target system depending on preferred
+           application design principles and requirements. Interrupt handlers (ISR) run on
+           special interrupt stack (this reduces stack size should be reserved for
+           threads).
+         </p>
+       </xml> 
+    )
+  end
+
+and ptempl (s:Template.settings) (cs:list crumb) (f:RespTabs.tabs -> transaction xbody) : transaction page =
+  let
+    val crumb = mkcrumb2 (product s "") "FX-RTOS"
+  in
+    template s (crumb :: cs) (fn tabs =>
+      news <- (Template.cellsBy1 news (
+        (mkcell
+          <xml>
+            <a href={url (s.Product "FX-RTOS" "")}>
+            <img src={Logo_rtos_png.geturl}/>
+            </a>
+            <dl>
+              <dt>Quick start</dt>
+              <dd><a href={s.Self}>Tutorial</a></dd>
+              <dd><a href={s.Self}>Download</a></dd>
+
+              <dt>Learn more</dt>
+              <dd><a link={learn1 s}>Feature list</a></dd>
+              <dd><a href={s.Self}>Full manual</a></dd>
+              <dd><a link={learn1 s}>Supported hardware</a></dd>
+            </dl>
+          </xml>
+        ) :: []));
+
+      x <- f tabs;
+
+      return
+        <xml>
+          <div class={Bootstrap.row}>
+            <div class={Bootstrap.span2}>
+              {news}
+            </div>
+            <div class={Bootstrap.span10}>
+              {x}
+            </div>
           </div>
-          <p>
-            The board routed by TopoR within an hour (20 min for autorouting and 40 min for
-            manual routing). The number of vias - 432. Trace length –5,11м.
-          </p>
-        </xml> 
+        </xml>
     )
   end
 

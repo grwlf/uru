@@ -1,0 +1,6 @@
+library Whyrtos5_jpg_c
+library Whyrtos5_jpg_js
+safeGet Whyrtos5_jpg/blobpage
+safeGet Whyrtos5_jpg/blob
+
+Whyrtos5_jpg

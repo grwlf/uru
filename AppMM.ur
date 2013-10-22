@@ -254,16 +254,6 @@ and topor s2 =
     feat <- Template.cellsBy3 box (
           (mkcell
             <xml>
-              <h4>Features related to the current product</h4>
-              <img src={Whytopor1_gif.geturl}/>
-              <p class={designnote}>
-                Basically, the image, some text, and 'Learn more' link. 'Learn more' link points to the page
-                whith an article
-              </p> 
-              {learnmore (main {})}
-            </xml>) ::
-          (mkcell
-            <xml>
               <h4>PCB design time reduced up to several times</h4>
               <img src={Whytopor1_gif.geturl}/>
               <p>

@@ -1,0 +1,3 @@
+ffi Whyrtos5_jpg_c
+include Whyrtos5_jpg_c.h
+link Whyrtos5_jpg_c.o

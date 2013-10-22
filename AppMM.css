@@ -21,6 +21,7 @@ body {
 
 .outercolumns {
   background:#fefefe;
+  padding-bottom:20px;
 }
 
 .pagecss {
@@ -66,7 +67,7 @@ li.mm-item {
 }
 
 div.mm-item-content {
-  background:rgba(240,240,240,0.95);
+  background:rgba(240,240,240,0.98);
 }
 
 a.mm-item-link:link, a.mm-item-link:visited {
@@ -81,6 +82,11 @@ a.mm-item-link-hover:link, a.mm-item-link-hover:visited {
   color: #323232;
 }
 
+a {
+  /* color : rgb(34, 68, 170); */
+  /* color: rgb(128, 152, 168); */
+  color: rgb(0, 85, 128);
+}
 
 /* Jumbotron */
 .jumbotron {
@@ -119,6 +125,7 @@ a.mm-item-link-hover:link, a.mm-item-link-hover:visited {
 /* } */
 
 .designnote {
+  display:none;
   color:red;
 }
 
@@ -126,6 +133,20 @@ a.mm-item-link-hover:link, a.mm-item-link-hover:visited {
 
 .outerfooter {
   background: rgb(34, 34, 34);
-  padding-top:20px;
+  color:rgb(128,128,128);
+  padding-top:70px;
+  padding-bottom:30px;
 }
 
+.footlink a{
+  color:rgb(136,136,136);
+  font-weight:normal;
+  font-size:10pt;
+  text-decoration:none;
+  outline:mediumnone;
+  padding:1px;
+}
+
+.footlink {
+ color: rgb(128, 152, 168);
+}

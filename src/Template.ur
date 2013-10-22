@@ -60,6 +60,7 @@ task initialize = fn {} =>
 
 style box
 style designnote
+style footlink
 
 (* Header *)
 style langmenu
@@ -292,9 +293,93 @@ and template (s:settings) (cs:list crumb) (x:RespTabs.tabs -> transaction xbody)
     ft <- wrap_footer (
       return
         <xml>
-          <p>
-            © 2008—2013 ООО "ЭРЕМЕКС"
-          </p>
+          <div class={Bootstrap.row_fluid}>
+            <p>© 2008—2013 Eremex, Ltd.© 2008—2013 Eremex, Ltd.</p>
+            <p>
+              Tel: +7 (495) 232-18-64, E-mail: info@eremex.com Tel: +7 (495) 232-18-64,
+              E-mail:
+              <a href="mailto:info@eremex.com">info@eremex.com</a>
+            </p>
+          </div>
+          <div class={Bootstrap.row_fluid}>
+          <div class={Bootstrap.span3}>
+          <div class={footlink}>
+            Product Information
+            <br/>
+            <a href={s.Self}>Product Overview</a>
+            <br/>
+            <a href={s.Self} target="_blank">8.0 Datasheet</a>
+            <br/>
+            <a href={s.Self}>Schematic Capture</a>
+            <br/>
+            <a href={s.Self}>PCB Layout</a>
+            <br/>
+            <a href={s.Self}>Circuit Simulation</a>
+            <br/>
+            <a href={s.Self}>PCB Autorouting</a>
+            <br/>
+            <a href={s.Self}>High Speed Design</a>
+            <br/>
+            <a href={s.Self}>Database Connection</a>
+            <br/>
+          </div>
+          </div>
+          <div class={Bootstrap.span3}>
+          <div class={footlink}>
+          Sales
+          <br/>
+          <a href={s.Self}>Where to buy</a>
+          <br/>
+          <a href={s.Self}>Download free trial</a>
+          <br/>
+          <a href={s.Self}>What our customers say</a>
+          <br/>
+          <a href={s.Self}>Why buy maintenance?</a>
+          <br/>
+          <a href={s.Self}>Come back on maintenance</a>
+          <br/>
+          <a href={s.Self}>How to update to the latest version</a>
+          <br/>
+          </div>
+          </div>
+          <div class={Bootstrap.span3}>
+          <div class={footlink}>
+            Support
+            <br/>
+            <a href={s.Self}>Updates and Service Packs</a>
+            <br/>
+            <a href={s.Self}>Getting help and support</a>
+            <br/>
+            <a href={s.Self}>Supported Windows versions</a>
+            <br/>
+            <a href={s.Self}>Download documentation</a>
+            <br/>
+            <a href={s.Self}>User Forum</a>
+            <br/>
+            <a href={s.Self}>Renewing maintenance</a>
+            <br/>
+          </div>
+          </div>
+          <div class={Bootstrap.span3}>
+          <div class={footlink}>
+            Services
+            <br/>
+            <a href={s.Self}>Training</a>
+            <br/>
+            <a href={s.Self}>PCB design services</a>
+            <br/>
+            <a href={s.Self}>Links and partners</a>
+            <br/>
+            <br/>
+            <a href={s.Self}>Registered user login</a>
+            <br/>
+            <br/>
+            <a href={s.Self}>Contact us</a>
+            <br/>
+            <a href={s.Self}>areer Opportunities</a>
+          </div>
+          </div>
+          </div>
         </xml>);
 
     return
