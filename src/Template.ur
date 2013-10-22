@@ -170,7 +170,9 @@ val headers = {
 
 fun mkcrumb (u:url) (s:string) = {Url = u, Caption=s}
 
-fun mkcrumb2 (x:transaction page) (s:string) = {Url = url x, Caption=s}
+fun addcrumb (x:transaction page) (s:string) h = h -- #Crumbs ++ { Crumbs = (mkcrumb (url x) s) :: h.Crumbs }
+
+val defaultSettings = { Crumbs = [] , IsMain = False } 
 
 fun fvoid {} = {}
 
@@ -178,26 +180,26 @@ and image n : transaction page =
   b <- oneRow (SELECT * FROM imaget WHERE imaget.Nam = {[n]});
   returnBlob b.Imaget.Data (blessMime "image/png")
 
-and template (s:settings) (cs:list crumb) (x:RespTabs.tabs -> transaction xbody) = let
+and template (h:handlers) (s:settings) (x:RespTabs.tabs -> transaction xbody) = let
   
-  val crumbs = (mkcrumb s.Main "Home") :: cs
+  val crumbs = (mkcrumb h.Main "Home") :: s.Crumbs
 
   (* val self = url (template ismain x) *)
 
-  fun prodlink s1 s2 = <xml><a link={s.Product s1 s2}>{[s2]}</a></xml>
+  fun prodlink s1 s2 = <xml><a link={h.Product s1 s2}>{[s2]}</a></xml>
 
   fun mkheader (css:css_class) : transaction xbody = 
 
-    h <- twocols
+    lng <- twocols
       (return <xml><div>
-          <a href={s.Main}> <img src={Logo_gif.geturl}/> </a>
+          <a href={h.Main}> <img src={Logo_gif.geturl}/> </a>
         </div></xml>)
       (return
         <xml>
           <div class={langmenu}>
-          <a href={s.Self}><img src={Flag_ru_gif.geturl}/>Русский</a>
-          <a href={s.Self}><img src={Flag_uk_gif.geturl}/>English</a>
-          <a href={s.Self}><img src={Flag_jp_gif.geturl}/>日本語</a>
+          <a href={h.Self}><img src={Flag_ru_gif.geturl}/>Русский</a>
+          <a href={h.Self}><img src={Flag_uk_gif.geturl}/>English</a>
+          <a href={h.Self}><img src={Flag_jp_gif.geturl}/>日本語</a>
           </div>
         </xml>);
 
@@ -208,7 +210,7 @@ and template (s:settings) (cs:list crumb) (x:RespTabs.tabs -> transaction xbody)
             <div class={menucolumn}>
               <div style="height:65px;display:table">
                 <div style="display:table-cell; vertical-align:middle;">
-                  <a link={s.Product prod.Product.Caption ""}>
+                  <a link={h.Product prod.Product.Caption ""}>
                   <img style="width:60%" src={url (image prod.Product.Logo)}/>
                   </a>
                 </div>
@@ -226,22 +228,22 @@ and template (s:settings) (cs:list crumb) (x:RespTabs.tabs -> transaction xbody)
     return
       <xml>
         <div>
-          {h}
+          {lng}
           <div style="text-align:right">
             <ul class={css} style="list-style:none;display:none">
               <li>
-                <a href={s.Self}>Products</a>
+                <a href={h.Self}>Products</a>
                 <div style="width:800px">
                   {ps}
                   <p class={designnote}>Note: Each product menu item corresponds to a tab on the product's page</p>
                 </div>
               </li>
               <li>
-                <a href={s.Self}>Sales</a>
+                <a href={h.Self}>Sales</a>
               </li>
-              <li><a href={s.Self}>Contacts</a></li>
-              <li><a href={s.Self}>Community</a></li>
-              <li><a href={s.Self}>Blog</a></li>
+              <li><a href={h.Self}>Contacts</a></li>
+              <li><a href={h.Self}>Community</a></li>
+              <li><a href={h.Self}>Blog</a></li>
             </ul>
           </div>
         </div>
@@ -286,7 +288,7 @@ and template (s:settings) (cs:list crumb) (x:RespTabs.tabs -> transaction xbody)
                   <span class={Bootstrap.divider}>/</span>
                   </li>
                   {x}
-                </xml>) <xml/> (crumbs));
+                </xml>) <xml/> crumbs);
           return <xml><ul class={Bootstrap.breadcrumb}>{l}</ul></xml>)
       |True => return <xml/>);
 
@@ -306,21 +308,21 @@ and template (s:settings) (cs:list crumb) (x:RespTabs.tabs -> transaction xbody)
           <div class={footlink}>
             Product Information
             <br/>
-            <a href={s.Self}>Product Overview</a>
+            <a href={h.Self}>Product Overview</a>
             <br/>
-            <a href={s.Self} target="_blank">8.0 Datasheet</a>
+            <a href={h.Self} target="_blank">8.0 Datasheet</a>
             <br/>
-            <a href={s.Self}>Schematic Capture</a>
+            <a href={h.Self}>Schematic Capture</a>
             <br/>
-            <a href={s.Self}>PCB Layout</a>
+            <a href={h.Self}>PCB Layout</a>
             <br/>
-            <a href={s.Self}>Circuit Simulation</a>
+            <a href={h.Self}>Circuit Simulation</a>
             <br/>
-            <a href={s.Self}>PCB Autorouting</a>
+            <a href={h.Self}>PCB Autorouting</a>
             <br/>
-            <a href={s.Self}>High Speed Design</a>
+            <a href={h.Self}>High Speed Design</a>
             <br/>
-            <a href={s.Self}>Database Connection</a>
+            <a href={h.Self}>Database Connection</a>
             <br/>
           </div>
           </div>
@@ -328,17 +330,17 @@ and template (s:settings) (cs:list crumb) (x:RespTabs.tabs -> transaction xbody)
           <div class={footlink}>
           Sales
           <br/>
-          <a href={s.Self}>Where to buy</a>
+          <a href={h.Self}>Where to buy</a>
           <br/>
-          <a href={s.Self}>Download free trial</a>
+          <a href={h.Self}>Download free trial</a>
           <br/>
-          <a href={s.Self}>What our customers say</a>
+          <a href={h.Self}>What our customers say</a>
           <br/>
-          <a href={s.Self}>Why buy maintenance?</a>
+          <a href={h.Self}>Why buy maintenance?</a>
           <br/>
-          <a href={s.Self}>Come back on maintenance</a>
+          <a href={h.Self}>Come back on maintenance</a>
           <br/>
-          <a href={s.Self}>How to update to the latest version</a>
+          <a href={h.Self}>How to update to the latest version</a>
           <br/>
           </div>
           </div>
@@ -346,17 +348,17 @@ and template (s:settings) (cs:list crumb) (x:RespTabs.tabs -> transaction xbody)
           <div class={footlink}>
             Support
             <br/>
-            <a href={s.Self}>Updates and Service Packs</a>
+            <a href={h.Self}>Updates and Service Packs</a>
             <br/>
-            <a href={s.Self}>Getting help and support</a>
+            <a href={h.Self}>Getting help and support</a>
             <br/>
-            <a href={s.Self}>Supported Windows versions</a>
+            <a href={h.Self}>Supported Windows versions</a>
             <br/>
-            <a href={s.Self}>Download documentation</a>
+            <a href={h.Self}>Download documentation</a>
             <br/>
-            <a href={s.Self}>User Forum</a>
+            <a href={h.Self}>User Forum</a>
             <br/>
-            <a href={s.Self}>Renewing maintenance</a>
+            <a href={h.Self}>Renewing maintenance</a>
             <br/>
           </div>
           </div>
@@ -364,19 +366,19 @@ and template (s:settings) (cs:list crumb) (x:RespTabs.tabs -> transaction xbody)
           <div class={footlink}>
             Services
             <br/>
-            <a href={s.Self}>Training</a>
+            <a href={h.Self}>Training</a>
             <br/>
-            <a href={s.Self}>PCB design services</a>
+            <a href={h.Self}>PCB design services</a>
             <br/>
-            <a href={s.Self}>Links and partners</a>
-            <br/>
-            <br/>
-            <a href={s.Self}>Registered user login</a>
+            <a href={h.Self}>Links and partners</a>
             <br/>
             <br/>
-            <a href={s.Self}>Contact us</a>
+            <a href={h.Self}>Registered user login</a>
             <br/>
-            <a href={s.Self}>areer Opportunities</a>
+            <br/>
+            <a href={h.Self}>Contact us</a>
+            <br/>
+            <a href={h.Self}>areer Opportunities</a>
           </div>
           </div>
           </div>

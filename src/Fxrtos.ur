@@ -6,7 +6,7 @@ val template = Template.template
 val mktab = RespTabs.mktab
 val mkcell = Template.mkcell
 val mkcrumb = Template.mkcrumb
-val mkcrumb2 = Template.mkcrumb2
+val addcrumb = Template.addcrumb
 type crumb = Template.crumb
 val btn = classes (classes Bootstrap.btn Bootstrap.btn_large) Bootstrap.btn_success
 
@@ -22,7 +22,7 @@ fun demo (u:url) : xbody = <xml>
   </xml>
 
 fun product s s2 = 
-  ptempl s [] (fn tabs =>
+  ptempl s Template.defaultSettings (fn tabs =>
     caption <- (return
       <xml>
         <div class={Bootstrap.row_fluid}>
@@ -233,9 +233,9 @@ fun product s s2 =
 
 and learn1 s =
   let
-    val crumb = mkcrumb2 (learn1 s) "Learn1"
+    val h = addcrumb (learn1 s) "Learn1" Template.defaultSettings
   in
-    ptempl s (crumb :: []) (fn tabs =>
+    ptempl s h (fn tabs =>
       return
       <xml>
          <h1>Feature List</h1>
@@ -310,11 +310,11 @@ and learn1 s =
     )
   end
 
-and ptempl (s:Template.settings) (cs:list crumb) (f:RespTabs.tabs -> transaction xbody) : transaction page =
+and ptempl (s:Template.handlers) (h:Template.settings) (f:RespTabs.tabs -> transaction xbody) : transaction page =
   let
-    val crumb = mkcrumb2 (product s "") "FX-RTOS"
+    val h' = addcrumb (product s "") "FX-RTOS" h
   in
-    template s (crumb :: cs) (fn tabs =>
+    template s h' (fn tabs =>
       news <- (Template.cellsBy1 news (
         (mkcell
           <xml>

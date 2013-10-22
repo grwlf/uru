@@ -8,13 +8,6 @@ body {
   background:#F8F8F4;
 }
 
-/* default href settings */
-/* a {color:#24a; text-decoration:none; outline:none; } */
-/* a:link {color:#24a; text-decoration:none; } */
-/* a:visited {color:#24a; text-decoration:none; } */
-/* a:active {color:#24a; text-decoration:none; } */
-/* a:hover { color:#000; text-decoration:none; border-bottom:1px dotted #000; } */
-
 .langmenu {
   margin-left:50%;
 }
@@ -113,15 +106,6 @@ a {
   padding-right:15px;
   float:left;
 }
-
-/* .box p:first-letter { */
-/*   text-transform:capitalize; */
-/*   font-size:xx-large; */
-/*   font-weight:bold; */
-/*   float:left; */
-/*   padding-right:5px; */
-/*   padding-top:5px; */
-/* } */
 
 .designnote {
   display:none;

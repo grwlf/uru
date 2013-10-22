@@ -9,17 +9,27 @@ val cellsBy1 : css_class -> list cell -> transaction xbody
 
 type crumb = { Url : url , Caption : string }
 
-val mkcrumb : url -> string -> crumb
-val mkcrumb2 : transaction page -> string -> crumb
+type language = { Lang : string }
 
-type settings = {
+type handlers = {
   Product: string -> string -> transaction page,
   Self : url,
-  Main : url,
-  IsMain : bool
+  Main : url
   }
 
-val template : settings -> list crumb -> (RespTabs.tabs -> transaction xbody) -> transaction page
+type settings = {
+  Crumbs : list crumb,
+  IsMain : bool
+}
+
+
+val mkcrumb : url -> string -> crumb
+
+
+val defaultSettings : settings
+val addcrumb : transaction page -> string -> settings -> settings
+
+val template : handlers -> settings -> (RespTabs.tabs -> transaction xbody) -> transaction page
 
 style designnote
 style box
