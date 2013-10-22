@@ -9,17 +9,18 @@ val cellsBy1 : css_class -> list cell -> transaction xbody
 
 type crumb = { Url : url , Caption : string }
 
-type language = { Lang : string }
+type lang = { Lang : string }
 
 type handlers = {
-  Product: string -> string -> transaction page,
-  Self : url,
-  Main : url
+  Product: string -> string -> lang -> transaction page,
+  Self : lang -> url,
+  Main : lang -> url
   }
 
 type settings = {
   Crumbs : list crumb,
-  IsMain : bool
+  IsMain : bool,
+  Lang : lang
 }
 
 
@@ -28,6 +29,8 @@ val mkcrumb : url -> string -> crumb
 
 val defaultSettings : settings
 val addcrumb : transaction page -> string -> settings -> settings
+val setlang : lang -> settings -> settings
+val setmain : settings -> settings
 
 val template : handlers -> settings -> (RespTabs.tabs -> transaction xbody) -> transaction page
 

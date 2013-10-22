@@ -21,8 +21,11 @@ fun demo (u:url) : xbody = <xml>
   </div>
   </xml>
 
-fun product s s2 = 
-  ptempl s Template.defaultSettings (fn tabs =>
+fun product (h:Template.handlers) (s:Template.settings) (s2:string) =
+  let
+    val tomain = h.Main s.Lang
+  in
+  ptempl h s (fn tabs =>
     caption <- (return
       <xml>
         <div class={Bootstrap.row_fluid}>
@@ -71,7 +74,7 @@ fun product s s2 =
               <p>
                 FX-RTOS is a set of loosely coupled software components. Dependencies between them are created as a result of configuring.
               </p> 
-              {learnmore (s.Main)}
+              {learnmore (tomain)}
             </xml>) ::
           (mkcell
             <xml>
@@ -80,7 +83,7 @@ fun product s s2 =
               <p>
                 The OS is configurable using dependency injection technique. Configuring is performed at compile-time, so resulting machine code is almost optimal and doesn't contain any overhead.
               </p> 
-              {learnmore (s.Main)}
+              {learnmore (tomain)}
             </xml>) ::
           (mkcell
             <xml>
@@ -89,7 +92,7 @@ fun product s s2 =
               <p>
                 FX-RTOS was initially designed with multiprocessing in mind. Thus, the amount of global variables shared between processors is reduced to minimum, there are no global system-wide locks. Therefore, the system performance scales well with number of processors.
               </p>
-              {learnmore (s.Main)}
+              {learnmore (tomain)}
             </xml>) ::
           (mkcell
             <xml>
@@ -98,7 +101,7 @@ fun product s s2 =
               <p>
                 Special profile for such systems is provided. Threads are removed and replaced with event service routines (ESR) similar in some aspects to program interrupts. Using ESR instead of threads reduces code size by 40%, increases performance and reduces RAM usage (in contrast with threads, ESR may share a single stack).
               </p>
-              {learnmore (s.Main)}
+              {learnmore (tomain)}
             </xml>) ::
           (mkcell
             <xml>
@@ -107,7 +110,7 @@ fun product s s2 =
               <p>
                 As several implementations of a single component interface are allowed, the kernel functionality may be extended or modified with components, developed by OS user or community.
               </p>
-              {learnmore (s.Main)}
+              {learnmore (tomain)}
             </xml>) ::
           []);
 
@@ -115,7 +118,7 @@ fun product s s2 =
         (mktab s2 "Features"
         <xml>
           {feat}
-          {demo s.Main}
+          {demo tomain}
         </xml>) :: 
         (mktab s2 "FAQ" 
         <xml>
@@ -125,7 +128,7 @@ fun product s s2 =
               We will keep constantly updating the Frequently Asked Questions section of the
               website. If you did not find the answers to your questions in this section,
               please feel free to
-              <a href={s.Main}>contact us</a>
+              <a href={tomain}>contact us</a>
             </p>
             <h5>
               Is TopoR similar to other PCB design software? Can my previous experience in
@@ -160,18 +163,18 @@ fun product s s2 =
             <p>
               The easiest way is to address you questions to our Forum or refer to us
               directly. You can find our contact details
-              <a href={s.Main}>here</a>
+              <a href={tomain}>here</a>
               .
             </p>
             <h5>
               You can also find our video tutorials in the
-              <a href={s.Main}>Tutorials section</a>
+              <a href={tomain}>Tutorials section</a>
               .
             </h5>
             <p>
               We can also provide training for more efficient insight on our product. For more
               details on trainings please
-              <a href={s.Main}>contact us</a>
+              <a href={tomain}>contact us</a>
               .
             </p>
             <h5>
@@ -181,7 +184,7 @@ fun product s s2 =
               You will receive all updates and support for free during the first year after
               the product purchase. The support period can be prolonged. For additional
               support conditions please
-              <a href={s.Main}>refer to us</a>
+              <a href={tomain}>refer to us</a>
               .
             </p>
             <p>
@@ -230,12 +233,13 @@ fun product s s2 =
         {tabcont}
       </xml>
   )
+  end
 
-and learn1 s =
+and learn1 h s =
   let
-    val h = addcrumb (learn1 s) "Learn1" Template.defaultSettings
+    val s' = addcrumb (learn1 h s) "Learn1" s
   in
-    ptempl s h (fn tabs =>
+    ptempl h s' (fn tabs =>
       return
       <xml>
          <h1>Feature List</h1>
@@ -310,26 +314,28 @@ and learn1 s =
     )
   end
 
-and ptempl (s:Template.handlers) (h:Template.settings) (f:RespTabs.tabs -> transaction xbody) : transaction page =
+and ptempl (h:Template.handlers) (s:Template.settings) (f:RespTabs.tabs -> transaction xbody) : transaction page =
   let
-    val h' = addcrumb (product s "") "FX-RTOS" h
+    val s' = addcrumb (product h s "") "FX-RTOS" s
+    val tomain = h.Main s.Lang
+    val toProduct = url (h.Product "FX-RTOS" "" s.Lang)
   in
-    template s h' (fn tabs =>
+    template h s' (fn tabs =>
       news <- (Template.cellsBy1 news (
         (mkcell
           <xml>
-            <a href={url (s.Product "FX-RTOS" "")}>
+            <a href={toProduct}>
             <img src={Logo_rtos_png.geturl}/>
             </a>
             <dl>
               <dt>Quick start</dt>
-              <dd><a href={s.Self}>Tutorial</a></dd>
-              <dd><a href={s.Self}>Download</a></dd>
+              <dd><a href={tomain}>Tutorial</a></dd>
+              <dd><a href={tomain}>Download</a></dd>
 
               <dt>Learn more</dt>
-              <dd><a link={learn1 s}>Feature list</a></dd>
-              <dd><a href={s.Self}>Full manual</a></dd>
-              <dd><a link={learn1 s}>Supported hardware</a></dd>
+              <dd><a link={learn1 h s}>Feature list</a></dd>
+              <dd><a href={tomain}>Full manual</a></dd>
+              <dd><a link={learn1 h s}>Supported hardware</a></dd>
             </dl>
           </xml>
         ) :: []));
