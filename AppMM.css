@@ -105,13 +105,12 @@ a {
 /* News boxes */
 
 .box {
-  text-align:justify;
+  text-align:left;
 }
 
 .box img {
   width:38%; 
   padding-right:15px;
-  padding-bottom:10px;
   float:left;
 }
 
