@@ -23,7 +23,7 @@ fun demo (u:url) : xbody = <xml>
 
 fun product (h:Template.handlers) (s:Template.settings) (s2:string) =
   let
-    val toMain = h.Main h.Lang
+    val toMain = h.Main s.Lang
   in
   ptempl h s (fn tabs =>
     caption <- (return
@@ -235,9 +235,9 @@ fun product (h:Template.handlers) (s:Template.settings) (s2:string) =
   )
   end
 
-and learn1 h s =
+and learn1 (h:Template.handlers) (s:Template.settings) : transaction page =
   let
-    val s' = addcrumb (learn1 h s) "Learn1" s
+    val s' = s
   in
     ptempl h s' (fn tabs =>
       return
@@ -316,9 +316,10 @@ and learn1 h s =
 
 and ptempl (h:Template.handlers) (s:Template.settings) (f:RespTabs.tabs -> transaction xbody) : transaction page =
   let
-    val s' = addcrumb (product h s "") "FX-RTOS" s
-    val toMain = h.Main h.Lang
-    val toProduct = h.Product h.Lang "FX-RTOS" ""
+    (* val s' = addcrumb (url (product h s "")) "FX-RTOS" s *)
+    val s' = s
+    val toMain = h.Main s.Lang
+    val toProduct = h.Product s.Lang (Product.FXRTOS "")
   in
     template h s' (fn tabs =>
       news <- (Template.cellsBy1 news (
@@ -333,9 +334,8 @@ and ptempl (h:Template.handlers) (s:Template.settings) (f:RespTabs.tabs -> trans
               <dd><a href={toMain}>Download</a></dd>
 
               <dt>Learn more</dt>
-              <dd><a link={learn1 h s}>Feature list</a></dd>
-              <dd><a href={toMain}>Full manual</a></dd>
-              <dd><a link={learn1 h s}>Supported hardware</a></dd>
+              (* <dd><a href={url (learn1 h)}>Full manual</a></dd> *)
+              (* <dd><a link={learn1 h}>Full manual</a></dd> *)
             </dl>
           </xml>
         ) :: []));

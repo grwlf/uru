@@ -168,11 +168,11 @@ val headers = {
   FW = { Width = 900 }
 }
 
-fun mkcrumb (u:url) (s:string) = {Url = u, Caption=s}
+fun mkcrumb (u:url) (s:string) = { Caption=s }
 
-fun addcrumb (x:transaction page) (s:string) h = h -- #Crumbs ++ { Crumbs = (mkcrumb (url x) s) :: h.Crumbs }
+fun addcrumb (u:url) (s:string) h = h -- #Crumbs ++ { Crumbs = (mkcrumb u s) :: h.Crumbs }
 
-val defaultSettings = { Crumbs = [] , IsMain = False } 
+val defaultSettings = { Crumbs = [] , IsMain = False , Lang = {Lang = "en"} } 
 
 (* fun setlang (l:lang) (s:settings) = s -- #Lang ++ {Lang = l} *)
 
@@ -186,17 +186,17 @@ and image n : transaction page =
 
 and template (h:handlers) (s:settings) (x:RespTabs.tabs -> transaction xbody) = let
   
-  val crumbs = (mkcrumb (h.Main h.Lang) "Home") :: s.Crumbs
+  val crumbs = (mkcrumb (h.Main s.Lang) "Home") :: s.Crumbs
 
   (* val self = url (template ismain x) *)
 
-  (* val toMain = h.Main h.Lang *)
+  (* val toMain = h.Main s.Lang *)
 
-  val mylang = h.Lang
+  val mylang = s.Lang
 
-  fun prodlink s1 s2 = <xml><a href={h.Product mylang s1 s2}>{[s2]}</a></xml>
+  fun prodlink s1 s2 = <xml><a href={h.Product mylang (Product.fromString s1 s2)}>{[s2]}</a></xml>
 
-  val toSelf = h.Self h.Lang
+  val toSelf = h.Self s.Lang
 
   fun mkheader (css:css_class) : transaction xbody = 
 
@@ -220,7 +220,7 @@ and template (h:handlers) (s:settings) (x:RespTabs.tabs -> transaction xbody) = 
             <div class={menucolumn}>
               <div style="height:65px;display:table">
                 <div style="display:table-cell; vertical-align:middle;">
-                  <a href={h.Product mylang prod.Product.Caption ""}>
+                  <a href={h.Product mylang (Product.fromString prod.Product.Caption "")}>
                   <img style="width:60%" src={url (image prod.Product.Logo)}/>
                   </a>
                 </div>
@@ -294,7 +294,8 @@ and template (h:handlers) (s:settings) (x:RespTabs.tabs -> transaction xbody) = 
           l <- return (List.foldr (fn c x =>
                 <xml>
                   <li>
-                  <a href={c.Url}>{[c.Caption]}</a>
+                  (* <a href={c.Url}>{[c.Caption]}</a> *)
+                  <a href={toSelf}>{[c.Caption]}</a>
                   <span class={Bootstrap.divider}>/</span>
                   </li>
                   {x}

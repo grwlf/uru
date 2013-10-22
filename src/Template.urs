@@ -7,20 +7,21 @@ val cellsBy3 : css_class -> list cell -> transaction xbody
 val cellsBy4 : css_class -> list cell -> transaction xbody
 val cellsBy1 : css_class -> list cell -> transaction xbody
 
-type crumb = { Url : url , Caption : string }
+(* type crumb = { Url : url , Caption : string } *)
+type crumb = {  Caption : string }
 
 type lang = { Lang : string }
 
 type handlers = {
-  Product: lang -> string -> string -> url,
+  Product: lang -> Product.product -> url,
   Self : lang -> url,
-  Main : lang -> url,
-  Lang : lang
+  Main : lang -> url
   }
 
 type settings = {
   Crumbs : list crumb,
-  IsMain : bool
+  IsMain : bool,
+  Lang : lang
   }
 
 
@@ -28,7 +29,7 @@ val mkcrumb : url -> string -> crumb
 
 
 val defaultSettings : settings
-val addcrumb : transaction page -> string -> settings -> settings
+val addcrumb : url -> string -> settings -> settings
 (* val setlang : lang -> settings -> settings *)
 val setmain : settings -> settings
 

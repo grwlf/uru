@@ -34,6 +34,7 @@ src/ui/FullWidth/FullWidth
 src/ui/RespTabs/RespTabs
 src/ui/Bootstrap/Bootstrap
 src/ui/ThreeColumns/ThreeColumns
+src/Product
 src/Template
 src/Fxrtos
 AppMM

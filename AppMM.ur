@@ -1,5 +1,4 @@
 
-
 style columnlist
 style download
 style work
@@ -18,7 +17,6 @@ val box = Template.box
 
 val btn = classes (classes Bootstrap.btn Bootstrap.btn_large) Bootstrap.btn_success
 
-
 (*
 fun demo (u:url) : xbody = <xml>
   <p style="text-align:center;margin:20px;">
@@ -30,27 +28,11 @@ fun demo (u:url) : xbody = <xml>
 fun learnmore (x : transaction page) : xbody =
   <xml><p><a link={x}>Learn more &raquo;</a></p></xml>
 
-and product l (s1:string) (s2:string) =
-  let
-    val hd = { Product = (fn l s1 s2 => url (product l s1 s2)),
-               Main = (fn l => url (main' l)),
-               Self = (fn l => url (product l s1 s2)),
-               Lang = l
-             }
-
-    val st = defset
-  in
-    case (String.mp tolower s1) of
-        "topor" => topor hd st s2
-      | "fx-rtos" => fxrtos hd st s2
-      | _ => main' l
-  end
-
-and fxrtos (h:Template.handlers) (s:Template.settings) s2 = Fxrtos.product h s s2
+and fxrtos (h:Template.handlers) (s:Template.settings) (s2:string) = Fxrtos.product h s s2
 
 and topor (h:Template.handlers) (s:Template.settings) (s2:string) =
   let 
-    val toSelf = url (product h.Lang "topor" "")
+    val toSelf = url (sitemap s.Lang (Product.TOPOR ""))
   in
     template h s
       (fn tabs =>
@@ -263,16 +245,8 @@ and topor (h:Template.handlers) (s:Template.settings) (s2:string) =
       )
   end
 
-and main' l = 
+and homepage (h:Template.handlers) (s:Template.settings) = 
   let
-    val h = { Product = (fn l s1 s2 => url (product l s1 s2)),
-              Main = (fn l => url (main' l)),
-              Self = (fn l => url (main' l)),
-              Lang = l
-            }
-
-    val s = defset
-
     fun genboxes {} : transaction xbody = 
       Template.cellsBy4 box (
         (mkcell
@@ -283,7 +257,7 @@ and main' l =
             non-designers secure access to essential design data, including the ability to
             generate reports and printouts. A free application that can be installed on any
             PC.</p>
-            <a link={topor h s ""}>Learn more >> </a>
+            <a link={main {}}>Learn more >> </a>
           </xml>) ::
         (mkcell
           <xml>
@@ -447,5 +421,19 @@ and main' l =
       )
   end
 
-and main {} = main' { Lang = "RU" }
+and sitemap l (p:Product.product) =
+  let
+    val hd = { Product = (fn l p => url (sitemap l p)),
+               Main = (fn l => url (sitemap l Product.HOME)),
+               Self = (fn l => url (sitemap l p))
+             }
+    val st = defset
+  in
+    case p of
+        Product.TOPOR s2 => topor hd st s2
+      | Product.FXRTOS s2 => fxrtos hd st s2
+      | Product.HOME => homepage hd st
+  end
+
+and main {} = sitemap { Lang = "RU" } Product.HOME
 
