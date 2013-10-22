@@ -30,14 +30,15 @@ fun demo (u:url) : xbody = <xml>
 fun learnmore (x : transaction page) : xbody =
   <xml><p><a link={x}>Learn more &raquo;</a></p></xml>
 
-and product (s1:string) (s2:string) l =
+and product l (s1:string) (s2:string) =
   let
-    val hd = { Product = product,
+    val hd = { Product = (fn l s1 s2 => url (product l s1 s2)),
                Main = (fn l => url (main' l)),
-               Self = (fn l => url (product s1 s2 l))
+               Self = (fn l => url (product l s1 s2)),
+               Lang = l
              }
 
-    val st = Template.setlang l defset
+    val st = defset
   in
     case (String.mp tolower s1) of
         "topor" => topor hd st s2
@@ -49,7 +50,7 @@ and fxrtos (h:Template.handlers) (s:Template.settings) s2 = Fxrtos.product h s s
 
 and topor (h:Template.handlers) (s:Template.settings) (s2:string) =
   let 
-    val toSelf = topor h s s2
+    val toSelf = url (product h.Lang "topor" "")
   in
     template h s
       (fn tabs =>
@@ -59,19 +60,19 @@ and topor (h:Template.handlers) (s:Template.settings) (s2:string) =
               <img src={Logo_topor_png.geturl}/>
               <dl>
                 <dt>Downlowads</dt>
-                <dd><a link={toSelf}>Manual.pdf</a></dd>
-                <dd><a link={toSelf}>Book.pdf</a></dd>
-                <dd><a link={toSelf}>Demo_installer.exe</a></dd>
-                <dd><a link={toSelf}>Full version (contact sales)</a></dd>
+                <dd><a href={toSelf}>Manual.pdf</a></dd>
+                <dd><a href={toSelf}>Book.pdf</a></dd>
+                <dd><a href={toSelf}>Demo_installer.exe</a></dd>
+                <dd><a href={toSelf}>Full version (contact sales)</a></dd>
 
                 <dt>Learn more articles</dt>
-                <dd><a link={toSelf}>PCB design guidelines</a></dd>
-                <dd><a link={toSelf}>High-quality autorouting</a></dd>
-                <dd><a link={toSelf}>Improved electro-magnetic compatibility</a></dd>
-                <dd><a link={toSelf}>Design of complex and high-speed PCBs</a></dd>
-                <dd><a link={toSelf}>How to do stuff like that</a></dd>
-                <dd><a link={toSelf}>How to upgrade to later versions</a></dd>
-                <dd><a link={toSelf}>What's the trick 42</a></dd>
+                <dd><a href={toSelf}>PCB design guidelines</a></dd>
+                <dd><a href={toSelf}>High-quality autorouting</a></dd>
+                <dd><a href={toSelf}>Improved electro-magnetic compatibility</a></dd>
+                <dd><a href={toSelf}>Design of complex and high-speed PCBs</a></dd>
+                <dd><a href={toSelf}>How to do stuff like that</a></dd>
+                <dd><a href={toSelf}>How to upgrade to later versions</a></dd>
+                <dd><a href={toSelf}>What's the trick 42</a></dd>
               </dl>
               <p class={designnote}>
                 Side menu contains some links related to a specific product as well
@@ -264,12 +265,13 @@ and topor (h:Template.handlers) (s:Template.settings) (s2:string) =
 
 and main' l = 
   let
-    val h = { Product = product,
+    val h = { Product = (fn l s1 s2 => url (product l s1 s2)),
               Main = (fn l => url (main' l)),
               Self = (fn l => url (main' l)),
+              Lang = l
             }
 
-    val s = Template.setlang l defset
+    val s = defset
 
     fun genboxes {} : transaction xbody = 
       Template.cellsBy4 box (

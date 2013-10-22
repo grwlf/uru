@@ -12,16 +12,16 @@ type crumb = { Url : url , Caption : string }
 type lang = { Lang : string }
 
 type handlers = {
-  Product: string -> string -> lang -> transaction page,
+  Product: lang -> string -> string -> url,
   Self : lang -> url,
-  Main : lang -> url
+  Main : lang -> url,
+  Lang : lang
   }
 
 type settings = {
   Crumbs : list crumb,
-  IsMain : bool,
-  Lang : lang
-}
+  IsMain : bool
+  }
 
 
 val mkcrumb : url -> string -> crumb
@@ -29,7 +29,7 @@ val mkcrumb : url -> string -> crumb
 
 val defaultSettings : settings
 val addcrumb : transaction page -> string -> settings -> settings
-val setlang : lang -> settings -> settings
+(* val setlang : lang -> settings -> settings *)
 val setmain : settings -> settings
 
 val template : handlers -> settings -> (RespTabs.tabs -> transaction xbody) -> transaction page

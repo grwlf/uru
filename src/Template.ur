@@ -172,9 +172,9 @@ fun mkcrumb (u:url) (s:string) = {Url = u, Caption=s}
 
 fun addcrumb (x:transaction page) (s:string) h = h -- #Crumbs ++ { Crumbs = (mkcrumb (url x) s) :: h.Crumbs }
 
-val defaultSettings = { Crumbs = [] , IsMain = False, Lang = { Lang = "en" } } 
+val defaultSettings = { Crumbs = [] , IsMain = False } 
 
-fun setlang (l:lang) (s:settings) = s -- #Lang ++ {Lang = l}
+(* fun setlang (l:lang) (s:settings) = s -- #Lang ++ {Lang = l} *)
 
 fun setmain (s:settings) : settings = s -- #IsMain ++ {IsMain = True}
 
@@ -186,15 +186,17 @@ and image n : transaction page =
 
 and template (h:handlers) (s:settings) (x:RespTabs.tabs -> transaction xbody) = let
   
-  val crumbs = (mkcrumb (h.Main s.Lang) "Home") :: s.Crumbs
+  val crumbs = (mkcrumb (h.Main h.Lang) "Home") :: s.Crumbs
 
   (* val self = url (template ismain x) *)
 
-  (* val toMain = h.Main s.Lang *)
+  (* val toMain = h.Main h.Lang *)
 
-  fun prodlink s1 s2 = <xml><a link={h.Product s1 s2 s.Lang}>{[s2]}</a></xml>
+  val mylang = h.Lang
 
-  val toSelf = h.Self s.Lang
+  fun prodlink s1 s2 = <xml><a href={h.Product mylang s1 s2}>{[s2]}</a></xml>
+
+  val toSelf = h.Self h.Lang
 
   fun mkheader (css:css_class) : transaction xbody = 
 
@@ -218,7 +220,7 @@ and template (h:handlers) (s:settings) (x:RespTabs.tabs -> transaction xbody) = 
             <div class={menucolumn}>
               <div style="height:65px;display:table">
                 <div style="display:table-cell; vertical-align:middle;">
-                  <a link={h.Product prod.Product.Caption "" s.Lang}>
+                  <a href={h.Product mylang prod.Product.Caption ""}>
                   <img style="width:60%" src={url (image prod.Product.Logo)}/>
                   </a>
                 </div>
