@@ -1,5 +1,7 @@
 
 val main : unit -> transaction page
 
-val sitemap : Template.lang -> Product.product -> transaction page
+type prod = Product.product string string
+
+val sitemap : Template.lang -> prod -> transaction page
 

@@ -1,5 +1,8 @@
 
-datatype product = HOME | FXRTOS of string | TOPOR of string
+datatype product f t =
+    HOME
+  | FXRTOS of f
+  | TOPOR of t
 
-val fromString : string -> string -> product
+val fromString : string -> string -> product string string
 

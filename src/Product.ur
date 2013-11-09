@@ -1,4 +1,7 @@
-datatype product = HOME | FXRTOS of string | TOPOR of string
+datatype product f t =
+    HOME
+  | FXRTOS of f
+  | TOPOR of t
 
 fun fromString s1 s2 =
     case (String.mp tolower s1) of

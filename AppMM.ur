@@ -421,7 +421,7 @@ and homepage (h:Template.handlers) (s:Template.settings) =
       )
   end
 
-and sitemap l (p:Product.product) =
+and sitemap l p =
   let
     val hd = { Product = (fn l p => url (sitemap l p)),
                Main = (fn l => url (sitemap l Product.HOME)),

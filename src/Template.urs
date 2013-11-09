@@ -13,7 +13,7 @@ type crumb = {  Caption : string }
 type lang = { Lang : string }
 
 type handlers = {
-  Product: lang -> Product.product -> url,
+  Product: lang -> Product.product string string -> url,
   Self : lang -> url,
   Main : lang -> url
   }
