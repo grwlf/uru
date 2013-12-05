@@ -40,14 +40,15 @@ Notes
 =====
 
   * Build system works as following:
-      1. cake3 builds the ./Cakegen app taking Cakefile.hs (in Haskell) as
-         it's input
-      2. ./Cakegen generates all UrWeb project files, autogen/* files, the
-         Makefile and the Makefile.devel. The first Makefile is for
+      1. [Cake3](https://github.com/grwlf/cake3) builds the ./Cakegen binary
+         using ./Cakefile.hs (in Haskell) as it's input
+      2. ./Cakegen generates all the UrWeb project files, the autogen/* files,
+         the Makefile and the Makefile.devel. The first Makefile is for
          non-developers.  It doesn't require cake3 to be installed. The second
          Makefile knows how to rebuild itself as well as autogen/* if someone
          change the resources.
-      3. GNU Makfile evaluates either Makefile or Makefile.devel
+      3. GNU Make evaluates either Makefile or Makefile.devel and builds the
+         library and the test executable.
   * src/NivoSlider is the hardest case, since it requires $(window).load()
     event handler and uses tricky urls inside it's CSS.
   * Main function ends with a smile :)
