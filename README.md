@@ -11,7 +11,7 @@ Requirements
 ============
 
 The Ur/Web compiler in source form, sqlite3 and the POSIX env are required in
-order to build the demo and watch it running.
+order to build the demo.
 
 For the development, [cake3](https://github.com/grwlf/cake3) and
 [urembed](https://github.com/grwlf/urembed) are needed as well. Both of them
@@ -21,33 +21,32 @@ Building
 ========
 
   1. Obtain the Ur/Web from the [official repo](http://hg.impredicative.com/urweb).
-  2. Patch the sources with the patches from the urweb/ directory, build and
-     install. Apply CYGWIN HACK patch only if you are using Cygwin.
-  3. Unpack the URU sources and run the following commands from the project's
-     top directory:
+  2. Patch the sources with the patches from the root directory, build and
+     install.
+  3. Clone and build [urscript library](https://github.com/grwlf/urscript)
+        
+        $ git clone https://github.com/grwlf/urscript
+        $ ( cd urscript ; make ; )
 
-        $ ./fixmake.sh # prevents rebuilding of static data
-        $ make
+  4. Unpack and build the URU sources
 
-  4. Launch ./AppMM.exe and visit http://localhost:8080/AppMM/main
+        $ git clone https://github.com/grwlf/uru 
+        $ ( cd uru ; make ; )
+
+  5. Launch ./uru/test/Test1.exe and visit http://localhost:8080/Test1/main
 
 Notes
 =====
 
-  * See the main function from the AppMM.ur for the overview of the approach.
-    src/ui/Page.ur defines the continuation monad-like structure 'dpage'
-    together with basic combinators. It is not a monad because the dpage is a
-    type function and each combinator changes the final type to record the
-    headers applied.
-  * src/static contains ur modules for static files generated with Urembed. This
-    way, no additional web server is needed.
-  * Urembed generates JavaScript FFI interfaces automatically. That is how files
-    like src/ui/PikaChoose/PikaChoose.js is handled. Look inside
-    src/static/PikaChoose_js.urs for the details.
-  * cake3 builds the ./Cakegen app from Cakefile.hs (in Haskell), ./Cakegen
-    generates the Makefile. Normally, one have to rebuild the Makefile after
-    adding new files or changing the App.urp file.
-  * src/ui/NivoSlider is the hardest case, since it requires $(window).load()
+  * Build system works as following:
+      1. cake3 builds the ./Cakegen app taking Cakefile.hs (in Haskell) as
+         it's input
+      2. ./Cakegen generates two Makefile: Makefile and Makefile.devel. The
+         first one is for non-developers. It doesn't require cake3 installed.
+         The second one knows how to rebuild autogen/* and the Makefiles if
+         someone change the resources
+      3. GNU Makfile evaluates either Makefile or Makefile.devel
+  * src/NivoSlider is the hardest case, since it requires $(window).load()
     event handler and uses tricky urls inside it's CSS.
   * Main function ends with a smile :)
 
