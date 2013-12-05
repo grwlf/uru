@@ -32,6 +32,8 @@ Building
         $ git clone https://github.com/grwlf/uru 
         $ ( cd uru ; make ; )
 
+     Note, uru and urscript should live in the same directory
+
   5. Launch ./uru/test/Test1.exe and visit http://localhost:8080/Test1/main
 
 Notes
