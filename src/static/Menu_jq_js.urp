@@ -1,6 +1,0 @@
-library Menu_jq_js_c
-library Menu_jq_js_js
-safeGet Menu_jq_js/blobpage
-safeGet Menu_jq_js/blob
-
-Menu_jq_js

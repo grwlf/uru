@@ -1,6 +1,0 @@
-library NivoSlider_js_c
-library NivoSlider_js_js
-safeGet NivoSlider_js/blobpage
-safeGet NivoSlider_js/blob
-
-NivoSlider_js

@@ -1,3 +1,0 @@
-ffi Flex_png_c
-include Flex_png_c.h
-link Flex_png_c.o

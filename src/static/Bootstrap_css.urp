@@ -1,6 +1,0 @@
-library Bootstrap_css_c
-library Bootstrap_css_js
-safeGet Bootstrap_css/blobpage
-safeGet Bootstrap_css/blob
-
-Bootstrap_css

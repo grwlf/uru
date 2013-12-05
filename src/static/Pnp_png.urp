@@ -1,6 +1,0 @@
-library Pnp_png_c
-library Pnp_png_js
-safeGet Pnp_png/blobpage
-safeGet Pnp_png/blob
-
-Pnp_png

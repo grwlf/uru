@@ -1,5 +1,0 @@
-ffi PikaChoose_js_js
-jsFunc PikaChoose_js_js.pkch_init = pkch_init__unit
-benignEffectful PikaChoose_js_js.pkch_init
-jsFunc PikaChoose_js_js.pkch_style = pkch_style__unit
-benignEffectful PikaChoose_js_js.pkch_style

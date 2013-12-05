@@ -1,7 +1,0 @@
-ffi TinyMCE_js_js
-jsFunc TinyMCE_js_js.imglist_new = imglist_new__tmce_imglist
-benignEffectful TinyMCE_js_js.imglist_new
-jsFunc TinyMCE_js_js.imglist_insert = imglist_insert__tmce_imglist
-benignEffectful TinyMCE_js_js.imglist_insert
-jsFunc TinyMCE_js_js.tmce_init = tmce_init__unit
-benignEffectful TinyMCE_js_js.tmce_init

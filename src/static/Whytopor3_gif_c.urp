@@ -1,3 +1,0 @@
-ffi Whytopor3_gif_c
-include Whytopor3_gif_c.h
-link Whytopor3_gif_c.o

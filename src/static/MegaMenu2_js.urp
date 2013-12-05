@@ -1,6 +1,0 @@
-library MegaMenu2_js_c
-library MegaMenu2_js_js
-safeGet MegaMenu2_js/blobpage
-safeGet MegaMenu2_js/blob
-
-MegaMenu2_js

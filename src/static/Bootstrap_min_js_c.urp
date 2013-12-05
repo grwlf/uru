@@ -1,3 +1,0 @@
-ffi Bootstrap_min_js_c
-include Bootstrap_min_js_c.h
-link Bootstrap_min_js_c.o

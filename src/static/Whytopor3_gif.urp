@@ -1,6 +1,0 @@
-library Whytopor3_gif_c
-library Whytopor3_gif_js
-safeGet Whytopor3_gif/blobpage
-safeGet Whytopor3_gif/blob
-
-Whytopor3_gif

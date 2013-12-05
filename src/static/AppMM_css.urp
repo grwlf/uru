@@ -1,6 +1,0 @@
-library AppMM_css_c
-library AppMM_css_js
-safeGet AppMM_css/blobpage
-safeGet AppMM_css/blob
-
-AppMM_css

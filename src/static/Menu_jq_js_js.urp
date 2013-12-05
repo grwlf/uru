@@ -1,3 +1,0 @@
-ffi Menu_jq_js_js
-jsFunc Menu_jq_js_js.init = init__unit
-benignEffectful Menu_jq_js_js.init

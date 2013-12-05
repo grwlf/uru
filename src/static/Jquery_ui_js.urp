@@ -1,6 +1,0 @@
-library Jquery_ui_js_c
-library Jquery_ui_js_js
-safeGet Jquery_ui_js/blobpage
-safeGet Jquery_ui_js/blob
-
-Jquery_ui_js

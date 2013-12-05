@@ -1,3 +1,0 @@
-ffi Menu_jq_css_c
-include Menu_jq_css_c.h
-link Menu_jq_css_c.o

@@ -1,6 +1,0 @@
-library Logo_gif_c
-library Logo_gif_js
-safeGet Logo_gif/blobpage
-safeGet Logo_gif/blob
-
-Logo_gif

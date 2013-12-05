@@ -1,6 +1,0 @@
-library Flag_uk_gif_c
-library Flag_uk_gif_js
-safeGet Flag_uk_gif/blobpage
-safeGet Flag_uk_gif/blob
-
-Flag_uk_gif

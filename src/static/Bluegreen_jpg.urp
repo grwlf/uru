@@ -1,6 +1,0 @@
-library Bluegreen_jpg_c
-library Bluegreen_jpg_js
-safeGet Bluegreen_jpg/blobpage
-safeGet Bluegreen_jpg/blob
-
-Bluegreen_jpg

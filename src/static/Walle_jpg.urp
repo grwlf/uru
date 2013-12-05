@@ -1,6 +1,0 @@
-library Walle_jpg_c
-library Walle_jpg_js
-safeGet Walle_jpg/blobpage
-safeGet Walle_jpg/blob
-
-Walle_jpg

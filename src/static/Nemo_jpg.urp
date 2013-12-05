@@ -1,6 +1,0 @@
-library Nemo_jpg_c
-library Nemo_jpg_js
-safeGet Nemo_jpg/blobpage
-safeGet Nemo_jpg/blob
-
-Nemo_jpg

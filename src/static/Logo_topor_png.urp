@@ -1,6 +1,0 @@
-library Logo_topor_png_c
-library Logo_topor_png_js
-safeGet Logo_topor_png/blobpage
-safeGet Logo_topor_png/blob
-
-Logo_topor_png

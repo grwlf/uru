@@ -1,3 +1,0 @@
-ffi Nivo_arrows_png_c
-include Nivo_arrows_png_c.h
-link Nivo_arrows_png_c.o

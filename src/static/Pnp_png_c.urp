@@ -1,3 +1,0 @@
-ffi Pnp_png_c
-include Pnp_png_c.h
-link Pnp_png_c.o

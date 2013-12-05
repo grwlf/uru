@@ -1,6 +1,0 @@
-library PikaChoose_js_c
-library PikaChoose_js_js
-safeGet PikaChoose_js/blobpage
-safeGet PikaChoose_js/blob
-
-PikaChoose_js

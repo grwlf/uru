@@ -1,3 +1,0 @@
-ffi Bluegreen_jpg_c
-include Bluegreen_jpg_c.h
-link Bluegreen_jpg_c.o

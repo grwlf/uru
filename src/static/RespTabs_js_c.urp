@@ -1,3 +1,0 @@
-ffi RespTabs_js_c
-include RespTabs_js_c.h
-link RespTabs_js_c.o

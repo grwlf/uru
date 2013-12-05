@@ -1,3 +1,0 @@
-ffi Logo_rtos_png_c
-include Logo_rtos_png_c.h
-link Logo_rtos_png_c.o

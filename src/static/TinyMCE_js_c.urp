@@ -1,3 +1,0 @@
-ffi TinyMCE_js_c
-include TinyMCE_js_c.h
-link TinyMCE_js_c.o

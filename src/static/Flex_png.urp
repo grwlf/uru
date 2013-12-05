@@ -1,6 +1,0 @@
-library Flex_png_c
-library Flex_png_js
-safeGet Flex_png/blobpage
-safeGet Flex_png/blob
-
-Flex_png

@@ -1,6 +1,0 @@
-library Banner1_png_c
-library Banner1_png_js
-safeGet Banner1_png/blobpage
-safeGet Banner1_png/blob
-
-Banner1_png

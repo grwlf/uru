@@ -1,0 +1,9 @@
+allow url http://code.jquery.com/ui/1.10.3/jquery-ui.js
+allow mime text/javascript
+allow mime text/css
+library .././Uru
+debug
+safeGet Test1/main
+
+$/list
+.././test/Test1

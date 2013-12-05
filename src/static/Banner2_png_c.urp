@@ -1,3 +1,0 @@
-ffi Banner2_png_c
-include Banner2_png_c.h
-link Banner2_png_c.o

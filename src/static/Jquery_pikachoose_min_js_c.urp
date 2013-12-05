@@ -1,3 +1,0 @@
-ffi Jquery_pikachoose_min_js_c
-include Jquery_pikachoose_min_js_c.h
-link Jquery_pikachoose_min_js_c.o

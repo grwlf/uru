@@ -1,3 +1,0 @@
-ffi MegaMenu2_js_c
-include MegaMenu2_js_c.h
-link MegaMenu2_js_c.o
