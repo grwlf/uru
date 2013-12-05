@@ -51,6 +51,7 @@ Notes
          library and the test executable.
   * src/NivoSlider is the hardest case, since it requires $(window).load()
     event handler and uses tricky urls inside it's CSS.
-  * Main function ends with a smile :)
+  * [Main function](https://github.com/grwlf/uru/blob/master/test/Test1.ur) ends
+    with a smile :)
 
 
