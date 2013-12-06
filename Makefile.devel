@@ -7,60 +7,74 @@ ifdef MAIN
 
 # Main section
 
-URCC = $(shell $(shell urweb -print-ccompiler) -print-prog-name=gcc)
-URINCL = $(shell urweb -print-cinclude)
+URVERSION = $(shell urweb -version)
 .PHONY: all
 all: ./Makefile.devel ./Uru.urp ./test/Test1.exe
 .PHONY: clean
 clean: ./Makefile.devel
-	rm -rf .cake3 ./autogen/Bootstrap_css_c.o ./autogen/RespTabs_js_c.o ./autogen/EasyResponsiveTabs_js_c.o ./autogen/Easy_responsive_tabs_css_c.o ./autogen/PikaChoose_js_c.o ./autogen/PikaChoose_css_c.o ./autogen/Jquery_pikachoose_min_js_c.o ./autogen/Jquery_jcarousel_min_js_c.o ./autogen/Menu_jq_js_c.o ./autogen/Menu_jq_css_c.o ./autogen/Jquery_megamenu_js_c.o ./autogen/MegaMenu2_js_c.o ./autogen/MegaMenu2_css_c.o ./autogen/Jquery_ui_js_c.o ./autogen/Jquery_ui_css_c.o ./autogen/Jquery_1_9_1_js_c.o ./test/Test1.exe
-./test/Test1.exe: ./Makefile.devel ./test/Test1.urp
+	rm -rf .cake3  ./test/Test1.exe
+./test/Test1.exe: ./Makefile.devel ./test/Test1.urp $(call GUARD,URVERSION)
 	urweb -dbms sqlite ./test/Test1
+./autogen/walle.jpg.urp: ./Makefile.devel ./test/walle.jpg
+	urembed -o ./autogen/walle.jpg.urp ./test/walle.jpg
+./autogen/nemo.jpg.urp: ./Makefile.devel ./test/nemo.jpg
+	urembed -o ./autogen/nemo.jpg.urp ./test/nemo.jpg
+./autogen/bootstrap.css.urp: ./Makefile.devel ./src/Bootstrap/bootstrap.css
+	urembed -o ./autogen/bootstrap.css.urp ./src/Bootstrap/bootstrap.css
+./autogen/RespTabs.js.urp: ./Makefile.devel ./src/RespTabs/RespTabs.js
+	urembed -o ./autogen/RespTabs.js.urp ./src/RespTabs/RespTabs.js
+./autogen/easyResponsiveTabs.js.urp: ./Makefile.devel ./src/RespTabs/easyResponsiveTabs.js
+	urembed -o ./autogen/easyResponsiveTabs.js.urp ./src/RespTabs/easyResponsiveTabs.js
+./autogen/easy-responsive-tabs.css.urp: ./Makefile.devel ./src/RespTabs/easy-responsive-tabs.css
+	urembed -o ./autogen/easy-responsive-tabs.css.urp ./src/RespTabs/easy-responsive-tabs.css
+./autogen/PikaChoose.js.urp: ./Makefile.devel ./src/PikaChoose/PikaChoose.js
+	urembed -o ./autogen/PikaChoose.js.urp ./src/PikaChoose/PikaChoose.js
+./autogen/PikaChoose.css.urp: ./Makefile.devel ./src/PikaChoose/PikaChoose.css
+	urembed -o ./autogen/PikaChoose.css.urp ./src/PikaChoose/PikaChoose.css
+./autogen/jquery.pikachoose.min.js.urp: ./Makefile.devel ./src/PikaChoose/jquery.pikachoose.min.js
+	urembed -o ./autogen/jquery.pikachoose.min.js.urp ./src/PikaChoose/jquery.pikachoose.min.js
+./autogen/jquery.jcarousel.min.js.urp: ./Makefile.devel ./src/PikaChoose/jquery.jcarousel.min.js
+	urembed -o ./autogen/jquery.jcarousel.min.js.urp ./src/PikaChoose/jquery.jcarousel.min.js
+./autogen/NivoSlider.js.urp: ./Makefile.devel ./src/NivoSlider/NivoSlider.js
+	urembed -o ./autogen/NivoSlider.js.urp ./src/NivoSlider/NivoSlider.js
+./autogen/nivo-slider.css.urp: ./Makefile.devel ./src/NivoSlider/nivo-slider.css
+	urembed -o ./autogen/nivo-slider.css.urp ./src/NivoSlider/nivo-slider.css
+./autogen/nivo-loading.gif.urp: ./Makefile.devel ./src/NivoSlider/nivo-loading.gif
+	urembed -o ./autogen/nivo-loading.gif.urp ./src/NivoSlider/nivo-loading.gif
+./autogen/nivo-default.css.urp: ./Makefile.devel ./src/NivoSlider/nivo-default.css
+	urembed -o ./autogen/nivo-default.css.urp ./src/NivoSlider/nivo-default.css
+./autogen/nivo-bullets.png.urp: ./Makefile.devel ./src/NivoSlider/nivo-bullets.png
+	urembed -o ./autogen/nivo-bullets.png.urp ./src/NivoSlider/nivo-bullets.png
+./autogen/nivo-arrows.png.urp: ./Makefile.devel ./src/NivoSlider/nivo-arrows.png
+	urembed -o ./autogen/nivo-arrows.png.urp ./src/NivoSlider/nivo-arrows.png
+./autogen/jquery.nivo.slider.pack.js.urp: ./Makefile.devel ./src/NivoSlider/jquery.nivo.slider.pack.js
+	urembed -o ./autogen/jquery.nivo.slider.pack.js.urp ./src/NivoSlider/jquery.nivo.slider.pack.js
+./autogen/menu_jq.js.urp: ./Makefile.devel ./src/MenuUI/menu_jq.js
+	urembed -o ./autogen/menu_jq.js.urp ./src/MenuUI/menu_jq.js
+./autogen/menu_jq.css.urp: ./Makefile.devel ./src/MenuUI/menu_jq.css
+	urembed -o ./autogen/menu_jq.css.urp ./src/MenuUI/menu_jq.css
+./autogen/jquery.megamenu.js.urp: ./Makefile.devel ./src/MegaMenu2/jquery.megamenu.js
+	urembed -o ./autogen/jquery.megamenu.js.urp ./src/MegaMenu2/jquery.megamenu.js
+./autogen/MegaMenu2.js.urp: ./Makefile.devel ./src/MegaMenu2/MegaMenu2.js
+	urembed -o ./autogen/MegaMenu2.js.urp ./src/MegaMenu2/MegaMenu2.js
+./autogen/MegaMenu2.css.urp: ./Makefile.devel ./src/MegaMenu2/MegaMenu2.css
+	urembed -o ./autogen/MegaMenu2.css.urp ./src/MegaMenu2/MegaMenu2.css
+./autogen/jquery-ui.js.urp: ./Makefile.devel ./src/JQueryUI/jquery-ui.js
+	urembed -o ./autogen/jquery-ui.js.urp ./src/JQueryUI/jquery-ui.js
+./autogen/jquery-ui.css.urp: ./Makefile.devel ./src/JQueryUI/jquery-ui.css
+	urembed -o ./autogen/jquery-ui.css.urp ./src/JQueryUI/jquery-ui.css
+./autogen/jquery-1.9.1.js.urp: ./Makefile.devel ./src/JQuery/jquery-1.9.1.js
+	urembed -o ./autogen/jquery-1.9.1.js.urp ./src/JQuery/jquery-1.9.1.js
 ./Cakegen: ./Cakefile.hs
 	cake3
-./Makefile.devel: ./Cakegen ./src/Bootstrap/bootstrap.css ./src/JQuery/jquery-1.9.1.js ./src/JQueryUI/jquery-ui.css ./src/JQueryUI/jquery-ui.js ./src/MegaMenu2/MegaMenu2.css ./src/MegaMenu2/MegaMenu2.js ./src/MegaMenu2/jquery.megamenu.js ./src/MenuUI/menu_jq.css ./src/MenuUI/menu_jq.js ./src/PikaChoose/PikaChoose.css ./src/PikaChoose/PikaChoose.js ./src/PikaChoose/jquery.jcarousel.min.js ./src/PikaChoose/jquery.pikachoose.min.js ./src/RespTabs/RespTabs.js ./src/RespTabs/easy-responsive-tabs.css ./src/RespTabs/easyResponsiveTabs.js
+./Makefile.devel: ./Cakegen
 	./Cakegen
-./Uru.urp: ./../urscript/Script.urp ./Makefile.devel ./autogen/Bootstrap_css.ur ./autogen/Bootstrap_css.urs ./autogen/Bootstrap_css_c.h ./autogen/Bootstrap_css_c.o ./autogen/EasyResponsiveTabs_js.ur ./autogen/EasyResponsiveTabs_js.urs ./autogen/EasyResponsiveTabs_js_c.h ./autogen/EasyResponsiveTabs_js_c.o ./autogen/Easy_responsive_tabs_css.ur ./autogen/Easy_responsive_tabs_css.urs ./autogen/Easy_responsive_tabs_css_c.h ./autogen/Easy_responsive_tabs_css_c.o ./autogen/Jquery_1_9_1_js.ur ./autogen/Jquery_1_9_1_js.urs ./autogen/Jquery_1_9_1_js_c.h ./autogen/Jquery_1_9_1_js_c.o ./autogen/Jquery_jcarousel_min_js.ur ./autogen/Jquery_jcarousel_min_js.urs ./autogen/Jquery_jcarousel_min_js_c.h ./autogen/Jquery_jcarousel_min_js_c.o ./autogen/Jquery_megamenu_js.ur ./autogen/Jquery_megamenu_js.urs ./autogen/Jquery_megamenu_js_c.h ./autogen/Jquery_megamenu_js_c.o ./autogen/Jquery_pikachoose_min_js.ur ./autogen/Jquery_pikachoose_min_js.urs ./autogen/Jquery_pikachoose_min_js_c.h ./autogen/Jquery_pikachoose_min_js_c.o ./autogen/Jquery_ui_css.ur ./autogen/Jquery_ui_css.urs ./autogen/Jquery_ui_css_c.h ./autogen/Jquery_ui_css_c.o ./autogen/Jquery_ui_js.ur ./autogen/Jquery_ui_js.urs ./autogen/Jquery_ui_js_c.h ./autogen/Jquery_ui_js_c.o ./autogen/MegaMenu2_css.ur ./autogen/MegaMenu2_css.urs ./autogen/MegaMenu2_css_c.h ./autogen/MegaMenu2_css_c.o ./autogen/MegaMenu2_js.ur ./autogen/MegaMenu2_js.urs ./autogen/MegaMenu2_js_c.h ./autogen/MegaMenu2_js_c.o ./autogen/Menu_jq_css.ur ./autogen/Menu_jq_css.urs ./autogen/Menu_jq_css_c.h ./autogen/Menu_jq_css_c.o ./autogen/Menu_jq_js.ur ./autogen/Menu_jq_js.urs ./autogen/Menu_jq_js_c.h ./autogen/Menu_jq_js_c.o ./autogen/PikaChoose_css.ur ./autogen/PikaChoose_css.urs ./autogen/PikaChoose_css_c.h ./autogen/PikaChoose_css_c.o ./autogen/PikaChoose_js.ur ./autogen/PikaChoose_js.urs ./autogen/PikaChoose_js_c.h ./autogen/PikaChoose_js_c.o ./autogen/RespTabs_js.ur ./autogen/RespTabs_js.urs ./autogen/RespTabs_js_c.h ./autogen/RespTabs_js_c.o ./src/Bootstrap/Bootstrap.ur ./src/Bootstrap/Bootstrap.urs ./src/CSS.ur ./src/CSS.urs ./src/JQuery/JQuery.ur ./src/JQuery/JQuery.urs ./src/JQueryUI/JQueryUI.ur ./src/JQueryUI/JQueryUI.urs ./src/MegaMenu2/MegaMenu2.ur ./src/MegaMenu2/MegaMenu2.urs ./src/MenuUI/Menu_jq.ur ./src/MenuUI/Menu_jq.urs ./src/Page.ur ./src/Page.urs ./src/PikaChoose/PikaChoose.ur ./src/PikaChoose/PikaChoose.urs ./src/RespTabs/RespTabs.ur ./src/RespTabs/RespTabs.urs
+./Uru.urp: ./../urscript/Script.urp ./Makefile.devel ./autogen/MegaMenu2.css.urp ./autogen/MegaMenu2.js.urp ./autogen/NivoSlider.js.urp ./autogen/PikaChoose.css.urp ./autogen/PikaChoose.js.urp ./autogen/RespTabs.js.urp ./autogen/bootstrap.css.urp ./autogen/easy-responsive-tabs.css.urp ./autogen/easyResponsiveTabs.js.urp ./autogen/jquery-1.9.1.js.urp ./autogen/jquery-ui.css.urp ./autogen/jquery-ui.js.urp ./autogen/jquery.jcarousel.min.js.urp ./autogen/jquery.megamenu.js.urp ./autogen/jquery.nivo.slider.pack.js.urp ./autogen/jquery.pikachoose.min.js.urp ./autogen/menu_jq.css.urp ./autogen/menu_jq.js.urp ./autogen/nivo-arrows.png.urp ./autogen/nivo-bullets.png.urp ./autogen/nivo-default.css.urp ./autogen/nivo-loading.gif.urp ./autogen/nivo-slider.css.urp ./src/Bootstrap/Bootstrap.ur ./src/Bootstrap/Bootstrap.urs ./src/CSS.ur ./src/CSS.urs ./src/JQuery/JQuery.ur ./src/JQuery/JQuery.urs ./src/JQueryUI/JQueryUI.ur ./src/JQueryUI/JQueryUI.urs ./src/MegaMenu2/MegaMenu2.ur ./src/MegaMenu2/MegaMenu2.urs ./src/MenuUI/Menu_jq.ur ./src/MenuUI/Menu_jq.urs ./src/NivoSlider/NivoSlider.ur ./src/NivoSlider/NivoSlider.urs ./src/Page.ur ./src/Page.urs ./src/PikaChoose/PikaChoose.ur ./src/PikaChoose/PikaChoose.urs ./src/RespTabs/RespTabs.ur ./src/RespTabs/RespTabs.urs
 	touch ./Uru.urp
-./autogen/Bootstrap_css_c.o: ./Makefile.devel ./autogen/Bootstrap_css_c.c $(call GUARD,URCC) $(call GUARD,URINCL)
-	$(URCC) -c -I $(URINCL) -o ./autogen/Bootstrap_css_c.o ./autogen/Bootstrap_css_c.c
-./autogen/EasyResponsiveTabs_js_c.o: ./Makefile.devel ./autogen/EasyResponsiveTabs_js_c.c $(call GUARD,URCC) $(call GUARD,URINCL)
-	$(URCC) -c -I $(URINCL) -o ./autogen/EasyResponsiveTabs_js_c.o ./autogen/EasyResponsiveTabs_js_c.c
-./autogen/Easy_responsive_tabs_css_c.o: ./Makefile.devel ./autogen/Easy_responsive_tabs_css_c.c $(call GUARD,URCC) $(call GUARD,URINCL)
-	$(URCC) -c -I $(URINCL) -o ./autogen/Easy_responsive_tabs_css_c.o ./autogen/Easy_responsive_tabs_css_c.c
-./autogen/Jquery_1_9_1_js_c.o: ./Makefile.devel ./autogen/Jquery_1_9_1_js_c.c $(call GUARD,URCC) $(call GUARD,URINCL)
-	$(URCC) -c -I $(URINCL) -o ./autogen/Jquery_1_9_1_js_c.o ./autogen/Jquery_1_9_1_js_c.c
-./autogen/Jquery_jcarousel_min_js_c.o: ./Makefile.devel ./autogen/Jquery_jcarousel_min_js_c.c $(call GUARD,URCC) $(call GUARD,URINCL)
-	$(URCC) -c -I $(URINCL) -o ./autogen/Jquery_jcarousel_min_js_c.o ./autogen/Jquery_jcarousel_min_js_c.c
-./autogen/Jquery_megamenu_js_c.o: ./Makefile.devel ./autogen/Jquery_megamenu_js_c.c $(call GUARD,URCC) $(call GUARD,URINCL)
-	$(URCC) -c -I $(URINCL) -o ./autogen/Jquery_megamenu_js_c.o ./autogen/Jquery_megamenu_js_c.c
-./autogen/Jquery_pikachoose_min_js_c.o: ./Makefile.devel ./autogen/Jquery_pikachoose_min_js_c.c $(call GUARD,URCC) $(call GUARD,URINCL)
-	$(URCC) -c -I $(URINCL) -o ./autogen/Jquery_pikachoose_min_js_c.o ./autogen/Jquery_pikachoose_min_js_c.c
-./autogen/Jquery_ui_css_c.o: ./Makefile.devel ./autogen/Jquery_ui_css_c.c $(call GUARD,URCC) $(call GUARD,URINCL)
-	$(URCC) -c -I $(URINCL) -o ./autogen/Jquery_ui_css_c.o ./autogen/Jquery_ui_css_c.c
-./autogen/Jquery_ui_js_c.o: ./Makefile.devel ./autogen/Jquery_ui_js_c.c $(call GUARD,URCC) $(call GUARD,URINCL)
-	$(URCC) -c -I $(URINCL) -o ./autogen/Jquery_ui_js_c.o ./autogen/Jquery_ui_js_c.c
-./autogen/MegaMenu2_css_c.o: ./Makefile.devel ./autogen/MegaMenu2_css_c.c $(call GUARD,URCC) $(call GUARD,URINCL)
-	$(URCC) -c -I $(URINCL) -o ./autogen/MegaMenu2_css_c.o ./autogen/MegaMenu2_css_c.c
-./autogen/MegaMenu2_js_c.o: ./Makefile.devel ./autogen/MegaMenu2_js_c.c $(call GUARD,URCC) $(call GUARD,URINCL)
-	$(URCC) -c -I $(URINCL) -o ./autogen/MegaMenu2_js_c.o ./autogen/MegaMenu2_js_c.c
-./autogen/Menu_jq_css_c.o: ./Makefile.devel ./autogen/Menu_jq_css_c.c $(call GUARD,URCC) $(call GUARD,URINCL)
-	$(URCC) -c -I $(URINCL) -o ./autogen/Menu_jq_css_c.o ./autogen/Menu_jq_css_c.c
-./autogen/Menu_jq_js_c.o: ./Makefile.devel ./autogen/Menu_jq_js_c.c $(call GUARD,URCC) $(call GUARD,URINCL)
-	$(URCC) -c -I $(URINCL) -o ./autogen/Menu_jq_js_c.o ./autogen/Menu_jq_js_c.c
-./autogen/PikaChoose_css_c.o: ./Makefile.devel ./autogen/PikaChoose_css_c.c $(call GUARD,URCC) $(call GUARD,URINCL)
-	$(URCC) -c -I $(URINCL) -o ./autogen/PikaChoose_css_c.o ./autogen/PikaChoose_css_c.c
-./autogen/PikaChoose_js_c.o: ./Makefile.devel ./autogen/PikaChoose_js_c.c $(call GUARD,URCC) $(call GUARD,URINCL)
-	$(URCC) -c -I $(URINCL) -o ./autogen/PikaChoose_js_c.o ./autogen/PikaChoose_js_c.c
-./autogen/RespTabs_js_c.o: ./Makefile.devel ./autogen/RespTabs_js_c.c $(call GUARD,URCC) $(call GUARD,URINCL)
-	$(URCC) -c -I $(URINCL) -o ./autogen/RespTabs_js_c.o ./autogen/RespTabs_js_c.c
-./test/Test1.urp: ./Makefile.devel ./Uru.urp ./test/Test1.ur
+./test/Test1.urp: ./Makefile.devel ./Uru.urp ./autogen/nemo.jpg.urp ./autogen/walle.jpg.urp ./test/Test1.ur
 	touch ./test/Test1.urp
-$(call GUARD,URCC):
-	rm -f .cake3/GUARD_URCC_*
-	touch $@
-$(call GUARD,URINCL):
-	rm -f .cake3/GUARD_URINCL_*
+$(call GUARD,URVERSION):
+	rm -f .cake3/GUARD_URVERSION_*
 	touch $@
 
 else
@@ -73,44 +87,62 @@ all: .fix-multy1
 clean: .fix-multy1
 .PHONY: ./test/Test1.exe
 ./test/Test1.exe: .fix-multy1
+.PHONY: ./autogen/walle.jpg.urp
+./autogen/walle.jpg.urp: .fix-multy1
+.PHONY: ./autogen/nemo.jpg.urp
+./autogen/nemo.jpg.urp: .fix-multy1
+.PHONY: ./autogen/bootstrap.css.urp
+./autogen/bootstrap.css.urp: .fix-multy1
+.PHONY: ./autogen/RespTabs.js.urp
+./autogen/RespTabs.js.urp: .fix-multy1
+.PHONY: ./autogen/easyResponsiveTabs.js.urp
+./autogen/easyResponsiveTabs.js.urp: .fix-multy1
+.PHONY: ./autogen/easy-responsive-tabs.css.urp
+./autogen/easy-responsive-tabs.css.urp: .fix-multy1
+.PHONY: ./autogen/PikaChoose.js.urp
+./autogen/PikaChoose.js.urp: .fix-multy1
+.PHONY: ./autogen/PikaChoose.css.urp
+./autogen/PikaChoose.css.urp: .fix-multy1
+.PHONY: ./autogen/jquery.pikachoose.min.js.urp
+./autogen/jquery.pikachoose.min.js.urp: .fix-multy1
+.PHONY: ./autogen/jquery.jcarousel.min.js.urp
+./autogen/jquery.jcarousel.min.js.urp: .fix-multy1
+.PHONY: ./autogen/NivoSlider.js.urp
+./autogen/NivoSlider.js.urp: .fix-multy1
+.PHONY: ./autogen/nivo-slider.css.urp
+./autogen/nivo-slider.css.urp: .fix-multy1
+.PHONY: ./autogen/nivo-loading.gif.urp
+./autogen/nivo-loading.gif.urp: .fix-multy1
+.PHONY: ./autogen/nivo-default.css.urp
+./autogen/nivo-default.css.urp: .fix-multy1
+.PHONY: ./autogen/nivo-bullets.png.urp
+./autogen/nivo-bullets.png.urp: .fix-multy1
+.PHONY: ./autogen/nivo-arrows.png.urp
+./autogen/nivo-arrows.png.urp: .fix-multy1
+.PHONY: ./autogen/jquery.nivo.slider.pack.js.urp
+./autogen/jquery.nivo.slider.pack.js.urp: .fix-multy1
+.PHONY: ./autogen/menu_jq.js.urp
+./autogen/menu_jq.js.urp: .fix-multy1
+.PHONY: ./autogen/menu_jq.css.urp
+./autogen/menu_jq.css.urp: .fix-multy1
+.PHONY: ./autogen/jquery.megamenu.js.urp
+./autogen/jquery.megamenu.js.urp: .fix-multy1
+.PHONY: ./autogen/MegaMenu2.js.urp
+./autogen/MegaMenu2.js.urp: .fix-multy1
+.PHONY: ./autogen/MegaMenu2.css.urp
+./autogen/MegaMenu2.css.urp: .fix-multy1
+.PHONY: ./autogen/jquery-ui.js.urp
+./autogen/jquery-ui.js.urp: .fix-multy1
+.PHONY: ./autogen/jquery-ui.css.urp
+./autogen/jquery-ui.css.urp: .fix-multy1
+.PHONY: ./autogen/jquery-1.9.1.js.urp
+./autogen/jquery-1.9.1.js.urp: .fix-multy1
 .PHONY: ./Cakegen
 ./Cakegen: .fix-multy1
 .PHONY: ./Makefile.devel
 ./Makefile.devel: .fix-multy1
 .PHONY: ./Uru.urp
 ./Uru.urp: .fix-multy1
-.PHONY: ./autogen/Bootstrap_css_c.o
-./autogen/Bootstrap_css_c.o: .fix-multy1
-.PHONY: ./autogen/EasyResponsiveTabs_js_c.o
-./autogen/EasyResponsiveTabs_js_c.o: .fix-multy1
-.PHONY: ./autogen/Easy_responsive_tabs_css_c.o
-./autogen/Easy_responsive_tabs_css_c.o: .fix-multy1
-.PHONY: ./autogen/Jquery_1_9_1_js_c.o
-./autogen/Jquery_1_9_1_js_c.o: .fix-multy1
-.PHONY: ./autogen/Jquery_jcarousel_min_js_c.o
-./autogen/Jquery_jcarousel_min_js_c.o: .fix-multy1
-.PHONY: ./autogen/Jquery_megamenu_js_c.o
-./autogen/Jquery_megamenu_js_c.o: .fix-multy1
-.PHONY: ./autogen/Jquery_pikachoose_min_js_c.o
-./autogen/Jquery_pikachoose_min_js_c.o: .fix-multy1
-.PHONY: ./autogen/Jquery_ui_css_c.o
-./autogen/Jquery_ui_css_c.o: .fix-multy1
-.PHONY: ./autogen/Jquery_ui_js_c.o
-./autogen/Jquery_ui_js_c.o: .fix-multy1
-.PHONY: ./autogen/MegaMenu2_css_c.o
-./autogen/MegaMenu2_css_c.o: .fix-multy1
-.PHONY: ./autogen/MegaMenu2_js_c.o
-./autogen/MegaMenu2_js_c.o: .fix-multy1
-.PHONY: ./autogen/Menu_jq_css_c.o
-./autogen/Menu_jq_css_c.o: .fix-multy1
-.PHONY: ./autogen/Menu_jq_js_c.o
-./autogen/Menu_jq_js_c.o: .fix-multy1
-.PHONY: ./autogen/PikaChoose_css_c.o
-./autogen/PikaChoose_css_c.o: .fix-multy1
-.PHONY: ./autogen/PikaChoose_js_c.o
-./autogen/PikaChoose_js_c.o: .fix-multy1
-.PHONY: ./autogen/RespTabs_js_c.o
-./autogen/RespTabs_js_c.o: .fix-multy1
 .PHONY: ./test/Test1.urp
 ./test/Test1.urp: .fix-multy1
 .INTERMEDIATE: .fix-multy1

@@ -1,0 +1,8 @@
+include ./PikaChoose_css_c.h
+link ./PikaChoose_css_c.o
+ffi ./PikaChoose_css_c
+ffi ./PikaChoose_css_js
+safeGet PikaChoose_css/blobpage
+safeGet PikaChoose_css/blob
+
+./PikaChoose_css

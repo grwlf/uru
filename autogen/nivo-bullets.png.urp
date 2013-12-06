@@ -1,0 +1,8 @@
+include ./Nivo_bullets_png_c.h
+link ./Nivo_bullets_png_c.o
+ffi ./Nivo_bullets_png_c
+ffi ./Nivo_bullets_png_js
+safeGet Nivo_bullets_png/blobpage
+safeGet Nivo_bullets_png/blob
+
+./Nivo_bullets_png

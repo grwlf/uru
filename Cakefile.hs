@@ -6,11 +6,23 @@ import Cakefile_P
 
 instance IsString File where fromString = file
 
-collection d xs = mapM_ choose xs where
-  choose x | (takeExtension x) == ".ur" = ur (pair (d</>x))
-           | otherwise = bin "autogen" (d </> x)
 
-project = do
+data Mode = User | Devel
+  deriving(Eq,Show)
+
+project mode = do
+
+  when (mode == Devel) $ do
+    selfUpdate
+    return ()
+
+  let collection d xs = mapM_ choose xs where
+        choose x | (takeExtension x) == ".ur" = ur (pair (d</>x))
+                 | (mode == Devel) = library (embed urp (d </> x))
+                 | (mode == User) = library (standalone2 urp)
+                 where
+                  urp = "autogen" </> ((takeFileName x) ++ ".urp")
+
   prebuild [cmd|urweb -print-cinclude >/dev/null|]
   prebuild [cmd|mkdir -pv autogen |]
 
@@ -46,6 +58,17 @@ project = do
       , "Menu_jq.ur"
       ]
 
+    collection "src/NivoSlider" [
+        "jquery.nivo.slider.pack.js"
+      , "nivo-arrows.png"
+      , "nivo-bullets.png"
+      , "nivo-default.css"
+      , "nivo-loading.gif"
+      , "nivo-slider.css"
+      , "NivoSlider.js"
+      , "NivoSlider.ur"
+      ]
+
     collection "src/PikaChoose" [
         "jquery.jcarousel.min.js"
       , "jquery.pikachoose.min.js"
@@ -70,10 +93,18 @@ project = do
     allow url "http://code.jquery.com/ui/1.10.3/jquery-ui.js";
     allow mime "text/javascript";
     allow mime "text/css";
+    allow mime "image/jpeg";
+    allow mime "image/png";
+    allow mime "image/gif";
     library (internal u);
     debug
     safeGet "Test1/main"
 
+    collection "test" [
+        "nemo.jpg"
+      , "walle.jpg"
+      ]
+     
     ur (sys "list")
     ur (single "test/Test1.ur")
 
@@ -87,6 +118,6 @@ project = do
     depend t1
 
 main = do
-  writeMake (file "Makefile") (project)
-  writeMake (file "Makefile.devel") (selfUpdate >> project)
+  writeMake (file "Makefile") (project User)
+  writeMake (file "Makefile.devel") (project Devel)
 

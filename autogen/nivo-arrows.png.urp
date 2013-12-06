@@ -1,0 +1,8 @@
+include ./Nivo_arrows_png_c.h
+link ./Nivo_arrows_png_c.o
+ffi ./Nivo_arrows_png_c
+ffi ./Nivo_arrows_png_js
+safeGet Nivo_arrows_png/blobpage
+safeGet Nivo_arrows_png/blob
+
+./Nivo_arrows_png
