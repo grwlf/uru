@@ -15,9 +15,7 @@ fun add [t] [x] [t~out] css f r =
       PikaChoose_js.pkch_init css;
       PikaChoose_js.pkch_style 817 390
       
-    val r' = Page.requireHeader [#JQ] (
-             Page.addHeader [#PKCH] hdr (init) (
-               r))
+    val r' = Page.addHeader [#PKCH] hdr (init) r
   in
     f r'
   end
