@@ -15,7 +15,7 @@ clean:
 	rm -rf .cake3  ./test/Test1.exe
 ./test/Test1.exe: ./test/Test1.urp $(call GUARD,URVERSION)
 	urweb -dbms sqlite ./test/Test1
-./Uru.urp: ./../urscript/Script.urp ./autogen/MegaMenu2.css.urp ./autogen/MegaMenu2.js.urp ./autogen/NivoSlider.js.urp ./autogen/PikaChoose.css.urp ./autogen/PikaChoose.js.urp ./autogen/RespTabs.js.urp ./autogen/bootstrap.css.urp ./autogen/easy-responsive-tabs.css.urp ./autogen/easyResponsiveTabs.js.urp ./autogen/jquery-1.9.1.js.urp ./autogen/jquery-ui.css.urp ./autogen/jquery-ui.js.urp ./autogen/jquery.jcarousel.min.js.urp ./autogen/jquery.megamenu.js.urp ./autogen/jquery.nivo.slider.pack.js.urp ./autogen/jquery.pikachoose.min.js.urp ./autogen/menu_jq.css.urp ./autogen/menu_jq.js.urp ./autogen/nivo-arrows.png.urp ./autogen/nivo-bullets.png.urp ./autogen/nivo-default.css.urp ./autogen/nivo-loading.gif.urp ./autogen/nivo-slider.css.urp ./src/Bootstrap/Bootstrap.ur ./src/Bootstrap/Bootstrap.urs ./src/CSS.ur ./src/CSS.urs ./src/JQuery/JQuery.ur ./src/JQuery/JQuery.urs ./src/JQueryUI/JQueryUI.ur ./src/JQueryUI/JQueryUI.urs ./src/MegaMenu2/MegaMenu2.ur ./src/MegaMenu2/MegaMenu2.urs ./src/MenuUI/Menu_jq.ur ./src/MenuUI/Menu_jq.urs ./src/NivoSlider/NivoSlider.ur ./src/NivoSlider/NivoSlider.urs ./src/Page.ur ./src/Page.urs ./src/PikaChoose/PikaChoose.ur ./src/PikaChoose/PikaChoose.urs ./src/RespTabs/RespTabs.ur ./src/RespTabs/RespTabs.urs
+./Uru.urp: ./../urscript/Script.urp ./autogen/MegaMenu2.css.urp ./autogen/MegaMenu2.js.urp ./autogen/PikaChoose.css.urp ./autogen/PikaChoose.js.urp ./autogen/RespTabs.js.urp ./autogen/bootstrap.css.urp ./autogen/easy-responsive-tabs.css.urp ./autogen/easyResponsiveTabs.js.urp ./autogen/jquery-1.9.1.js.urp ./autogen/jquery-ui.css.urp ./autogen/jquery-ui.js.urp ./autogen/jquery.jcarousel.min.js.urp ./autogen/jquery.megamenu.js.urp ./autogen/jquery.pikachoose.min.js.urp ./autogen/menu_jq.css.urp ./autogen/menu_jq.js.urp ./src/Bootstrap/Bootstrap.ur ./src/Bootstrap/Bootstrap.urs ./src/CSS.ur ./src/CSS.urs ./src/JQuery/JQuery.ur ./src/JQuery/JQuery.urs ./src/JQueryUI/JQueryUI.ur ./src/JQueryUI/JQueryUI.urs ./src/MegaMenu2/MegaMenu2.ur ./src/MegaMenu2/MegaMenu2.urs ./src/MenuUI/Menu_jq.ur ./src/MenuUI/Menu_jq.urs ./src/Page.ur ./src/Page.urs ./src/PikaChoose/PikaChoose.ur ./src/PikaChoose/PikaChoose.urs ./src/RespTabs/RespTabs.ur ./src/RespTabs/RespTabs.urs
 	touch ./Uru.urp
 ./test/Test1.urp: ./Uru.urp ./autogen/nemo.jpg.urp ./autogen/walle.jpg.urp ./test/Test1.ur
 	touch ./test/Test1.urp
@@ -42,32 +42,25 @@ clean: .fix-multy1
 	-mkdir .cake3
 	urweb -print-cinclude >/dev/null
 	mkdir -pv autogen
-	$(MAKE) -C ./../urscript
-	$(MAKE) -f jquery-1.9.1.js.mk -C ./autogen
-	$(MAKE) -f jquery-ui.css.mk -C ./autogen
-	$(MAKE) -f jquery-ui.js.mk -C ./autogen
-	$(MAKE) -f MegaMenu2.css.mk -C ./autogen
-	$(MAKE) -f MegaMenu2.js.mk -C ./autogen
-	$(MAKE) -f jquery.megamenu.js.mk -C ./autogen
-	$(MAKE) -f menu_jq.css.mk -C ./autogen
-	$(MAKE) -f menu_jq.js.mk -C ./autogen
-	$(MAKE) -f jquery.nivo.slider.pack.js.mk -C ./autogen
-	$(MAKE) -f nivo-arrows.png.mk -C ./autogen
-	$(MAKE) -f nivo-bullets.png.mk -C ./autogen
-	$(MAKE) -f nivo-default.css.mk -C ./autogen
-	$(MAKE) -f nivo-loading.gif.mk -C ./autogen
-	$(MAKE) -f nivo-slider.css.mk -C ./autogen
-	$(MAKE) -f NivoSlider.js.mk -C ./autogen
-	$(MAKE) -f jquery.jcarousel.min.js.mk -C ./autogen
-	$(MAKE) -f jquery.pikachoose.min.js.mk -C ./autogen
-	$(MAKE) -f PikaChoose.css.mk -C ./autogen
-	$(MAKE) -f PikaChoose.js.mk -C ./autogen
-	$(MAKE) -f easy-responsive-tabs.css.mk -C ./autogen
-	$(MAKE) -f easyResponsiveTabs.js.mk -C ./autogen
-	$(MAKE) -f RespTabs.js.mk -C ./autogen
-	$(MAKE) -f bootstrap.css.mk -C ./autogen
-	$(MAKE) -f nemo.jpg.mk -C ./autogen
-	$(MAKE) -f walle.jpg.mk -C ./autogen
+	$(MAKE) -C ./../urscript -f Makefile
+	$(MAKE) -C ./autogen -f jquery-1.9.1.js.mk
+	$(MAKE) -C ./autogen -f jquery-ui.css.mk
+	$(MAKE) -C ./autogen -f jquery-ui.js.mk
+	$(MAKE) -C ./autogen -f MegaMenu2.css.mk
+	$(MAKE) -C ./autogen -f MegaMenu2.js.mk
+	$(MAKE) -C ./autogen -f jquery.megamenu.js.mk
+	$(MAKE) -C ./autogen -f menu_jq.css.mk
+	$(MAKE) -C ./autogen -f menu_jq.js.mk
+	$(MAKE) -C ./autogen -f jquery.jcarousel.min.js.mk
+	$(MAKE) -C ./autogen -f jquery.pikachoose.min.js.mk
+	$(MAKE) -C ./autogen -f PikaChoose.css.mk
+	$(MAKE) -C ./autogen -f PikaChoose.js.mk
+	$(MAKE) -C ./autogen -f easy-responsive-tabs.css.mk
+	$(MAKE) -C ./autogen -f easyResponsiveTabs.js.mk
+	$(MAKE) -C ./autogen -f RespTabs.js.mk
+	$(MAKE) -C ./autogen -f bootstrap.css.mk
+	$(MAKE) -C ./autogen -f nemo.jpg.mk
+	$(MAKE) -C ./autogen -f walle.jpg.mk
 	$(MAKE) -f ./Makefile MAIN=1 $(MAKECMDGOALS)
 
 endif

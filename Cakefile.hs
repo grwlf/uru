@@ -18,17 +18,20 @@ project mode = do
 
   let collection d xs = mapM_ choose xs where
         choose x | (takeExtension x) == ".ur" = ur (pair (d</>x))
-                 | (mode == Devel) = library (embed urp (d </> x))
-                 | (mode == User) = library (standalone2 urp)
-                 where
-                  urp = "autogen" </> ((takeFileName x) ++ ".urp")
+                 | otherwise =
+                    let un = file $ "autogen" </> ((takeFileName x) ++ ".urp")
+                    in case mode of
+                      User -> library' $ do
+                        externalMake2 un
+                      Devel -> library' $ do
+                        rule $ shell [cmd|urembed -o @un $(d</>x)|]
 
   prebuild [cmd|urweb -print-cinclude >/dev/null|]
   prebuild [cmd|mkdir -pv autogen |]
 
   u <- uwlib "Uru.urp" $ do
 
-    library (standalone "../urscript/Script.urp")
+    library' (externalMake "../urscript/Script.urp")
 
     ur (sys "list")
     ur (pair "src/CSS.ur")
@@ -58,16 +61,16 @@ project mode = do
       , "Menu_jq.ur"
       ]
 
-    collection "src/NivoSlider" [
-        "jquery.nivo.slider.pack.js"
-      , "nivo-arrows.png"
-      , "nivo-bullets.png"
-      , "nivo-default.css"
-      , "nivo-loading.gif"
-      , "nivo-slider.css"
-      , "NivoSlider.js"
-      , "NivoSlider.ur"
-      ]
+    -- collection "src/NivoSlider" [
+    --     "jquery.nivo.slider.pack.js"
+    --   , "nivo-arrows.png"
+    --   , "nivo-bullets.png"
+    --   , "nivo-default.css"
+    --   , "nivo-loading.gif"
+    --   , "nivo-slider.css"
+    --   , "NivoSlider.js"
+    --   , "NivoSlider.ur"
+    --   ]
 
     collection "src/PikaChoose" [
         "jquery.jcarousel.min.js"
@@ -96,7 +99,7 @@ project mode = do
     allow mime "image/jpeg";
     allow mime "image/png";
     allow mime "image/gif";
-    library (internal u);
+    library u;
     debug
     safeGet "Test1/main"
 
