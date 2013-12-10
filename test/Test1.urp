@@ -4,7 +4,7 @@ allow mime text/css
 allow mime image/jpeg
 allow mime image/png
 allow mime image/gif
-library .././Uru
+library ../.
 debug
 safeGet Test1/main
 library .././autogen/nemo.jpg

@@ -9,15 +9,15 @@ ifdef MAIN
 
 URVERSION = $(shell urweb -version)
 .PHONY: all
-all: ./Uru.urp ./test/Test1.exe
+all: ./lib.urp ./test/Test1.exe
 .PHONY: clean
 clean: 
 	rm -rf .cake3  ./test/Test1.exe
 ./test/Test1.exe: ./test/Test1.urp $(call GUARD,URVERSION)
 	urweb -dbms sqlite ./test/Test1
-./Uru.urp: ./../urscript/Script.urp ./autogen/MegaMenu2.css.urp ./autogen/MegaMenu2.js.urp ./autogen/PikaChoose.css.urp ./autogen/PikaChoose.js.urp ./autogen/RespTabs.js.urp ./autogen/bootstrap.css.urp ./autogen/easy-responsive-tabs.css.urp ./autogen/easyResponsiveTabs.js.urp ./autogen/jquery-1.9.1.js.urp ./autogen/jquery-ui.css.urp ./autogen/jquery-ui.js.urp ./autogen/jquery.jcarousel.min.js.urp ./autogen/jquery.megamenu.js.urp ./autogen/jquery.pikachoose.min.js.urp ./autogen/menu_jq.css.urp ./autogen/menu_jq.js.urp ./src/Bootstrap/Bootstrap.ur ./src/Bootstrap/Bootstrap.urs ./src/CSS.ur ./src/CSS.urs ./src/JQuery/JQuery.ur ./src/JQuery/JQuery.urs ./src/JQueryUI/JQueryUI.ur ./src/JQueryUI/JQueryUI.urs ./src/MegaMenu2/MegaMenu2.ur ./src/MegaMenu2/MegaMenu2.urs ./src/MenuUI/Menu_jq.ur ./src/MenuUI/Menu_jq.urs ./src/Page.ur ./src/Page.urs ./src/PikaChoose/PikaChoose.ur ./src/PikaChoose/PikaChoose.urs ./src/RespTabs/RespTabs.ur ./src/RespTabs/RespTabs.urs
-	touch ./Uru.urp
-./test/Test1.urp: ./Uru.urp ./autogen/nemo.jpg.urp ./autogen/walle.jpg.urp ./test/Test1.ur
+./lib.urp: ./../urscript/lib.urp ./autogen/MegaMenu2.css.urp ./autogen/MegaMenu2.js.urp ./autogen/PikaChoose.css.urp ./autogen/PikaChoose.js.urp ./autogen/RespTabs.js.urp ./autogen/bootstrap.css.urp ./autogen/easy-responsive-tabs.css.urp ./autogen/easyResponsiveTabs.js.urp ./autogen/jquery-1.9.1.js.urp ./autogen/jquery-ui.css.urp ./autogen/jquery-ui.js.urp ./autogen/jquery.jcarousel.min.js.urp ./autogen/jquery.megamenu.js.urp ./autogen/jquery.pikachoose.min.js.urp ./autogen/menu_jq.css.urp ./autogen/menu_jq.js.urp ./src/Bootstrap/Bootstrap.ur ./src/Bootstrap/Bootstrap.urs ./src/CSS.ur ./src/CSS.urs ./src/JQuery/JQuery.ur ./src/JQuery/JQuery.urs ./src/JQueryUI/JQueryUI.ur ./src/JQueryUI/JQueryUI.urs ./src/MegaMenu2/MegaMenu2.ur ./src/MegaMenu2/MegaMenu2.urs ./src/MenuUI/Menu_jq.ur ./src/MenuUI/Menu_jq.urs ./src/Page.ur ./src/Page.urs ./src/PikaChoose/PikaChoose.ur ./src/PikaChoose/PikaChoose.urs ./src/RespTabs/RespTabs.ur ./src/RespTabs/RespTabs.urs
+	touch ./lib.urp
+./test/Test1.urp: ./autogen/nemo.jpg.urp ./autogen/walle.jpg.urp ./lib.urp ./test/Test1.ur
 	touch ./test/Test1.urp
 $(call GUARD,URVERSION):
 	rm -f .cake3/GUARD_URVERSION_*
@@ -33,8 +33,8 @@ all: .fix-multy1
 clean: .fix-multy1
 .PHONY: ./test/Test1.exe
 ./test/Test1.exe: .fix-multy1
-.PHONY: ./Uru.urp
-./Uru.urp: .fix-multy1
+.PHONY: ./lib.urp
+./lib.urp: .fix-multy1
 .PHONY: ./test/Test1.urp
 ./test/Test1.urp: .fix-multy1
 .INTERMEDIATE: .fix-multy1

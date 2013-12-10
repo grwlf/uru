@@ -29,9 +29,9 @@ project mode = do
   prebuild [cmd|urweb -print-cinclude >/dev/null|]
   prebuild [cmd|mkdir -pv autogen |]
 
-  u <- uwlib "Uru.urp" $ do
+  u <- uwlib "lib.urp" $ do
 
-    library' (externalMake "../urscript/Script.urp")
+    library' (externalMake "../urscript/lib.urp")
 
     ur (sys "list")
     ur (pair "src/CSS.ur")

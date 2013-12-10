@@ -1,4 +1,4 @@
-library ./../urscript/Script
+library ./../urscript
 library ./autogen/jquery-1.9.1.js
 library ./autogen/jquery-ui.css
 library ./autogen/jquery-ui.js
