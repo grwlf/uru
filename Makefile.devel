@@ -35,6 +35,20 @@ clean: ./Makefile.devel
 	urembed -o ./autogen/jquery.pikachoose.min.js.urp ./src/PikaChoose/jquery.pikachoose.min.js
 ./autogen/jquery.jcarousel.min.js.urp: ./Makefile.devel ./src/PikaChoose/jquery.jcarousel.min.js
 	urembed -o ./autogen/jquery.jcarousel.min.js.urp ./src/PikaChoose/jquery.jcarousel.min.js
+./autogen/NivoSlider.js.urp: ./Makefile.devel ./src/NivoSlider/NivoSlider.js
+	urembed -o ./autogen/NivoSlider.js.urp ./src/NivoSlider/NivoSlider.js
+./autogen/nivo-slider.css.urp: ./Makefile.devel ./src/NivoSlider/nivo-slider.css
+	urembed -o ./autogen/nivo-slider.css.urp ./src/NivoSlider/nivo-slider.css
+./autogen/nivo-loading.gif.urp: ./Makefile.devel ./src/NivoSlider/nivo-loading.gif
+	urembed -o ./autogen/nivo-loading.gif.urp ./src/NivoSlider/nivo-loading.gif
+./autogen/nivo-default.css.urp: ./Makefile.devel ./src/NivoSlider/nivo-default.css
+	urembed -o ./autogen/nivo-default.css.urp ./src/NivoSlider/nivo-default.css
+./autogen/nivo-bullets.png.urp: ./Makefile.devel ./src/NivoSlider/nivo-bullets.png
+	urembed -o ./autogen/nivo-bullets.png.urp ./src/NivoSlider/nivo-bullets.png
+./autogen/nivo-arrows.png.urp: ./Makefile.devel ./src/NivoSlider/nivo-arrows.png
+	urembed -o ./autogen/nivo-arrows.png.urp ./src/NivoSlider/nivo-arrows.png
+./autogen/jquery.nivo.slider.pack.js.urp: ./Makefile.devel ./src/NivoSlider/jquery.nivo.slider.pack.js
+	urembed -o ./autogen/jquery.nivo.slider.pack.js.urp ./src/NivoSlider/jquery.nivo.slider.pack.js
 ./autogen/menu_jq.js.urp: ./Makefile.devel ./src/MenuUI/menu_jq.js
 	urembed -o ./autogen/menu_jq.js.urp ./src/MenuUI/menu_jq.js
 ./autogen/menu_jq.css.urp: ./Makefile.devel ./src/MenuUI/menu_jq.css
@@ -55,7 +69,7 @@ clean: ./Makefile.devel
 	cake3
 ./Makefile.devel: ./Cakegen
 	./Cakegen
-./lib.urp: ./../urscript/lib.urp ./Makefile.devel ./autogen/MegaMenu2.css.urp ./autogen/MegaMenu2.js.urp ./autogen/PikaChoose.css.urp ./autogen/PikaChoose.js.urp ./autogen/RespTabs.js.urp ./autogen/bootstrap.css.urp ./autogen/easy-responsive-tabs.css.urp ./autogen/easyResponsiveTabs.js.urp ./autogen/jquery-1.9.1.js.urp ./autogen/jquery-ui.css.urp ./autogen/jquery-ui.js.urp ./autogen/jquery.jcarousel.min.js.urp ./autogen/jquery.megamenu.js.urp ./autogen/jquery.pikachoose.min.js.urp ./autogen/menu_jq.css.urp ./autogen/menu_jq.js.urp ./src/Bootstrap/Bootstrap.ur ./src/Bootstrap/Bootstrap.urs ./src/CSS.ur ./src/CSS.urs ./src/JQuery/JQuery.ur ./src/JQuery/JQuery.urs ./src/JQueryUI/JQueryUI.ur ./src/JQueryUI/JQueryUI.urs ./src/MegaMenu2/MegaMenu2.ur ./src/MegaMenu2/MegaMenu2.urs ./src/MenuUI/Menu_jq.ur ./src/MenuUI/Menu_jq.urs ./src/Page.ur ./src/Page.urs ./src/PikaChoose/PikaChoose.ur ./src/PikaChoose/PikaChoose.urs ./src/RespTabs/RespTabs.ur ./src/RespTabs/RespTabs.urs
+./lib.urp: ./../urscript/lib.urp ./Makefile.devel ./autogen/MegaMenu2.css.urp ./autogen/MegaMenu2.js.urp ./autogen/NivoSlider.js.urp ./autogen/PikaChoose.css.urp ./autogen/PikaChoose.js.urp ./autogen/RespTabs.js.urp ./autogen/bootstrap.css.urp ./autogen/easy-responsive-tabs.css.urp ./autogen/easyResponsiveTabs.js.urp ./autogen/jquery-1.9.1.js.urp ./autogen/jquery-ui.css.urp ./autogen/jquery-ui.js.urp ./autogen/jquery.jcarousel.min.js.urp ./autogen/jquery.megamenu.js.urp ./autogen/jquery.nivo.slider.pack.js.urp ./autogen/jquery.pikachoose.min.js.urp ./autogen/menu_jq.css.urp ./autogen/menu_jq.js.urp ./autogen/nivo-arrows.png.urp ./autogen/nivo-bullets.png.urp ./autogen/nivo-default.css.urp ./autogen/nivo-loading.gif.urp ./autogen/nivo-slider.css.urp ./src/Bootstrap/Bootstrap.ur ./src/Bootstrap/Bootstrap.urs ./src/CSS.ur ./src/CSS.urs ./src/JQuery/JQuery.ur ./src/JQuery/JQuery.urs ./src/JQueryUI/JQueryUI.ur ./src/JQueryUI/JQueryUI.urs ./src/MegaMenu2/MegaMenu2.ur ./src/MegaMenu2/MegaMenu2.urs ./src/MenuUI/Menu_jq.ur ./src/MenuUI/Menu_jq.urs ./src/NivoSlider/NivoSlider.ur ./src/NivoSlider/NivoSlider.urs ./src/Page.ur ./src/Page.urs ./src/PikaChoose/PikaChoose.ur ./src/PikaChoose/PikaChoose.urs ./src/RespTabs/RespTabs.ur ./src/RespTabs/RespTabs.urs
 	touch ./lib.urp
 ./test/Test1.urp: ./Makefile.devel ./autogen/nemo.jpg.urp ./autogen/walle.jpg.urp ./lib.urp ./test/Test1.ur
 	touch ./test/Test1.urp
@@ -93,6 +107,20 @@ clean: .fix-multy1
 ./autogen/jquery.pikachoose.min.js.urp: .fix-multy1
 .PHONY: ./autogen/jquery.jcarousel.min.js.urp
 ./autogen/jquery.jcarousel.min.js.urp: .fix-multy1
+.PHONY: ./autogen/NivoSlider.js.urp
+./autogen/NivoSlider.js.urp: .fix-multy1
+.PHONY: ./autogen/nivo-slider.css.urp
+./autogen/nivo-slider.css.urp: .fix-multy1
+.PHONY: ./autogen/nivo-loading.gif.urp
+./autogen/nivo-loading.gif.urp: .fix-multy1
+.PHONY: ./autogen/nivo-default.css.urp
+./autogen/nivo-default.css.urp: .fix-multy1
+.PHONY: ./autogen/nivo-bullets.png.urp
+./autogen/nivo-bullets.png.urp: .fix-multy1
+.PHONY: ./autogen/nivo-arrows.png.urp
+./autogen/nivo-arrows.png.urp: .fix-multy1
+.PHONY: ./autogen/jquery.nivo.slider.pack.js.urp
+./autogen/jquery.nivo.slider.pack.js.urp: .fix-multy1
 .PHONY: ./autogen/menu_jq.js.urp
 ./autogen/menu_jq.js.urp: .fix-multy1
 .PHONY: ./autogen/menu_jq.css.urp

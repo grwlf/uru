@@ -27,8 +27,7 @@ fun add [t] [x] [t~out] css f r =
                 {Script.insert Page.javascript Jquery_nivo_slider_pack_js.geturl}
                 {Script.insert Page.javascript NivoSlider_js.geturl}
                 <link rel="stylesheet" href={Nivo_default_css.geturl}/>
-                <activeHead code={
-                  alert "hehehe";
+                <script code={
                   NivoSlider_js.nivo_init
                     css
                     nivocls
@@ -37,18 +36,6 @@ fun add [t] [x] [t~out] css f r =
                     Nivo_bullets_png.geturl
                     Nivo_loading_gif.geturl ;
                   return {}}/>
-
-                (* <script type={Page.javascript}> *)
-                (*   nivo_init( *)
-                (*     "{[css]}", *)
-                (*     "{[nivocls]}", *)
-                (*     "{[nivoribbon]}", *)
-                (*     "{[Nivo_arrows_png.geturl]}", *)
-                (*     "{[Nivo_bullets_png.geturl]}", *)
-                (*     "{[Nivo_loading_gif.geturl]}" *)
-                (*     ); *)
-                (* </script> *)
-
               </xml> 
 
     val init =

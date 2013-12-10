@@ -1,3 +1,7 @@
+allow url http://nivo.dev7studios.com
+allow url http://plugins.jquery.com/*
+rewrite style Bootstrap/* [-]
+rewrite style Bootstrap/table_ table
 library ./../urscript
 library ./autogen/jquery-1.9.1.js
 library ./autogen/jquery-ui.css
@@ -7,6 +11,13 @@ library ./autogen/MegaMenu2.js
 library ./autogen/jquery.megamenu.js
 library ./autogen/menu_jq.css
 library ./autogen/menu_jq.js
+library ./autogen/jquery.nivo.slider.pack.js
+library ./autogen/nivo-arrows.png
+library ./autogen/nivo-bullets.png
+library ./autogen/nivo-default.css
+library ./autogen/nivo-loading.gif
+library ./autogen/nivo-slider.css
+library ./autogen/NivoSlider.js
 library ./autogen/jquery.jcarousel.min.js
 library ./autogen/jquery.pikachoose.min.js
 library ./autogen/PikaChoose.css
@@ -23,6 +34,7 @@ $/list
 ./src/JQueryUI/JQueryUI
 ./src/MegaMenu2/MegaMenu2
 ./src/MenuUI/Menu_jq
+./src/NivoSlider/NivoSlider
 ./src/PikaChoose/PikaChoose
 ./src/RespTabs/RespTabs
 ./src/Bootstrap/Bootstrap

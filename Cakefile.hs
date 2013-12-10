@@ -31,6 +31,12 @@ project mode = do
 
   u <- uwlib "lib.urp" $ do
 
+    allow url "http://nivo.dev7studios.com"
+    allow url "http://plugins.jquery.com/*"
+
+    rewrite style "Bootstrap/* [-]"
+    rewrite style "Bootstrap/table_ table"
+
     library' (externalMake "../urscript/lib.urp")
 
     ur (sys "list")
@@ -61,16 +67,16 @@ project mode = do
       , "Menu_jq.ur"
       ]
 
-    -- collection "src/NivoSlider" [
-    --     "jquery.nivo.slider.pack.js"
-    --   , "nivo-arrows.png"
-    --   , "nivo-bullets.png"
-    --   , "nivo-default.css"
-    --   , "nivo-loading.gif"
-    --   , "nivo-slider.css"
-    --   , "NivoSlider.js"
-    --   , "NivoSlider.ur"
-    --   ]
+    collection "src/NivoSlider" [
+        "jquery.nivo.slider.pack.js"
+      , "nivo-arrows.png"
+      , "nivo-bullets.png"
+      , "nivo-default.css"
+      , "nivo-loading.gif"
+      , "nivo-slider.css"
+      , "NivoSlider.js"
+      , "NivoSlider.ur"
+      ]
 
     collection "src/PikaChoose" [
         "jquery.jcarousel.min.js"

@@ -15,7 +15,7 @@ clean:
 	rm -rf .cake3  ./test/Test1.exe
 ./test/Test1.exe: ./test/Test1.urp $(call GUARD,URVERSION)
 	urweb -dbms sqlite ./test/Test1
-./lib.urp: ./../urscript/lib.urp ./autogen/MegaMenu2.css.urp ./autogen/MegaMenu2.js.urp ./autogen/PikaChoose.css.urp ./autogen/PikaChoose.js.urp ./autogen/RespTabs.js.urp ./autogen/bootstrap.css.urp ./autogen/easy-responsive-tabs.css.urp ./autogen/easyResponsiveTabs.js.urp ./autogen/jquery-1.9.1.js.urp ./autogen/jquery-ui.css.urp ./autogen/jquery-ui.js.urp ./autogen/jquery.jcarousel.min.js.urp ./autogen/jquery.megamenu.js.urp ./autogen/jquery.pikachoose.min.js.urp ./autogen/menu_jq.css.urp ./autogen/menu_jq.js.urp ./src/Bootstrap/Bootstrap.ur ./src/Bootstrap/Bootstrap.urs ./src/CSS.ur ./src/CSS.urs ./src/JQuery/JQuery.ur ./src/JQuery/JQuery.urs ./src/JQueryUI/JQueryUI.ur ./src/JQueryUI/JQueryUI.urs ./src/MegaMenu2/MegaMenu2.ur ./src/MegaMenu2/MegaMenu2.urs ./src/MenuUI/Menu_jq.ur ./src/MenuUI/Menu_jq.urs ./src/Page.ur ./src/Page.urs ./src/PikaChoose/PikaChoose.ur ./src/PikaChoose/PikaChoose.urs ./src/RespTabs/RespTabs.ur ./src/RespTabs/RespTabs.urs
+./lib.urp: ./../urscript/lib.urp ./autogen/MegaMenu2.css.urp ./autogen/MegaMenu2.js.urp ./autogen/NivoSlider.js.urp ./autogen/PikaChoose.css.urp ./autogen/PikaChoose.js.urp ./autogen/RespTabs.js.urp ./autogen/bootstrap.css.urp ./autogen/easy-responsive-tabs.css.urp ./autogen/easyResponsiveTabs.js.urp ./autogen/jquery-1.9.1.js.urp ./autogen/jquery-ui.css.urp ./autogen/jquery-ui.js.urp ./autogen/jquery.jcarousel.min.js.urp ./autogen/jquery.megamenu.js.urp ./autogen/jquery.nivo.slider.pack.js.urp ./autogen/jquery.pikachoose.min.js.urp ./autogen/menu_jq.css.urp ./autogen/menu_jq.js.urp ./autogen/nivo-arrows.png.urp ./autogen/nivo-bullets.png.urp ./autogen/nivo-default.css.urp ./autogen/nivo-loading.gif.urp ./autogen/nivo-slider.css.urp ./src/Bootstrap/Bootstrap.ur ./src/Bootstrap/Bootstrap.urs ./src/CSS.ur ./src/CSS.urs ./src/JQuery/JQuery.ur ./src/JQuery/JQuery.urs ./src/JQueryUI/JQueryUI.ur ./src/JQueryUI/JQueryUI.urs ./src/MegaMenu2/MegaMenu2.ur ./src/MegaMenu2/MegaMenu2.urs ./src/MenuUI/Menu_jq.ur ./src/MenuUI/Menu_jq.urs ./src/NivoSlider/NivoSlider.ur ./src/NivoSlider/NivoSlider.urs ./src/Page.ur ./src/Page.urs ./src/PikaChoose/PikaChoose.ur ./src/PikaChoose/PikaChoose.urs ./src/RespTabs/RespTabs.ur ./src/RespTabs/RespTabs.urs
 	touch ./lib.urp
 ./test/Test1.urp: ./autogen/nemo.jpg.urp ./autogen/walle.jpg.urp ./lib.urp ./test/Test1.ur
 	touch ./test/Test1.urp
@@ -51,6 +51,13 @@ clean: .fix-multy1
 	$(MAKE) -C ./autogen -f jquery.megamenu.js.mk
 	$(MAKE) -C ./autogen -f menu_jq.css.mk
 	$(MAKE) -C ./autogen -f menu_jq.js.mk
+	$(MAKE) -C ./autogen -f jquery.nivo.slider.pack.js.mk
+	$(MAKE) -C ./autogen -f nivo-arrows.png.mk
+	$(MAKE) -C ./autogen -f nivo-bullets.png.mk
+	$(MAKE) -C ./autogen -f nivo-default.css.mk
+	$(MAKE) -C ./autogen -f nivo-loading.gif.mk
+	$(MAKE) -C ./autogen -f nivo-slider.css.mk
+	$(MAKE) -C ./autogen -f NivoSlider.js.mk
 	$(MAKE) -C ./autogen -f jquery.jcarousel.min.js.mk
 	$(MAKE) -C ./autogen -f jquery.pikachoose.min.js.mk
 	$(MAKE) -C ./autogen -f PikaChoose.css.mk
