@@ -2,10 +2,7 @@ URU
 ===
 
 URU is the collection of jQuery widgets, prepared to be used with
-[Ur/Web](http://www.impredicative.com/ur/). The collection should be considered
-as non-stabled since it uses patched compiler and a couple of non-stabled build
-tools.
-
+[Ur/Web](http://www.impredicative.com/ur/).
 
 Requirements
 ------------
@@ -13,9 +10,8 @@ Requirements
 The Ur/Web compiler in source form, sqlite3 and the POSIX env are required in
 order to build the demo.
 
-For the development, [cake3](https://github.com/grwlf/cake3) and
-[urembed](https://github.com/grwlf/urembed) are needed as well. Both of them
-require the [Haskell platform](http://www.haskell.org/platform/).
+For the development, [cake3](https://github.com/grwlf/cake3) the Makefile
+generator is needed. It requires the [Haskell platform](http://www.haskell.org/platform/).
 
 Building
 --------
