@@ -21,7 +21,7 @@ Building
 ========
 
   1. Obtain the Ur/Web from the [official repo](http://hg.impredicative.com/urweb).
-  2. Patch the sources with the patches from the root directory, build and
+  2. Patch the sources with the patches from the uru's root directory, build and
      install.
   3. Clone the [urscript library](https://github.com/grwlf/urscript)
         
