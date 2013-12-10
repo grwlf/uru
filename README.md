@@ -39,7 +39,10 @@ Building
 Notes
 =====
 
-  * Build system works as following:
+  * Makefile and Makefile.devel are provided. The first one is the default
+    makefile which requires no special tools. The .devel version offers additional
+    rules to embed styles, images and JavaScript into the UrWeb project. Also,
+    Makefile.devel knows how to rebuild itself. The sequence is:
       1. [Cake3](https://github.com/grwlf/cake3) builds the ./Cakegen binary
          using ./Cakefile.hs (in Haskell) as it's input
       2. ./Cakegen generates all the UrWeb project files, the autogen/* files,
@@ -49,9 +52,18 @@ Notes
          change the resources.
       3. GNU Make evaluates either Makefile or Makefile.devel and builds the
          library and the test executable.
-  * src/NivoSlider is the hardest case, since it requires $(window).load()
-    event handler and uses tricky urls inside it's CSS.
+  * src/NivoSlider is the hardest control to maintain, since it requires
+    different styles, images and unusual $(window).load() event handler and
+    uses tricky urls inside it's CSS.
   * [Main function](https://github.com/grwlf/uru/blob/master/test/Test1.ur) ends
     with a smile :)
 
+
+TODO
+====
+
+  * Split Uru into several libraries, one library per control
+  * Pass more options from UrWeb into JS. Currently, almost all options are
+    hardcoded.
+  * More controls?
 
