@@ -1,5 +1,5 @@
 URU
----
+===
 
 URU is the collection of jQuery widgets, prepared to be used with
 [Ur/Web](http://www.impredicative.com/ur/). The collection should be considered
@@ -8,7 +8,7 @@ tools.
 
 
 Requirements
-============
+------------
 
 The Ur/Web compiler in source form, sqlite3 and the POSIX env are required in
 order to build the demo.
@@ -18,7 +18,7 @@ For the development, [cake3](https://github.com/grwlf/cake3) and
 require the [Haskell platform](http://www.haskell.org/platform/).
 
 Building
-========
+--------
 
   1. Obtain the Ur/Web from the [official repo](http://hg.impredicative.com/urweb).
   2. Patch the sources with the patches from the uru's root directory, build and
@@ -37,7 +37,7 @@ Building
   5. Launch ./uru/test/Test1.exe and visit http://localhost:8080/Test1/main
 
 Notes
-=====
+-----
 
   * Makefile and Makefile.devel are provided. The first one is the default
     makefile which requires no special tools. The .devel version offers additional
@@ -60,7 +60,7 @@ Notes
 
 
 TODO
-====
+----
 
   * Split Uru into several libraries, one library per control
   * Pass more options from UrWeb into JS. Currently, almost all options are
