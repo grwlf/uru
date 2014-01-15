@@ -8,13 +8,15 @@ ifdef MAIN
 # Main section
 
 URCC = $(shell $(shell urweb -print-ccompiler) -print-prog-name=gcc)
-URINCL = $(shell urweb -print-cinclude)
+URINCL = -I$(shell urweb -print-cinclude) 
 .PHONY: all
 all: ./MegaMenu2.css.urp
-./MegaMenu2.css.urp: ./MegaMenu2_css.ur ./MegaMenu2_css.urs ./MegaMenu2_css_c.h ./MegaMenu2_css_c.o
-	touch ./MegaMenu2.css.urp
+./MegaMenu2.css.urp: ./MegaMenu2.css.urp.in
+	cat ./MegaMenu2.css.urp.in > ./MegaMenu2.css.urp
+./MegaMenu2.css.urp.in: ./MegaMenu2_css.ur ./MegaMenu2_css.urs ./MegaMenu2_css_c.h ./MegaMenu2_css_c.o
+	touch ./MegaMenu2.css.urp.in
 ./MegaMenu2_css_c.o: ./MegaMenu2_css_c.c $(call GUARD,URCC) $(call GUARD,URINCL)
-	$(URCC) -c -I $(URINCL) -o ./MegaMenu2_css_c.o ./MegaMenu2_css_c.c
+	$(URCC) -c $(URINCL) -o  ./MegaMenu2_css_c.o ./MegaMenu2_css_c.c
 $(call GUARD,URCC):
 	rm -f .cake3/GUARD_URCC_*
 	touch $@
@@ -30,6 +32,8 @@ else
 all: .fix-multy1
 .PHONY: ./MegaMenu2.css.urp
 ./MegaMenu2.css.urp: .fix-multy1
+.PHONY: ./MegaMenu2.css.urp.in
+./MegaMenu2.css.urp.in: .fix-multy1
 .PHONY: ./MegaMenu2_css_c.o
 ./MegaMenu2_css_c.o: .fix-multy1
 .INTERMEDIATE: .fix-multy1

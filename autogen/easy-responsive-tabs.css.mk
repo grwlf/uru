@@ -8,13 +8,15 @@ ifdef MAIN
 # Main section
 
 URCC = $(shell $(shell urweb -print-ccompiler) -print-prog-name=gcc)
-URINCL = $(shell urweb -print-cinclude)
+URINCL = -I$(shell urweb -print-cinclude) 
 .PHONY: all
 all: ./easy-responsive-tabs.css.urp
+./easy-responsive-tabs.css.urp: ./easy-responsive-tabs.css.urp.in
+	cat ./easy-responsive-tabs.css.urp.in > ./easy-responsive-tabs.css.urp
+./easy-responsive-tabs.css.urp.in: ./Easy_responsive_tabs_css.ur ./Easy_responsive_tabs_css.urs ./Easy_responsive_tabs_css_c.h ./Easy_responsive_tabs_css_c.o
+	touch ./easy-responsive-tabs.css.urp.in
 ./Easy_responsive_tabs_css_c.o: ./Easy_responsive_tabs_css_c.c $(call GUARD,URCC) $(call GUARD,URINCL)
-	$(URCC) -c -I $(URINCL) -o ./Easy_responsive_tabs_css_c.o ./Easy_responsive_tabs_css_c.c
-./easy-responsive-tabs.css.urp: ./Easy_responsive_tabs_css.ur ./Easy_responsive_tabs_css.urs ./Easy_responsive_tabs_css_c.h ./Easy_responsive_tabs_css_c.o
-	touch ./easy-responsive-tabs.css.urp
+	$(URCC) -c $(URINCL) -o  ./Easy_responsive_tabs_css_c.o ./Easy_responsive_tabs_css_c.c
 $(call GUARD,URCC):
 	rm -f .cake3/GUARD_URCC_*
 	touch $@
@@ -28,10 +30,12 @@ else
 
 .PHONY: all
 all: .fix-multy1
-.PHONY: ./Easy_responsive_tabs_css_c.o
-./Easy_responsive_tabs_css_c.o: .fix-multy1
 .PHONY: ./easy-responsive-tabs.css.urp
 ./easy-responsive-tabs.css.urp: .fix-multy1
+.PHONY: ./easy-responsive-tabs.css.urp.in
+./easy-responsive-tabs.css.urp.in: .fix-multy1
+.PHONY: ./Easy_responsive_tabs_css_c.o
+./Easy_responsive_tabs_css_c.o: .fix-multy1
 .INTERMEDIATE: .fix-multy1
 .fix-multy1: 
 	-mkdir .cake3

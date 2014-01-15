@@ -8,13 +8,15 @@ ifdef MAIN
 # Main section
 
 URCC = $(shell $(shell urweb -print-ccompiler) -print-prog-name=gcc)
-URINCL = $(shell urweb -print-cinclude)
+URINCL = -I$(shell urweb -print-cinclude) 
 .PHONY: all
 all: ./RespTabs.js.urp
-./RespTabs.js.urp: ./RespTabs_js.ur ./RespTabs_js.urs ./RespTabs_js_c.h ./RespTabs_js_c.o
-	touch ./RespTabs.js.urp
+./RespTabs.js.urp: ./RespTabs.js.urp.in
+	cat ./RespTabs.js.urp.in > ./RespTabs.js.urp
+./RespTabs.js.urp.in: ./RespTabs_js.ur ./RespTabs_js.urs ./RespTabs_js_c.h ./RespTabs_js_c.o
+	touch ./RespTabs.js.urp.in
 ./RespTabs_js_c.o: ./RespTabs_js_c.c $(call GUARD,URCC) $(call GUARD,URINCL)
-	$(URCC) -c -I $(URINCL) -o ./RespTabs_js_c.o ./RespTabs_js_c.c
+	$(URCC) -c $(URINCL) -o  ./RespTabs_js_c.o ./RespTabs_js_c.c
 $(call GUARD,URCC):
 	rm -f .cake3/GUARD_URCC_*
 	touch $@
@@ -30,6 +32,8 @@ else
 all: .fix-multy1
 .PHONY: ./RespTabs.js.urp
 ./RespTabs.js.urp: .fix-multy1
+.PHONY: ./RespTabs.js.urp.in
+./RespTabs.js.urp.in: .fix-multy1
 .PHONY: ./RespTabs_js_c.o
 ./RespTabs_js_c.o: .fix-multy1
 .INTERMEDIATE: .fix-multy1

@@ -8,13 +8,15 @@ ifdef MAIN
 # Main section
 
 URCC = $(shell $(shell urweb -print-ccompiler) -print-prog-name=gcc)
-URINCL = $(shell urweb -print-cinclude)
+URINCL = -I$(shell urweb -print-cinclude) 
 .PHONY: all
 all: ./nivo-loading.gif.urp
+./nivo-loading.gif.urp: ./nivo-loading.gif.urp.in
+	cat ./nivo-loading.gif.urp.in > ./nivo-loading.gif.urp
+./nivo-loading.gif.urp.in: ./Nivo_loading_gif.ur ./Nivo_loading_gif.urs ./Nivo_loading_gif_c.h ./Nivo_loading_gif_c.o
+	touch ./nivo-loading.gif.urp.in
 ./Nivo_loading_gif_c.o: ./Nivo_loading_gif_c.c $(call GUARD,URCC) $(call GUARD,URINCL)
-	$(URCC) -c -I $(URINCL) -o ./Nivo_loading_gif_c.o ./Nivo_loading_gif_c.c
-./nivo-loading.gif.urp: ./Nivo_loading_gif.ur ./Nivo_loading_gif.urs ./Nivo_loading_gif_c.h ./Nivo_loading_gif_c.o
-	touch ./nivo-loading.gif.urp
+	$(URCC) -c $(URINCL) -o  ./Nivo_loading_gif_c.o ./Nivo_loading_gif_c.c
 $(call GUARD,URCC):
 	rm -f .cake3/GUARD_URCC_*
 	touch $@
@@ -28,10 +30,12 @@ else
 
 .PHONY: all
 all: .fix-multy1
-.PHONY: ./Nivo_loading_gif_c.o
-./Nivo_loading_gif_c.o: .fix-multy1
 .PHONY: ./nivo-loading.gif.urp
 ./nivo-loading.gif.urp: .fix-multy1
+.PHONY: ./nivo-loading.gif.urp.in
+./nivo-loading.gif.urp.in: .fix-multy1
+.PHONY: ./Nivo_loading_gif_c.o
+./Nivo_loading_gif_c.o: .fix-multy1
 .INTERMEDIATE: .fix-multy1
 .fix-multy1: 
 	-mkdir .cake3

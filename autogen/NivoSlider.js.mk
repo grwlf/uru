@@ -8,13 +8,15 @@ ifdef MAIN
 # Main section
 
 URCC = $(shell $(shell urweb -print-ccompiler) -print-prog-name=gcc)
-URINCL = $(shell urweb -print-cinclude)
+URINCL = -I$(shell urweb -print-cinclude) 
 .PHONY: all
 all: ./NivoSlider.js.urp
-./NivoSlider.js.urp: ./NivoSlider_js.ur ./NivoSlider_js.urs ./NivoSlider_js_c.h ./NivoSlider_js_c.o
-	touch ./NivoSlider.js.urp
+./NivoSlider.js.urp: ./NivoSlider.js.urp.in
+	cat ./NivoSlider.js.urp.in > ./NivoSlider.js.urp
+./NivoSlider.js.urp.in: ./NivoSlider_js.ur ./NivoSlider_js.urs ./NivoSlider_js_c.h ./NivoSlider_js_c.o
+	touch ./NivoSlider.js.urp.in
 ./NivoSlider_js_c.o: ./NivoSlider_js_c.c $(call GUARD,URCC) $(call GUARD,URINCL)
-	$(URCC) -c -I $(URINCL) -o ./NivoSlider_js_c.o ./NivoSlider_js_c.c
+	$(URCC) -c $(URINCL) -o  ./NivoSlider_js_c.o ./NivoSlider_js_c.c
 $(call GUARD,URCC):
 	rm -f .cake3/GUARD_URCC_*
 	touch $@
@@ -30,6 +32,8 @@ else
 all: .fix-multy1
 .PHONY: ./NivoSlider.js.urp
 ./NivoSlider.js.urp: .fix-multy1
+.PHONY: ./NivoSlider.js.urp.in
+./NivoSlider.js.urp.in: .fix-multy1
 .PHONY: ./NivoSlider_js_c.o
 ./NivoSlider_js_c.o: .fix-multy1
 .INTERMEDIATE: .fix-multy1

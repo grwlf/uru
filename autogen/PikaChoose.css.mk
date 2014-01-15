@@ -8,13 +8,15 @@ ifdef MAIN
 # Main section
 
 URCC = $(shell $(shell urweb -print-ccompiler) -print-prog-name=gcc)
-URINCL = $(shell urweb -print-cinclude)
+URINCL = -I$(shell urweb -print-cinclude) 
 .PHONY: all
 all: ./PikaChoose.css.urp
-./PikaChoose.css.urp: ./PikaChoose_css.ur ./PikaChoose_css.urs ./PikaChoose_css_c.h ./PikaChoose_css_c.o
-	touch ./PikaChoose.css.urp
+./PikaChoose.css.urp: ./PikaChoose.css.urp.in
+	cat ./PikaChoose.css.urp.in > ./PikaChoose.css.urp
+./PikaChoose.css.urp.in: ./PikaChoose_css.ur ./PikaChoose_css.urs ./PikaChoose_css_c.h ./PikaChoose_css_c.o
+	touch ./PikaChoose.css.urp.in
 ./PikaChoose_css_c.o: ./PikaChoose_css_c.c $(call GUARD,URCC) $(call GUARD,URINCL)
-	$(URCC) -c -I $(URINCL) -o ./PikaChoose_css_c.o ./PikaChoose_css_c.c
+	$(URCC) -c $(URINCL) -o  ./PikaChoose_css_c.o ./PikaChoose_css_c.c
 $(call GUARD,URCC):
 	rm -f .cake3/GUARD_URCC_*
 	touch $@
@@ -30,6 +32,8 @@ else
 all: .fix-multy1
 .PHONY: ./PikaChoose.css.urp
 ./PikaChoose.css.urp: .fix-multy1
+.PHONY: ./PikaChoose.css.urp.in
+./PikaChoose.css.urp.in: .fix-multy1
 .PHONY: ./PikaChoose_css_c.o
 ./PikaChoose_css_c.o: .fix-multy1
 .INTERMEDIATE: .fix-multy1

@@ -8,13 +8,15 @@ ifdef MAIN
 # Main section
 
 URCC = $(shell $(shell urweb -print-ccompiler) -print-prog-name=gcc)
-URINCL = $(shell urweb -print-cinclude)
+URINCL = -I$(shell urweb -print-cinclude) 
 .PHONY: all
 all: ./nivo-default.css.urp
+./nivo-default.css.urp: ./nivo-default.css.urp.in
+	cat ./nivo-default.css.urp.in > ./nivo-default.css.urp
+./nivo-default.css.urp.in: ./Nivo_default_css.ur ./Nivo_default_css.urs ./Nivo_default_css_c.h ./Nivo_default_css_c.o
+	touch ./nivo-default.css.urp.in
 ./Nivo_default_css_c.o: ./Nivo_default_css_c.c $(call GUARD,URCC) $(call GUARD,URINCL)
-	$(URCC) -c -I $(URINCL) -o ./Nivo_default_css_c.o ./Nivo_default_css_c.c
-./nivo-default.css.urp: ./Nivo_default_css.ur ./Nivo_default_css.urs ./Nivo_default_css_c.h ./Nivo_default_css_c.o
-	touch ./nivo-default.css.urp
+	$(URCC) -c $(URINCL) -o  ./Nivo_default_css_c.o ./Nivo_default_css_c.c
 $(call GUARD,URCC):
 	rm -f .cake3/GUARD_URCC_*
 	touch $@
@@ -28,10 +30,12 @@ else
 
 .PHONY: all
 all: .fix-multy1
-.PHONY: ./Nivo_default_css_c.o
-./Nivo_default_css_c.o: .fix-multy1
 .PHONY: ./nivo-default.css.urp
 ./nivo-default.css.urp: .fix-multy1
+.PHONY: ./nivo-default.css.urp.in
+./nivo-default.css.urp.in: .fix-multy1
+.PHONY: ./Nivo_default_css_c.o
+./Nivo_default_css_c.o: .fix-multy1
 .INTERMEDIATE: .fix-multy1
 .fix-multy1: 
 	-mkdir .cake3

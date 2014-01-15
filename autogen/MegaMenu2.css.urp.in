@@ -1,0 +1,8 @@
+include ./MegaMenu2_css_c.h
+link ./MegaMenu2_css_c.o
+ffi ./MegaMenu2_css_c
+ffi ./MegaMenu2_css_js
+safeGet MegaMenu2_css/blobpage
+safeGet MegaMenu2_css/blob
+
+./MegaMenu2_css

@@ -1,0 +1,8 @@
+include ./Jquery_ui_css_c.h
+link ./Jquery_ui_css_c.o
+ffi ./Jquery_ui_css_c
+ffi ./Jquery_ui_css_js
+safeGet Jquery_ui_css/blobpage
+safeGet Jquery_ui_css/blob
+
+./Jquery_ui_css

@@ -1,0 +1,8 @@
+include ./Nivo_loading_gif_c.h
+link ./Nivo_loading_gif_c.o
+ffi ./Nivo_loading_gif_c
+ffi ./Nivo_loading_gif_js
+safeGet Nivo_loading_gif/blobpage
+safeGet Nivo_loading_gif/blob
+
+./Nivo_loading_gif

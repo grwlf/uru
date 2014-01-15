@@ -8,13 +8,15 @@ ifdef MAIN
 # Main section
 
 URCC = $(shell $(shell urweb -print-ccompiler) -print-prog-name=gcc)
-URINCL = $(shell urweb -print-cinclude)
+URINCL = -I$(shell urweb -print-cinclude) 
 .PHONY: all
 all: ./nivo-slider.css.urp
+./nivo-slider.css.urp: ./nivo-slider.css.urp.in
+	cat ./nivo-slider.css.urp.in > ./nivo-slider.css.urp
+./nivo-slider.css.urp.in: ./Nivo_slider_css.ur ./Nivo_slider_css.urs ./Nivo_slider_css_c.h ./Nivo_slider_css_c.o
+	touch ./nivo-slider.css.urp.in
 ./Nivo_slider_css_c.o: ./Nivo_slider_css_c.c $(call GUARD,URCC) $(call GUARD,URINCL)
-	$(URCC) -c -I $(URINCL) -o ./Nivo_slider_css_c.o ./Nivo_slider_css_c.c
-./nivo-slider.css.urp: ./Nivo_slider_css.ur ./Nivo_slider_css.urs ./Nivo_slider_css_c.h ./Nivo_slider_css_c.o
-	touch ./nivo-slider.css.urp
+	$(URCC) -c $(URINCL) -o  ./Nivo_slider_css_c.o ./Nivo_slider_css_c.c
 $(call GUARD,URCC):
 	rm -f .cake3/GUARD_URCC_*
 	touch $@
@@ -28,10 +30,12 @@ else
 
 .PHONY: all
 all: .fix-multy1
-.PHONY: ./Nivo_slider_css_c.o
-./Nivo_slider_css_c.o: .fix-multy1
 .PHONY: ./nivo-slider.css.urp
 ./nivo-slider.css.urp: .fix-multy1
+.PHONY: ./nivo-slider.css.urp.in
+./nivo-slider.css.urp.in: .fix-multy1
+.PHONY: ./Nivo_slider_css_c.o
+./Nivo_slider_css_c.o: .fix-multy1
 .INTERMEDIATE: .fix-multy1
 .fix-multy1: 
 	-mkdir .cake3

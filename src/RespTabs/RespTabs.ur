@@ -17,7 +17,7 @@ fun add [t] [x] [t~out] f r =
               <link rel="stylesheet" href={Easy_responsive_tabs_css.geturl}/>
             </xml>
 
-    val r' = Page.addHeader [#RESPT] h (RespTabs_js.rt_init resplist respcont resptabs active) r
+    val l = RespTabs_js.rt_init resplist respcont resptabs active
 
     fun ftabs (s:list tab) : transaction xbody = 
       x <- List.foldlM (fn r x =>
@@ -37,7 +37,10 @@ fun add [t] [x] [t~out] f r =
         </xml>
 
   in
-    f ftabs r'
+    f ftabs ( Page.addHeader h (
+              Page.addMark [#RESPT] (
+              Page.addOnLoad l (
+              r))))
   end
 
 fun mktab (s2:string) (s:string) (x:xbody) = {Active = (s = s2), Caption = s, Content = x}

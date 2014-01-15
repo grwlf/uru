@@ -8,13 +8,15 @@ ifdef MAIN
 # Main section
 
 URCC = $(shell $(shell urweb -print-ccompiler) -print-prog-name=gcc)
-URINCL = $(shell urweb -print-cinclude)
+URINCL = -I$(shell urweb -print-cinclude) 
 .PHONY: all
 all: ./jquery.nivo.slider.pack.js.urp
+./jquery.nivo.slider.pack.js.urp: ./jquery.nivo.slider.pack.js.urp.in
+	cat ./jquery.nivo.slider.pack.js.urp.in > ./jquery.nivo.slider.pack.js.urp
+./jquery.nivo.slider.pack.js.urp.in: ./Jquery_nivo_slider_pack_js.ur ./Jquery_nivo_slider_pack_js.urs ./Jquery_nivo_slider_pack_js_c.h ./Jquery_nivo_slider_pack_js_c.o
+	touch ./jquery.nivo.slider.pack.js.urp.in
 ./Jquery_nivo_slider_pack_js_c.o: ./Jquery_nivo_slider_pack_js_c.c $(call GUARD,URCC) $(call GUARD,URINCL)
-	$(URCC) -c -I $(URINCL) -o ./Jquery_nivo_slider_pack_js_c.o ./Jquery_nivo_slider_pack_js_c.c
-./jquery.nivo.slider.pack.js.urp: ./Jquery_nivo_slider_pack_js.ur ./Jquery_nivo_slider_pack_js.urs ./Jquery_nivo_slider_pack_js_c.h ./Jquery_nivo_slider_pack_js_c.o
-	touch ./jquery.nivo.slider.pack.js.urp
+	$(URCC) -c $(URINCL) -o  ./Jquery_nivo_slider_pack_js_c.o ./Jquery_nivo_slider_pack_js_c.c
 $(call GUARD,URCC):
 	rm -f .cake3/GUARD_URCC_*
 	touch $@
@@ -28,10 +30,12 @@ else
 
 .PHONY: all
 all: .fix-multy1
-.PHONY: ./Jquery_nivo_slider_pack_js_c.o
-./Jquery_nivo_slider_pack_js_c.o: .fix-multy1
 .PHONY: ./jquery.nivo.slider.pack.js.urp
 ./jquery.nivo.slider.pack.js.urp: .fix-multy1
+.PHONY: ./jquery.nivo.slider.pack.js.urp.in
+./jquery.nivo.slider.pack.js.urp.in: .fix-multy1
+.PHONY: ./Jquery_nivo_slider_pack_js_c.o
+./Jquery_nivo_slider_pack_js_c.o: .fix-multy1
 .INTERMEDIATE: .fix-multy1
 .fix-multy1: 
 	-mkdir .cake3

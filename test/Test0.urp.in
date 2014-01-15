@@ -1,0 +1,10 @@
+allow mime text/javascript
+allow mime text/css
+allow mime image/jpeg
+allow mime image/png
+allow mime image/gif
+library ../.
+debug
+safeGet Test0/main
+
+.././test/Test0

@@ -3,7 +3,22 @@ style cmenu
 style pika
 style nivo
 
-fun main {} = Page.runPage (
+(* table tst : { A : list int } *)
+
+
+(* fun read_list [t ::: Type] (x:read t) : read (list t) = *)
+(*   let *)
+(*     fun rd (s:string) : list t = *) 
+(*       case substring s 0 4 of *)
+(*           " :: " => (readError s) :: (rd (substring s 4 (strlen s))) *)
+(*         | "[]"  => [] *)
+(*         | _ => [] *)
+(*   in *)
+(*     mkRead rd (fn s => None) *)
+(*   end *)
+
+
+fun main {} : transaction page = Page.run (
   JQuery.add (
   JQueryUI.add (
   Bootstrap.add (
@@ -31,14 +46,15 @@ fun main {} = Page.runPage (
       []);
 
     return (
+
       <xml>
         <div class={Bootstrap.container}>
           <h1>Hello, menu</h1>
           <ul class={cmenu}>
-            <li><a link={main {}}>Item1</a></li>
-            <li><a link={main {}}>Item2</a></li>
-            <li><a link={main {}}>Item3</a></li>
-            <li> <a link={main {}}>Item4</a> </li>
+            (* <li><a href={url (main {})}>Item1</a></li> *)
+            (* <li><a link={main {}}>Item2</a></li> *)
+            (* <li><a link={main {}}>Item3</a></li> *)
+            (* <li> <a link={main {}}>Item4</a> </li> *)
           </ul>
 
           <div class={Bootstrap.row_fluid}>

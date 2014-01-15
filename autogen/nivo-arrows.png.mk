@@ -8,13 +8,15 @@ ifdef MAIN
 # Main section
 
 URCC = $(shell $(shell urweb -print-ccompiler) -print-prog-name=gcc)
-URINCL = $(shell urweb -print-cinclude)
+URINCL = -I$(shell urweb -print-cinclude) 
 .PHONY: all
 all: ./nivo-arrows.png.urp
+./nivo-arrows.png.urp: ./nivo-arrows.png.urp.in
+	cat ./nivo-arrows.png.urp.in > ./nivo-arrows.png.urp
+./nivo-arrows.png.urp.in: ./Nivo_arrows_png.ur ./Nivo_arrows_png.urs ./Nivo_arrows_png_c.h ./Nivo_arrows_png_c.o
+	touch ./nivo-arrows.png.urp.in
 ./Nivo_arrows_png_c.o: ./Nivo_arrows_png_c.c $(call GUARD,URCC) $(call GUARD,URINCL)
-	$(URCC) -c -I $(URINCL) -o ./Nivo_arrows_png_c.o ./Nivo_arrows_png_c.c
-./nivo-arrows.png.urp: ./Nivo_arrows_png.ur ./Nivo_arrows_png.urs ./Nivo_arrows_png_c.h ./Nivo_arrows_png_c.o
-	touch ./nivo-arrows.png.urp
+	$(URCC) -c $(URINCL) -o  ./Nivo_arrows_png_c.o ./Nivo_arrows_png_c.c
 $(call GUARD,URCC):
 	rm -f .cake3/GUARD_URCC_*
 	touch $@
@@ -28,10 +30,12 @@ else
 
 .PHONY: all
 all: .fix-multy1
-.PHONY: ./Nivo_arrows_png_c.o
-./Nivo_arrows_png_c.o: .fix-multy1
 .PHONY: ./nivo-arrows.png.urp
 ./nivo-arrows.png.urp: .fix-multy1
+.PHONY: ./nivo-arrows.png.urp.in
+./nivo-arrows.png.urp.in: .fix-multy1
+.PHONY: ./Nivo_arrows_png_c.o
+./Nivo_arrows_png_c.o: .fix-multy1
 .INTERMEDIATE: .fix-multy1
 .fix-multy1: 
 	-mkdir .cake3

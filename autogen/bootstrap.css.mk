@@ -8,13 +8,15 @@ ifdef MAIN
 # Main section
 
 URCC = $(shell $(shell urweb -print-ccompiler) -print-prog-name=gcc)
-URINCL = $(shell urweb -print-cinclude)
+URINCL = -I$(shell urweb -print-cinclude) 
 .PHONY: all
 all: ./bootstrap.css.urp
+./bootstrap.css.urp: ./bootstrap.css.urp.in
+	cat ./bootstrap.css.urp.in > ./bootstrap.css.urp
+./bootstrap.css.urp.in: ./Bootstrap_css.ur ./Bootstrap_css.urs ./Bootstrap_css_c.h ./Bootstrap_css_c.o
+	touch ./bootstrap.css.urp.in
 ./Bootstrap_css_c.o: ./Bootstrap_css_c.c $(call GUARD,URCC) $(call GUARD,URINCL)
-	$(URCC) -c -I $(URINCL) -o ./Bootstrap_css_c.o ./Bootstrap_css_c.c
-./bootstrap.css.urp: ./Bootstrap_css.ur ./Bootstrap_css.urs ./Bootstrap_css_c.h ./Bootstrap_css_c.o
-	touch ./bootstrap.css.urp
+	$(URCC) -c $(URINCL) -o  ./Bootstrap_css_c.o ./Bootstrap_css_c.c
 $(call GUARD,URCC):
 	rm -f .cake3/GUARD_URCC_*
 	touch $@
@@ -28,10 +30,12 @@ else
 
 .PHONY: all
 all: .fix-multy1
-.PHONY: ./Bootstrap_css_c.o
-./Bootstrap_css_c.o: .fix-multy1
 .PHONY: ./bootstrap.css.urp
 ./bootstrap.css.urp: .fix-multy1
+.PHONY: ./bootstrap.css.urp.in
+./bootstrap.css.urp.in: .fix-multy1
+.PHONY: ./Bootstrap_css_c.o
+./Bootstrap_css_c.o: .fix-multy1
 .INTERMEDIATE: .fix-multy1
 .fix-multy1: 
 	-mkdir .cake3

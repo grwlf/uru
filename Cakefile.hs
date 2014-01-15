@@ -48,6 +48,19 @@ project mode = do
       , "JQuery.ur"
       ]
 
+    collection "src/Bootstrap" [
+        "bootstrap.css"
+      , "Bootstrap.ur"
+      ]
+
+    collection "src/RespTabs" [
+        "easy-responsive-tabs.css"
+      , "easyResponsiveTabs.js"
+      , "RespTabs.js"
+      , "RespTabs.ur"
+      ]
+
+{-
     collection "src/JQueryUI" [
         "jquery-ui.css"
       , "jquery-ui.js"
@@ -86,17 +99,18 @@ project mode = do
       , "PikaChoose.ur"
       ]
 
-    collection "src/RespTabs" [
-        "easy-responsive-tabs.css"
-      , "easyResponsiveTabs.js"
-      , "RespTabs.js"
-      , "RespTabs.ur"
-      ]
+      -}
 
-    collection "src/Bootstrap" [
-        "bootstrap.css"
-      , "Bootstrap.ur"
-      ]
+  t0 <- uwapp "-dbms sqlite" "test/Test0.urp" $ do
+    allow mime "text/javascript";
+    allow mime "text/css";
+    allow mime "image/jpeg";
+    allow mime "image/png";
+    allow mime "image/gif";
+    library u;
+    debug
+    safeGet "Test0/main"
+    ur (pair "test/Test0.ur")
 
   t1 <- uwapp "-dbms sqlite" "test/Test1.urp" $ do
     allow url "http://code.jquery.com/ui/1.10.3/jquery-ui.js";
@@ -115,16 +129,17 @@ project mode = do
       ]
      
     ur (sys "list")
-    ur (single "test/Test1.ur")
+    ur (pair "test/Test1.ur")
 
   rule $ do
     phony "clean"
-    unsafeShell [cmd|rm -rf .cake3 $(tempfiles u) $(tempfiles t1)|]
+    unsafeShell [cmd|rm -rf .cake3|]
 
   rule $ do
     phony "all"
     depend u
-    depend t1
+    -- depend t1
+    depend t0
 
 main = do
   writeMake (file "Makefile") (project User)

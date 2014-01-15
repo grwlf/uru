@@ -1,0 +1,8 @@
+include ./Walle_jpg_c.h
+link ./Walle_jpg_c.o
+ffi ./Walle_jpg_c
+ffi ./Walle_jpg_js
+safeGet Walle_jpg/blobpage
+safeGet Walle_jpg/blob
+
+./Walle_jpg

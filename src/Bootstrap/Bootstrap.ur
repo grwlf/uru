@@ -296,7 +296,7 @@ fun add [t] [x] [t~out] f r =
     val h = <xml>
               <link rel="stylesheet" href={Bootstrap_css.geturl}/>
             </xml> 
-    val r' = Page.addHeader [#BOOTSTRAP] h (return {}) r
+    val r' = Page.addHeader h (Page.addMark [#BOOTSTRAP] r)
   in
     f r'
   end

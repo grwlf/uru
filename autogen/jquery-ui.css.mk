@@ -8,13 +8,15 @@ ifdef MAIN
 # Main section
 
 URCC = $(shell $(shell urweb -print-ccompiler) -print-prog-name=gcc)
-URINCL = $(shell urweb -print-cinclude)
+URINCL = -I$(shell urweb -print-cinclude) 
 .PHONY: all
 all: ./jquery-ui.css.urp
+./jquery-ui.css.urp: ./jquery-ui.css.urp.in
+	cat ./jquery-ui.css.urp.in > ./jquery-ui.css.urp
+./jquery-ui.css.urp.in: ./Jquery_ui_css.ur ./Jquery_ui_css.urs ./Jquery_ui_css_c.h ./Jquery_ui_css_c.o
+	touch ./jquery-ui.css.urp.in
 ./Jquery_ui_css_c.o: ./Jquery_ui_css_c.c $(call GUARD,URCC) $(call GUARD,URINCL)
-	$(URCC) -c -I $(URINCL) -o ./Jquery_ui_css_c.o ./Jquery_ui_css_c.c
-./jquery-ui.css.urp: ./Jquery_ui_css.ur ./Jquery_ui_css.urs ./Jquery_ui_css_c.h ./Jquery_ui_css_c.o
-	touch ./jquery-ui.css.urp
+	$(URCC) -c $(URINCL) -o  ./Jquery_ui_css_c.o ./Jquery_ui_css_c.c
 $(call GUARD,URCC):
 	rm -f .cake3/GUARD_URCC_*
 	touch $@
@@ -28,10 +30,12 @@ else
 
 .PHONY: all
 all: .fix-multy1
-.PHONY: ./Jquery_ui_css_c.o
-./Jquery_ui_css_c.o: .fix-multy1
 .PHONY: ./jquery-ui.css.urp
 ./jquery-ui.css.urp: .fix-multy1
+.PHONY: ./jquery-ui.css.urp.in
+./jquery-ui.css.urp.in: .fix-multy1
+.PHONY: ./Jquery_ui_css_c.o
+./Jquery_ui_css_c.o: .fix-multy1
 .INTERMEDIATE: .fix-multy1
 .fix-multy1: 
 	-mkdir .cake3

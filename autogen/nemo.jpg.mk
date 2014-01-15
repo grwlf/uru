@@ -8,13 +8,15 @@ ifdef MAIN
 # Main section
 
 URCC = $(shell $(shell urweb -print-ccompiler) -print-prog-name=gcc)
-URINCL = $(shell urweb -print-cinclude)
+URINCL = -I$(shell urweb -print-cinclude) 
 .PHONY: all
 all: ./nemo.jpg.urp
+./nemo.jpg.urp: ./nemo.jpg.urp.in
+	cat ./nemo.jpg.urp.in > ./nemo.jpg.urp
+./nemo.jpg.urp.in: ./Nemo_jpg.ur ./Nemo_jpg.urs ./Nemo_jpg_c.h ./Nemo_jpg_c.o
+	touch ./nemo.jpg.urp.in
 ./Nemo_jpg_c.o: ./Nemo_jpg_c.c $(call GUARD,URCC) $(call GUARD,URINCL)
-	$(URCC) -c -I $(URINCL) -o ./Nemo_jpg_c.o ./Nemo_jpg_c.c
-./nemo.jpg.urp: ./Nemo_jpg.ur ./Nemo_jpg.urs ./Nemo_jpg_c.h ./Nemo_jpg_c.o
-	touch ./nemo.jpg.urp
+	$(URCC) -c $(URINCL) -o  ./Nemo_jpg_c.o ./Nemo_jpg_c.c
 $(call GUARD,URCC):
 	rm -f .cake3/GUARD_URCC_*
 	touch $@
@@ -28,10 +30,12 @@ else
 
 .PHONY: all
 all: .fix-multy1
-.PHONY: ./Nemo_jpg_c.o
-./Nemo_jpg_c.o: .fix-multy1
 .PHONY: ./nemo.jpg.urp
 ./nemo.jpg.urp: .fix-multy1
+.PHONY: ./nemo.jpg.urp.in
+./nemo.jpg.urp.in: .fix-multy1
+.PHONY: ./Nemo_jpg_c.o
+./Nemo_jpg_c.o: .fix-multy1
 .INTERMEDIATE: .fix-multy1
 .fix-multy1: 
 	-mkdir .cake3
