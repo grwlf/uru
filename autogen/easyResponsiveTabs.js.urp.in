@@ -1,8 +1,0 @@
-include ./EasyResponsiveTabs_js_c.h
-link ./EasyResponsiveTabs_js_c.o
-ffi ./EasyResponsiveTabs_js_c
-ffi ./EasyResponsiveTabs_js_js
-safeGet EasyResponsiveTabs_js/blobpage
-safeGet EasyResponsiveTabs_js/blob
-
-./EasyResponsiveTabs_js

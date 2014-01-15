@@ -1,8 +1,0 @@
-include ./Easy_responsive_tabs_css_c.h
-link ./Easy_responsive_tabs_css_c.o
-ffi ./Easy_responsive_tabs_css_c
-ffi ./Easy_responsive_tabs_css_js
-safeGet Easy_responsive_tabs_css/blobpage
-safeGet Easy_responsive_tabs_css/blob
-
-./Easy_responsive_tabs_css

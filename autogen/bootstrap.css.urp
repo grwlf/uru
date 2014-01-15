@@ -1,8 +1,0 @@
-include ./Bootstrap_css_c.h
-link ./Bootstrap_css_c.o
-ffi ./Bootstrap_css_c
-ffi ./Bootstrap_css_js
-safeGet Bootstrap_css/blobpage
-safeGet Bootstrap_css/blob
-
-./Bootstrap_css

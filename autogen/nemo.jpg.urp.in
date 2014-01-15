@@ -1,8 +1,0 @@
-include ./Nemo_jpg_c.h
-link ./Nemo_jpg_c.o
-ffi ./Nemo_jpg_c
-ffi ./Nemo_jpg_js
-safeGet Nemo_jpg/blobpage
-safeGet Nemo_jpg/blob
-
-./Nemo_jpg

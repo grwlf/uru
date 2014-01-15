@@ -1,9 +1,0 @@
-include ./MegaMenu2_js_c.h
-link ./MegaMenu2_js_c.o
-ffi ./MegaMenu2_js_c
-jsFunc MegaMenu2_js_js.mm2_init = mm2_init__unit
-ffi ./MegaMenu2_js_js
-safeGet MegaMenu2_js/blobpage
-safeGet MegaMenu2_js/blob
-
-./MegaMenu2_js

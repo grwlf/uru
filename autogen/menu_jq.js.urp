@@ -1,9 +1,0 @@
-include ./Menu_jq_js_c.h
-link ./Menu_jq_js_c.o
-ffi ./Menu_jq_js_c
-jsFunc Menu_jq_js_js.init = init__unit
-ffi ./Menu_jq_js_js
-safeGet Menu_jq_js/blobpage
-safeGet Menu_jq_js/blob
-
-./Menu_jq_js

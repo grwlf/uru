@@ -2,35 +2,33 @@
 fun addOnLoad [t1] tu r =
   (r -- #Bdy_onload ++ {Bdy_onload = (r.Bdy_onload ; tu)})
 
-fun withBody [t] b z =
-  (z -- #Bdy ++ {Bdy = b})
-
 fun addHeader [t1] h r =
   (r -- #Hdr ++ {Hdr = <xml>{r.Hdr}{h}</xml>})
 
-fun addMark [t1] [n :: Name] [t1 ~ [n={}]] r =
-  (r -- #Marks ++ {Marks = r.Marks ++ {n = {}}})
+fun addTag [t1] [tm] [n :: Name] [t1 ~ [n=tm]] tv r =
+  (r -- #Tags ++ {Tags = r.Tags ++ {n = tv}})
 
-fun run [t2] f : transaction page =
-  let
-    val f' = f {
-            Marks = { } ,
-            Hdr = <xml/> ,
-            Bdy = return <xml/> ,
-            Bdy_onload = return {}
-            }
-  in
-  b <- f'.Bdy;
+fun addEmptyTag [t1] [n :: Name] [t1 ~ [n={}]] r =
+  (r -- #Tags ++ {Tags = r.Tags ++ {n = {}}})
+
+fun withBody [t] f r =
+  b <- f r;
   return
     <xml>
       <head>
-      {f'.Hdr}
+      {r.Hdr}
       </head>
-      <body onload={(f'.Bdy_onload)}>
+      <body onload={r.Bdy_onload}>
       {b}
       </body>
     </xml>
-  end
+
+fun run f : transaction page =
+  f {
+    Tags = { } ,
+    Hdr = <xml/> ,
+    Bdy_onload = return {}
+    }
 
 val javascript = blessMime "text/javascript"
 

@@ -4,14 +4,8 @@ rewrite style Bootstrap/* [-]
 rewrite style Bootstrap/table_ table
 library ./../urscript
 library ./autogen/jquery-1.9.1.js
-library ./autogen/bootstrap.css
-library ./autogen/easy-responsive-tabs.css
-library ./autogen/easyResponsiveTabs.js
-library ./autogen/RespTabs.js
 
 $/list
 ./src/CSS
 ./src/Page
 ./src/JQuery/JQuery
-./src/Bootstrap/Bootstrap
-./src/RespTabs/RespTabs

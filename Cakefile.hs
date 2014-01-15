@@ -48,6 +48,7 @@ project mode = do
       , "JQuery.ur"
       ]
 
+{-
     collection "src/Bootstrap" [
         "bootstrap.css"
       , "Bootstrap.ur"
@@ -60,7 +61,6 @@ project mode = do
       , "RespTabs.ur"
       ]
 
-{-
     collection "src/JQueryUI" [
         "jquery-ui.css"
       , "jquery-ui.js"

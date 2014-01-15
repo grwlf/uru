@@ -1,8 +1,0 @@
-include ./Nivo_slider_css_c.h
-link ./Nivo_slider_css_c.o
-ffi ./Nivo_slider_css_c
-ffi ./Nivo_slider_css_js
-safeGet Nivo_slider_css/blobpage
-safeGet Nivo_slider_css/blob
-
-./Nivo_slider_css

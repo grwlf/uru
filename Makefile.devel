@@ -3,7 +3,8 @@
 
 GUARD = .cake3/GUARD_$(1)_$(shell echo $($(1)) | md5sum | cut -d ' ' -f 1)
 
-ifdef MAIN
+ifeq ($(MAIN),1)
+unexport MAIN
 
 # Main section
 
@@ -31,16 +32,8 @@ clean: ./Makefile.devel
 	touch ./test/Test0.urp.in
 ./lib.urp: ./Makefile.devel ./lib.urp.in
 	cat ./lib.urp.in > ./lib.urp
-./lib.urp.in: ./../urscript/lib.urp ./Makefile.devel ./autogen/RespTabs.js.urp ./autogen/bootstrap.css.urp ./autogen/easy-responsive-tabs.css.urp ./autogen/easyResponsiveTabs.js.urp ./autogen/jquery-1.9.1.js.urp ./src/Bootstrap/Bootstrap.ur ./src/Bootstrap/Bootstrap.urs ./src/CSS.ur ./src/CSS.urs ./src/JQuery/JQuery.ur ./src/JQuery/JQuery.urs ./src/Page.ur ./src/Page.urs ./src/RespTabs/RespTabs.ur ./src/RespTabs/RespTabs.urs
+./lib.urp.in: ./../urscript/lib.urp ./Makefile.devel ./autogen/jquery-1.9.1.js.urp ./src/CSS.ur ./src/CSS.urs ./src/JQuery/JQuery.ur ./src/JQuery/JQuery.urs ./src/Page.ur ./src/Page.urs
 	touch ./lib.urp.in
-./autogen/RespTabs.js.urp: ./Makefile.devel ./src/RespTabs/RespTabs.js
-	urembed -o ./autogen/RespTabs.js.urp ./src/RespTabs/RespTabs.js
-./autogen/easyResponsiveTabs.js.urp: ./Makefile.devel ./src/RespTabs/easyResponsiveTabs.js
-	urembed -o ./autogen/easyResponsiveTabs.js.urp ./src/RespTabs/easyResponsiveTabs.js
-./autogen/easy-responsive-tabs.css.urp: ./Makefile.devel ./src/RespTabs/easy-responsive-tabs.css
-	urembed -o ./autogen/easy-responsive-tabs.css.urp ./src/RespTabs/easy-responsive-tabs.css
-./autogen/bootstrap.css.urp: ./Makefile.devel ./src/Bootstrap/bootstrap.css
-	urembed -o ./autogen/bootstrap.css.urp ./src/Bootstrap/bootstrap.css
 ./autogen/jquery-1.9.1.js.urp: ./Makefile.devel ./src/JQuery/jquery-1.9.1.js
 	urembed -o ./autogen/jquery-1.9.1.js.urp ./src/JQuery/jquery-1.9.1.js
 ./Cakegen: ./Cakefile.hs
@@ -54,6 +47,8 @@ $(call GUARD,URVERSION):
 else
 
 # Prebuild/postbuild section
+
+export MAIN=1
 
 .PHONY: all
 all: .fix-multy1
@@ -79,14 +74,6 @@ clean: .fix-multy1
 ./lib.urp: .fix-multy1
 .PHONY: ./lib.urp.in
 ./lib.urp.in: .fix-multy1
-.PHONY: ./autogen/RespTabs.js.urp
-./autogen/RespTabs.js.urp: .fix-multy1
-.PHONY: ./autogen/easyResponsiveTabs.js.urp
-./autogen/easyResponsiveTabs.js.urp: .fix-multy1
-.PHONY: ./autogen/easy-responsive-tabs.css.urp
-./autogen/easy-responsive-tabs.css.urp: .fix-multy1
-.PHONY: ./autogen/bootstrap.css.urp
-./autogen/bootstrap.css.urp: .fix-multy1
 .PHONY: ./autogen/jquery-1.9.1.js.urp
 ./autogen/jquery-1.9.1.js.urp: .fix-multy1
 .PHONY: ./Cakegen
@@ -99,6 +86,6 @@ clean: .fix-multy1
 	urweb -print-cinclude >/dev/null
 	mkdir -pv autogen
 	$(MAKE) -C ./../urscript -f Makefile
-	$(MAKE) -f ./Makefile.devel MAIN=1 $(MAKECMDGOALS)
+	$(MAKE) -f ./Makefile.devel $(MAKECMDGOALS)
 
 endif
