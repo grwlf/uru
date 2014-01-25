@@ -1,0 +1,8 @@
+include ./Nivo_default_css_c.h
+link ./Nivo_default_css_c.o
+ffi ./Nivo_default_css_c
+ffi ./Nivo_default_css_js
+safeGet Nivo_default_css/blobpage
+safeGet Nivo_default_css/blob
+
+./Nivo_default_css

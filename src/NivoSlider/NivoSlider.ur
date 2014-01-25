@@ -24,8 +24,8 @@ fun add [t] [x] [t~out] css f r =
   let
     val hdr = <xml>
                 <link rel="stylesheet" href={Nivo_slider_css.geturl}/>
-                {Script.insert Page.javascript Jquery_nivo_slider_pack_js.geturl}
-                {Script.insert Page.javascript NivoSlider_js.geturl}
+                {Script.insert Uru.javascript Jquery_nivo_slider_pack_js.geturl}
+                {Script.insert Uru.javascript NivoSlider_js.geturl}
                 <link rel="stylesheet" href={Nivo_default_css.geturl}/>
                 <script code={
                   NivoSlider_js.nivo_init
@@ -37,13 +37,6 @@ fun add [t] [x] [t~out] css f r =
                     Nivo_loading_gif.geturl ;
                   return {}}/>
               </xml> 
-
-    val init =
-      return {}
-      
-    val r' = Page.requireHeader [#JQ] (
-             Page.addHeader [#NIVO] hdr init (
-               r))
 
     fun fslides (s:list slide) : transaction xbody = 
       x <- List.foldlM (fn r x =>
@@ -60,7 +53,10 @@ fun add [t] [x] [t~out] css f r =
           </div>
         </xml>
   in
-    f fslides r'
+    f fslides (
+      Uru.addHeader hdr (
+      Uru.addTag [#NIVO] {} (
+        r)))
   end
 
 

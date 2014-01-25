@@ -1,0 +1,9 @@
+include ./NivoSlider_js_c.h
+link ./NivoSlider_js_c.o
+ffi ./NivoSlider_js_c
+jsFunc NivoSlider_js_js.nivo_init = nivo_init__unit
+ffi ./NivoSlider_js_js
+safeGet NivoSlider_js/blobpage
+safeGet NivoSlider_js/blob
+
+./NivoSlider_js

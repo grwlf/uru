@@ -4,17 +4,19 @@ con out = need ++ [JQM={}]
 
 fun add [t] [x] [t~out] css f r = 
   let
-    val hdr = <xml>
+    val h = <xml>
                 <link rel="stylesheet" href={Menu_jq_css.geturl}/>
-                {Script.insert Page.javascript Menu_jq_js.geturl}
+                {Script.insert Uru.javascript Menu_jq_js.geturl}
               </xml> 
 
-    val init =
+    val l =
       Menu_jq_js.init css
 
-    val r' = Page.addHeader [#JQM] hdr init r
-
   in
-    f r'
+    f (
+      Uru.addHeader h (
+      Uru.addTag [#JQM] {} (
+      Uru.addOnLoad l (
+      r))))
   end
 

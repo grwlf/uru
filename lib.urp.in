@@ -14,6 +14,15 @@ library ./autogen/jquery.jcarousel.min.js
 library ./autogen/jquery.pikachoose.min.js
 library ./autogen/PikaChoose.css
 library ./autogen/PikaChoose.js
+library ./autogen/menu_jq.css
+library ./autogen/menu_jq.js
+library ./autogen/jquery.nivo.slider.pack.js
+library ./autogen/nivo-arrows.png
+library ./autogen/nivo-bullets.png
+library ./autogen/nivo-default.css
+library ./autogen/nivo-loading.gif
+library ./autogen/nivo-slider.css
+library ./autogen/NivoSlider.js
 
 $/list
 ./src/CSS
@@ -23,3 +32,5 @@ $/list
 ./src/JQueryUI/JQueryUI
 ./src/RespTabs/RespTabs
 ./src/PikaChoose/PikaChoose
+./src/MenuUI/Menu_jq
+./src/NivoSlider/NivoSlider

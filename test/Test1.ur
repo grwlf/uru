@@ -12,7 +12,7 @@ fun main {} : transaction page =
   Menu_jq.add cmenu (
   PikaChoose.add pika (
   NivoSlider.add nivo (fn slides =>
-  Uru.withBody (
+  Uru.withBody (fn _ =>
     
     t <- tabs (
       RespTabs.mktab "" "Tab1"

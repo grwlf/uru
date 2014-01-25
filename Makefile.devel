@@ -10,20 +10,26 @@ unexport MAIN
 
 URVERSION = $(shell urweb -version)
 .PHONY: all
-all: ./Makefile.devel ./lib.urp ./test/Test0.exe ./test/TestBootstrap.exe ./test/TestJQUI.exe ./test/TestPikaChoose.exe ./test/TestRespTabs.exe
+all: ./Makefile.devel ./lib.urp ./test/Test0.exe ./test/Test1.exe ./test/TestBootstrap.exe ./test/TestJQUI.exe ./test/TestPikaChoose.exe ./test/TestRespTabs.exe
 .PHONY: clean
 clean: ./Makefile.devel
 	rm -rf .cake3
+./test/Test1.exe: ./Makefile.devel ./test/Test1.urp $(call GUARD,URVERSION)
+	urweb -dbms sqlite ./test/Test1
+./test/Test1.urp: ./Makefile.devel ./test/Test1.urp.in
+	cat ./test/Test1.urp.in > ./test/Test1.urp
+./test/Test1.urp.in: ./Makefile.devel ./autogen/nemo.jpg.urp ./autogen/walle.jpg.urp ./lib.urp ./test/Test1.ur
+	touch ./test/Test1.urp.in
+./autogen/walle.jpg.urp: ./Makefile.devel ./test/walle.jpg
+	urembed -o ./autogen/walle.jpg.urp ./test/walle.jpg
+./autogen/nemo.jpg.urp: ./Makefile.devel ./test/nemo.jpg
+	urembed -o ./autogen/nemo.jpg.urp ./test/nemo.jpg
 ./test/TestPikaChoose.exe: ./Makefile.devel ./test/TestPikaChoose.urp $(call GUARD,URVERSION)
 	urweb -dbms sqlite ./test/TestPikaChoose
 ./test/TestPikaChoose.urp: ./Makefile.devel ./test/TestPikaChoose.urp.in
 	cat ./test/TestPikaChoose.urp.in > ./test/TestPikaChoose.urp
 ./test/TestPikaChoose.urp.in: ./Makefile.devel ./autogen/nemo.jpg.urp ./autogen/walle.jpg.urp ./lib.urp ./test/TestPikaChoose.ur
 	touch ./test/TestPikaChoose.urp.in
-./autogen/walle.jpg.urp: ./Makefile.devel ./test/walle.jpg
-	urembed -o ./autogen/walle.jpg.urp ./test/walle.jpg
-./autogen/nemo.jpg.urp: ./Makefile.devel ./test/nemo.jpg
-	urembed -o ./autogen/nemo.jpg.urp ./test/nemo.jpg
 ./test/TestRespTabs.exe: ./Makefile.devel ./test/TestRespTabs.urp $(call GUARD,URVERSION)
 	urweb -dbms sqlite ./test/TestRespTabs
 ./test/TestRespTabs.urp: ./Makefile.devel ./test/TestRespTabs.urp.in
@@ -50,8 +56,26 @@ clean: ./Makefile.devel
 	touch ./test/Test0.urp.in
 ./lib.urp: ./Makefile.devel ./lib.urp.in
 	cat ./lib.urp.in > ./lib.urp
-./lib.urp.in: ./../urscript/lib.urp ./Makefile.devel ./autogen/PikaChoose.css.urp ./autogen/PikaChoose.js.urp ./autogen/RespTabs.js.urp ./autogen/bootstrap.css.urp ./autogen/easy-responsive-tabs.css.urp ./autogen/easyResponsiveTabs.js.urp ./autogen/jquery-1.9.1.js.urp ./autogen/jquery-ui.css.urp ./autogen/jquery-ui.js.urp ./autogen/jquery.jcarousel.min.js.urp ./autogen/jquery.pikachoose.min.js.urp ./src/Bootstrap/Bootstrap.ur ./src/Bootstrap/Bootstrap.urs ./src/CSS.ur ./src/CSS.urs ./src/JQuery/JQuery.ur ./src/JQuery/JQuery.urs ./src/JQueryUI/JQueryUI.ur ./src/JQueryUI/JQueryUI.urs ./src/PikaChoose/PikaChoose.ur ./src/PikaChoose/PikaChoose.urs ./src/RespTabs/RespTabs.ur ./src/RespTabs/RespTabs.urs ./src/Uru.ur ./src/Uru.urs
+./lib.urp.in: ./../urscript/lib.urp ./Makefile.devel ./autogen/NivoSlider.js.urp ./autogen/PikaChoose.css.urp ./autogen/PikaChoose.js.urp ./autogen/RespTabs.js.urp ./autogen/bootstrap.css.urp ./autogen/easy-responsive-tabs.css.urp ./autogen/easyResponsiveTabs.js.urp ./autogen/jquery-1.9.1.js.urp ./autogen/jquery-ui.css.urp ./autogen/jquery-ui.js.urp ./autogen/jquery.jcarousel.min.js.urp ./autogen/jquery.nivo.slider.pack.js.urp ./autogen/jquery.pikachoose.min.js.urp ./autogen/menu_jq.css.urp ./autogen/menu_jq.js.urp ./autogen/nivo-arrows.png.urp ./autogen/nivo-bullets.png.urp ./autogen/nivo-default.css.urp ./autogen/nivo-loading.gif.urp ./autogen/nivo-slider.css.urp ./src/Bootstrap/Bootstrap.ur ./src/Bootstrap/Bootstrap.urs ./src/CSS.ur ./src/CSS.urs ./src/JQuery/JQuery.ur ./src/JQuery/JQuery.urs ./src/JQueryUI/JQueryUI.ur ./src/JQueryUI/JQueryUI.urs ./src/MenuUI/Menu_jq.ur ./src/MenuUI/Menu_jq.urs ./src/NivoSlider/NivoSlider.ur ./src/NivoSlider/NivoSlider.urs ./src/PikaChoose/PikaChoose.ur ./src/PikaChoose/PikaChoose.urs ./src/RespTabs/RespTabs.ur ./src/RespTabs/RespTabs.urs ./src/Uru.ur ./src/Uru.urs
 	touch ./lib.urp.in
+./autogen/NivoSlider.js.urp: ./Makefile.devel ./src/NivoSlider/NivoSlider.js
+	urembed -o ./autogen/NivoSlider.js.urp ./src/NivoSlider/NivoSlider.js
+./autogen/nivo-slider.css.urp: ./Makefile.devel ./src/NivoSlider/nivo-slider.css
+	urembed -o ./autogen/nivo-slider.css.urp ./src/NivoSlider/nivo-slider.css
+./autogen/nivo-loading.gif.urp: ./Makefile.devel ./src/NivoSlider/nivo-loading.gif
+	urembed -o ./autogen/nivo-loading.gif.urp ./src/NivoSlider/nivo-loading.gif
+./autogen/nivo-default.css.urp: ./Makefile.devel ./src/NivoSlider/nivo-default.css
+	urembed -o ./autogen/nivo-default.css.urp ./src/NivoSlider/nivo-default.css
+./autogen/nivo-bullets.png.urp: ./Makefile.devel ./src/NivoSlider/nivo-bullets.png
+	urembed -o ./autogen/nivo-bullets.png.urp ./src/NivoSlider/nivo-bullets.png
+./autogen/nivo-arrows.png.urp: ./Makefile.devel ./src/NivoSlider/nivo-arrows.png
+	urembed -o ./autogen/nivo-arrows.png.urp ./src/NivoSlider/nivo-arrows.png
+./autogen/jquery.nivo.slider.pack.js.urp: ./Makefile.devel ./src/NivoSlider/jquery.nivo.slider.pack.js
+	urembed -o ./autogen/jquery.nivo.slider.pack.js.urp ./src/NivoSlider/jquery.nivo.slider.pack.js
+./autogen/menu_jq.js.urp: ./Makefile.devel ./src/MenuUI/menu_jq.js
+	urembed -o ./autogen/menu_jq.js.urp ./src/MenuUI/menu_jq.js
+./autogen/menu_jq.css.urp: ./Makefile.devel ./src/MenuUI/menu_jq.css
+	urembed -o ./autogen/menu_jq.css.urp ./src/MenuUI/menu_jq.css
 ./autogen/PikaChoose.js.urp: ./Makefile.devel ./src/PikaChoose/PikaChoose.js
 	urembed -o ./autogen/PikaChoose.js.urp ./src/PikaChoose/PikaChoose.js
 ./autogen/PikaChoose.css.urp: ./Makefile.devel ./src/PikaChoose/PikaChoose.css
@@ -92,16 +116,22 @@ export MAIN=1
 all: .fix-multy1
 .PHONY: clean
 clean: .fix-multy1
+.PHONY: ./test/Test1.exe
+./test/Test1.exe: .fix-multy1
+.PHONY: ./test/Test1.urp
+./test/Test1.urp: .fix-multy1
+.PHONY: ./test/Test1.urp.in
+./test/Test1.urp.in: .fix-multy1
+.PHONY: ./autogen/walle.jpg.urp
+./autogen/walle.jpg.urp: .fix-multy1
+.PHONY: ./autogen/nemo.jpg.urp
+./autogen/nemo.jpg.urp: .fix-multy1
 .PHONY: ./test/TestPikaChoose.exe
 ./test/TestPikaChoose.exe: .fix-multy1
 .PHONY: ./test/TestPikaChoose.urp
 ./test/TestPikaChoose.urp: .fix-multy1
 .PHONY: ./test/TestPikaChoose.urp.in
 ./test/TestPikaChoose.urp.in: .fix-multy1
-.PHONY: ./autogen/walle.jpg.urp
-./autogen/walle.jpg.urp: .fix-multy1
-.PHONY: ./autogen/nemo.jpg.urp
-./autogen/nemo.jpg.urp: .fix-multy1
 .PHONY: ./test/TestRespTabs.exe
 ./test/TestRespTabs.exe: .fix-multy1
 .PHONY: ./test/TestRespTabs.urp
@@ -130,6 +160,24 @@ clean: .fix-multy1
 ./lib.urp: .fix-multy1
 .PHONY: ./lib.urp.in
 ./lib.urp.in: .fix-multy1
+.PHONY: ./autogen/NivoSlider.js.urp
+./autogen/NivoSlider.js.urp: .fix-multy1
+.PHONY: ./autogen/nivo-slider.css.urp
+./autogen/nivo-slider.css.urp: .fix-multy1
+.PHONY: ./autogen/nivo-loading.gif.urp
+./autogen/nivo-loading.gif.urp: .fix-multy1
+.PHONY: ./autogen/nivo-default.css.urp
+./autogen/nivo-default.css.urp: .fix-multy1
+.PHONY: ./autogen/nivo-bullets.png.urp
+./autogen/nivo-bullets.png.urp: .fix-multy1
+.PHONY: ./autogen/nivo-arrows.png.urp
+./autogen/nivo-arrows.png.urp: .fix-multy1
+.PHONY: ./autogen/jquery.nivo.slider.pack.js.urp
+./autogen/jquery.nivo.slider.pack.js.urp: .fix-multy1
+.PHONY: ./autogen/menu_jq.js.urp
+./autogen/menu_jq.js.urp: .fix-multy1
+.PHONY: ./autogen/menu_jq.css.urp
+./autogen/menu_jq.css.urp: .fix-multy1
 .PHONY: ./autogen/PikaChoose.js.urp
 ./autogen/PikaChoose.js.urp: .fix-multy1
 .PHONY: ./autogen/PikaChoose.css.urp

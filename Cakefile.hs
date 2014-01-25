@@ -74,15 +74,6 @@ project mode = do
       , "PikaChoose.ur"
       ]
 
-{-
-
-    collection "src/MegaMenu2" [
-        "MegaMenu2.css"
-      , "MegaMenu2.js"
-      , "jquery.megamenu.js"
-      , "MegaMenu2.ur"
-      ]
-
     collection "src/MenuUI" [
         "menu_jq.css"
       , "menu_jq.js"
@@ -100,6 +91,15 @@ project mode = do
       , "NivoSlider.ur"
       ]
 
+{-
+
+    collection "src/MegaMenu2" [
+        "MegaMenu2.css"
+      , "MegaMenu2.js"
+      , "jquery.megamenu.js"
+      , "MegaMenu2.ur"
+      ]
+
       -}
 
   t <- forM [ "test/Test0.urp"
@@ -107,6 +107,7 @@ project mode = do
             , "test/TestJQUI.urp"
             , "test/TestRespTabs.urp"
             , "test/TestPikaChoose.urp"
+            , "test/Test1.urp"
             ] $ \t -> do
 
     uwapp "-dbms sqlite" t $ do
