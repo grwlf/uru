@@ -3,22 +3,8 @@ style cmenu
 style pika
 style nivo
 
-(* table tst : { A : list int } *)
-
-
-(* fun read_list [t ::: Type] (x:read t) : read (list t) = *)
-(*   let *)
-(*     fun rd (s:string) : list t = *) 
-(*       case substring s 0 4 of *)
-(*           " :: " => (readError s) :: (rd (substring s 4 (strlen s))) *)
-(*         | "[]"  => [] *)
-(*         | _ => [] *)
-(*   in *)
-(*     mkRead rd (fn s => None) *)
-(*   end *)
-
-
-fun main {} : transaction page = Page.run (
+fun main {} : transaction page =
+  Uru.run (
   JQuery.add (
   JQueryUI.add (
   Bootstrap.add (
@@ -26,7 +12,7 @@ fun main {} : transaction page = Page.run (
   Menu_jq.add cmenu (
   PikaChoose.add pika (
   NivoSlider.add nivo (fn slides =>
-  Page.withBody (
+  Uru.withBody (
     
     t <- tabs (
       RespTabs.mktab "" "Tab1"

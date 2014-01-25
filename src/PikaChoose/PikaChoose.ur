@@ -4,19 +4,21 @@ con out = need ++ [PKCH={}]
 
 fun add [t] [x] [t~out] css f r = 
   let
-    val hdr = <xml>
-                {Script.insert Page.javascript Jquery_pikachoose_min_js.geturl}
-                {Script.insert Page.javascript Jquery_jcarousel_min_js.geturl}
-                {Script.insert Page.javascript PikaChoose_js.geturl}
+    val h = <xml>
+                {Script.insert Uru.javascript Jquery_pikachoose_min_js.geturl}
+                {Script.insert Uru.javascript Jquery_jcarousel_min_js.geturl}
+                {Script.insert Uru.javascript PikaChoose_js.geturl}
                 <link rel="stylesheet" href={PikaChoose_css.geturl}/>
               </xml> 
 
-    val init = 
+    val l = 
       PikaChoose_js.pkch_init css;
       PikaChoose_js.pkch_style 817 390
       
-    val r' = Page.addHeader [#PKCH] hdr (init) r
   in
-    f r'
+    f (Uru.addHeader h (
+       Uru.addTag [#PKCH] {} (
+       Uru.addOnLoad l (
+       r))))
   end
 

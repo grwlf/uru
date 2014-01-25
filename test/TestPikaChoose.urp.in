@@ -1,0 +1,14 @@
+allow url http://code.jquery.com/ui/1.10.3/jquery-ui.js
+allow mime text/javascript
+allow mime text/css
+allow mime image/jpeg
+allow mime image/png
+allow mime image/gif
+safeGet TestPikaChoose/main
+library ../.
+debug
+library .././autogen/nemo.jpg
+library .././autogen/walle.jpg
+
+$/list
+.././test/TestPikaChoose

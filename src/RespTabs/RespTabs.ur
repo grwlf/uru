@@ -9,11 +9,11 @@ style active
 
 fun add [t] [x] [t~out] f r = 
   let
-    val j = Page.javascript
+    val j = Uru.javascript
 
     val h = <xml>
-              {Script.insert Page.javascript EasyResponsiveTabs_js.geturl}
-              {Script.insert Page.javascript RespTabs_js.geturl}
+              {Script.insert Uru.javascript EasyResponsiveTabs_js.geturl}
+              {Script.insert Uru.javascript RespTabs_js.geturl}
               <link rel="stylesheet" href={Easy_responsive_tabs_css.geturl}/>
             </xml>
 
@@ -37,9 +37,9 @@ fun add [t] [x] [t~out] f r =
         </xml>
 
   in
-    f ftabs ( Page.addHeader h (
-              Page.addMark [#RESPT] (
-              Page.addOnLoad l (
+    f ftabs ( Uru.addHeader h (
+              Uru.addTag [#RESPT] {} (
+              Uru.addOnLoad l (
               r))))
   end
 

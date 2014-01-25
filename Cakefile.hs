@@ -41,17 +41,22 @@ project mode = do
 
     ur (sys "list")
     ur (pair "src/CSS.ur")
-    ur (pair "src/Page.ur")
+    ur (pair "src/Uru.ur")
 
     collection "src/JQuery" [
         "jquery-1.9.1.js"
       , "JQuery.ur"
       ]
 
-{-
     collection "src/Bootstrap" [
         "bootstrap.css"
       , "Bootstrap.ur"
+      ]
+
+    collection "src/JQueryUI" [
+        "jquery-ui.css"
+      , "jquery-ui.js"
+      , "JQueryUI.ur"
       ]
 
     collection "src/RespTabs" [
@@ -61,11 +66,15 @@ project mode = do
       , "RespTabs.ur"
       ]
 
-    collection "src/JQueryUI" [
-        "jquery-ui.css"
-      , "jquery-ui.js"
-      , "JQueryUI.ur"
+    collection "src/PikaChoose" [
+        "jquery.jcarousel.min.js"
+      , "jquery.pikachoose.min.js"
+      , "PikaChoose.css"
+      , "PikaChoose.js"
+      , "PikaChoose.ur"
       ]
+
+{-
 
     collection "src/MegaMenu2" [
         "MegaMenu2.css"
@@ -91,37 +100,25 @@ project mode = do
       , "NivoSlider.ur"
       ]
 
-    collection "src/PikaChoose" [
-        "jquery.jcarousel.min.js"
-      , "jquery.pikachoose.min.js"
-      , "PikaChoose.css"
-      , "PikaChoose.js"
-      , "PikaChoose.ur"
-      ]
-
       -}
 
-  t0 <- uwapp "-dbms sqlite" "test/Test0.urp" $ do
-    allow mime "text/javascript";
-    allow mime "text/css";
-    allow mime "image/jpeg";
-    allow mime "image/png";
-    allow mime "image/gif";
-    library u;
-    debug
-    safeGet "Test0/main"
-    ur (pair "test/Test0.ur")
+  t <- forM [ "test/Test0.urp"
+            , "test/TestBootstrap.urp"
+            , "test/TestJQUI.urp"
+            , "test/TestRespTabs.urp"
+            , "test/TestPikaChoose.urp"
+            ] $ \t -> do
 
-  t1 <- uwapp "-dbms sqlite" "test/Test1.urp" $ do
+    uwapp "-dbms sqlite" t $ do
     allow url "http://code.jquery.com/ui/1.10.3/jquery-ui.js";
     allow mime "text/javascript";
     allow mime "text/css";
     allow mime "image/jpeg";
     allow mime "image/png";
     allow mime "image/gif";
+    safeGet (t.="ur") "main"
     library u;
     debug
-    safeGet "Test1/main"
 
     collection "test" [
         "nemo.jpg"
@@ -129,7 +126,7 @@ project mode = do
       ]
      
     ur (sys "list")
-    ur (pair "test/Test1.ur")
+    ur (single (t.="ur"))
 
   rule $ do
     phony "clean"
@@ -138,8 +135,7 @@ project mode = do
   rule $ do
     phony "all"
     depend u
-    -- depend t1
-    depend t0
+    depend t
 
 main = do
   writeMake (file "Makefile") (project User)

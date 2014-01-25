@@ -10,30 +10,68 @@ unexport MAIN
 
 URVERSION = $(shell urweb -version)
 .PHONY: all
-all: ./Makefile.devel ./lib.urp ./test/Test0.exe
+all: ./Makefile.devel ./lib.urp ./test/Test0.exe ./test/TestBootstrap.exe ./test/TestJQUI.exe ./test/TestPikaChoose.exe ./test/TestRespTabs.exe
 .PHONY: clean
 clean: ./Makefile.devel
 	rm -rf .cake3
-./test/Test1.exe: ./Makefile.devel ./test/Test1.urp $(call GUARD,URVERSION)
-	urweb -dbms sqlite ./test/Test1
-./test/Test1.urp: ./Makefile.devel ./test/Test1.urp.in
-	cat ./test/Test1.urp.in > ./test/Test1.urp
-./test/Test1.urp.in: ./Makefile.devel ./autogen/nemo.jpg.urp ./autogen/walle.jpg.urp ./lib.urp ./test/Test1.ur ./test/Test1.urs
-	touch ./test/Test1.urp.in
+./test/TestPikaChoose.exe: ./Makefile.devel ./test/TestPikaChoose.urp $(call GUARD,URVERSION)
+	urweb -dbms sqlite ./test/TestPikaChoose
+./test/TestPikaChoose.urp: ./Makefile.devel ./test/TestPikaChoose.urp.in
+	cat ./test/TestPikaChoose.urp.in > ./test/TestPikaChoose.urp
+./test/TestPikaChoose.urp.in: ./Makefile.devel ./autogen/nemo.jpg.urp ./autogen/walle.jpg.urp ./lib.urp ./test/TestPikaChoose.ur
+	touch ./test/TestPikaChoose.urp.in
 ./autogen/walle.jpg.urp: ./Makefile.devel ./test/walle.jpg
 	urembed -o ./autogen/walle.jpg.urp ./test/walle.jpg
 ./autogen/nemo.jpg.urp: ./Makefile.devel ./test/nemo.jpg
 	urembed -o ./autogen/nemo.jpg.urp ./test/nemo.jpg
+./test/TestRespTabs.exe: ./Makefile.devel ./test/TestRespTabs.urp $(call GUARD,URVERSION)
+	urweb -dbms sqlite ./test/TestRespTabs
+./test/TestRespTabs.urp: ./Makefile.devel ./test/TestRespTabs.urp.in
+	cat ./test/TestRespTabs.urp.in > ./test/TestRespTabs.urp
+./test/TestRespTabs.urp.in: ./Makefile.devel ./autogen/nemo.jpg.urp ./autogen/walle.jpg.urp ./lib.urp ./test/TestRespTabs.ur
+	touch ./test/TestRespTabs.urp.in
+./test/TestJQUI.exe: ./Makefile.devel ./test/TestJQUI.urp $(call GUARD,URVERSION)
+	urweb -dbms sqlite ./test/TestJQUI
+./test/TestJQUI.urp: ./Makefile.devel ./test/TestJQUI.urp.in
+	cat ./test/TestJQUI.urp.in > ./test/TestJQUI.urp
+./test/TestJQUI.urp.in: ./Makefile.devel ./autogen/nemo.jpg.urp ./autogen/walle.jpg.urp ./lib.urp ./test/TestJQUI.ur
+	touch ./test/TestJQUI.urp.in
+./test/TestBootstrap.exe: ./Makefile.devel ./test/TestBootstrap.urp $(call GUARD,URVERSION)
+	urweb -dbms sqlite ./test/TestBootstrap
+./test/TestBootstrap.urp: ./Makefile.devel ./test/TestBootstrap.urp.in
+	cat ./test/TestBootstrap.urp.in > ./test/TestBootstrap.urp
+./test/TestBootstrap.urp.in: ./Makefile.devel ./autogen/nemo.jpg.urp ./autogen/walle.jpg.urp ./lib.urp ./test/TestBootstrap.ur
+	touch ./test/TestBootstrap.urp.in
 ./test/Test0.exe: ./Makefile.devel ./test/Test0.urp $(call GUARD,URVERSION)
 	urweb -dbms sqlite ./test/Test0
 ./test/Test0.urp: ./Makefile.devel ./test/Test0.urp.in
 	cat ./test/Test0.urp.in > ./test/Test0.urp
-./test/Test0.urp.in: ./Makefile.devel ./lib.urp ./test/Test0.ur ./test/Test0.urs
+./test/Test0.urp.in: ./Makefile.devel ./autogen/nemo.jpg.urp ./autogen/walle.jpg.urp ./lib.urp ./test/Test0.ur
 	touch ./test/Test0.urp.in
 ./lib.urp: ./Makefile.devel ./lib.urp.in
 	cat ./lib.urp.in > ./lib.urp
-./lib.urp.in: ./../urscript/lib.urp ./Makefile.devel ./autogen/jquery-1.9.1.js.urp ./src/CSS.ur ./src/CSS.urs ./src/JQuery/JQuery.ur ./src/JQuery/JQuery.urs ./src/Page.ur ./src/Page.urs
+./lib.urp.in: ./../urscript/lib.urp ./Makefile.devel ./autogen/PikaChoose.css.urp ./autogen/PikaChoose.js.urp ./autogen/RespTabs.js.urp ./autogen/bootstrap.css.urp ./autogen/easy-responsive-tabs.css.urp ./autogen/easyResponsiveTabs.js.urp ./autogen/jquery-1.9.1.js.urp ./autogen/jquery-ui.css.urp ./autogen/jquery-ui.js.urp ./autogen/jquery.jcarousel.min.js.urp ./autogen/jquery.pikachoose.min.js.urp ./src/Bootstrap/Bootstrap.ur ./src/Bootstrap/Bootstrap.urs ./src/CSS.ur ./src/CSS.urs ./src/JQuery/JQuery.ur ./src/JQuery/JQuery.urs ./src/JQueryUI/JQueryUI.ur ./src/JQueryUI/JQueryUI.urs ./src/PikaChoose/PikaChoose.ur ./src/PikaChoose/PikaChoose.urs ./src/RespTabs/RespTabs.ur ./src/RespTabs/RespTabs.urs ./src/Uru.ur ./src/Uru.urs
 	touch ./lib.urp.in
+./autogen/PikaChoose.js.urp: ./Makefile.devel ./src/PikaChoose/PikaChoose.js
+	urembed -o ./autogen/PikaChoose.js.urp ./src/PikaChoose/PikaChoose.js
+./autogen/PikaChoose.css.urp: ./Makefile.devel ./src/PikaChoose/PikaChoose.css
+	urembed -o ./autogen/PikaChoose.css.urp ./src/PikaChoose/PikaChoose.css
+./autogen/jquery.pikachoose.min.js.urp: ./Makefile.devel ./src/PikaChoose/jquery.pikachoose.min.js
+	urembed -o ./autogen/jquery.pikachoose.min.js.urp ./src/PikaChoose/jquery.pikachoose.min.js
+./autogen/jquery.jcarousel.min.js.urp: ./Makefile.devel ./src/PikaChoose/jquery.jcarousel.min.js
+	urembed -o ./autogen/jquery.jcarousel.min.js.urp ./src/PikaChoose/jquery.jcarousel.min.js
+./autogen/RespTabs.js.urp: ./Makefile.devel ./src/RespTabs/RespTabs.js
+	urembed -o ./autogen/RespTabs.js.urp ./src/RespTabs/RespTabs.js
+./autogen/easyResponsiveTabs.js.urp: ./Makefile.devel ./src/RespTabs/easyResponsiveTabs.js
+	urembed -o ./autogen/easyResponsiveTabs.js.urp ./src/RespTabs/easyResponsiveTabs.js
+./autogen/easy-responsive-tabs.css.urp: ./Makefile.devel ./src/RespTabs/easy-responsive-tabs.css
+	urembed -o ./autogen/easy-responsive-tabs.css.urp ./src/RespTabs/easy-responsive-tabs.css
+./autogen/jquery-ui.js.urp: ./Makefile.devel ./src/JQueryUI/jquery-ui.js
+	urembed -o ./autogen/jquery-ui.js.urp ./src/JQueryUI/jquery-ui.js
+./autogen/jquery-ui.css.urp: ./Makefile.devel ./src/JQueryUI/jquery-ui.css
+	urembed -o ./autogen/jquery-ui.css.urp ./src/JQueryUI/jquery-ui.css
+./autogen/bootstrap.css.urp: ./Makefile.devel ./src/Bootstrap/bootstrap.css
+	urembed -o ./autogen/bootstrap.css.urp ./src/Bootstrap/bootstrap.css
 ./autogen/jquery-1.9.1.js.urp: ./Makefile.devel ./src/JQuery/jquery-1.9.1.js
 	urembed -o ./autogen/jquery-1.9.1.js.urp ./src/JQuery/jquery-1.9.1.js
 ./Cakegen: ./Cakefile.hs
@@ -54,16 +92,34 @@ export MAIN=1
 all: .fix-multy1
 .PHONY: clean
 clean: .fix-multy1
-.PHONY: ./test/Test1.exe
-./test/Test1.exe: .fix-multy1
-.PHONY: ./test/Test1.urp
-./test/Test1.urp: .fix-multy1
-.PHONY: ./test/Test1.urp.in
-./test/Test1.urp.in: .fix-multy1
+.PHONY: ./test/TestPikaChoose.exe
+./test/TestPikaChoose.exe: .fix-multy1
+.PHONY: ./test/TestPikaChoose.urp
+./test/TestPikaChoose.urp: .fix-multy1
+.PHONY: ./test/TestPikaChoose.urp.in
+./test/TestPikaChoose.urp.in: .fix-multy1
 .PHONY: ./autogen/walle.jpg.urp
 ./autogen/walle.jpg.urp: .fix-multy1
 .PHONY: ./autogen/nemo.jpg.urp
 ./autogen/nemo.jpg.urp: .fix-multy1
+.PHONY: ./test/TestRespTabs.exe
+./test/TestRespTabs.exe: .fix-multy1
+.PHONY: ./test/TestRespTabs.urp
+./test/TestRespTabs.urp: .fix-multy1
+.PHONY: ./test/TestRespTabs.urp.in
+./test/TestRespTabs.urp.in: .fix-multy1
+.PHONY: ./test/TestJQUI.exe
+./test/TestJQUI.exe: .fix-multy1
+.PHONY: ./test/TestJQUI.urp
+./test/TestJQUI.urp: .fix-multy1
+.PHONY: ./test/TestJQUI.urp.in
+./test/TestJQUI.urp.in: .fix-multy1
+.PHONY: ./test/TestBootstrap.exe
+./test/TestBootstrap.exe: .fix-multy1
+.PHONY: ./test/TestBootstrap.urp
+./test/TestBootstrap.urp: .fix-multy1
+.PHONY: ./test/TestBootstrap.urp.in
+./test/TestBootstrap.urp.in: .fix-multy1
 .PHONY: ./test/Test0.exe
 ./test/Test0.exe: .fix-multy1
 .PHONY: ./test/Test0.urp
@@ -74,6 +130,26 @@ clean: .fix-multy1
 ./lib.urp: .fix-multy1
 .PHONY: ./lib.urp.in
 ./lib.urp.in: .fix-multy1
+.PHONY: ./autogen/PikaChoose.js.urp
+./autogen/PikaChoose.js.urp: .fix-multy1
+.PHONY: ./autogen/PikaChoose.css.urp
+./autogen/PikaChoose.css.urp: .fix-multy1
+.PHONY: ./autogen/jquery.pikachoose.min.js.urp
+./autogen/jquery.pikachoose.min.js.urp: .fix-multy1
+.PHONY: ./autogen/jquery.jcarousel.min.js.urp
+./autogen/jquery.jcarousel.min.js.urp: .fix-multy1
+.PHONY: ./autogen/RespTabs.js.urp
+./autogen/RespTabs.js.urp: .fix-multy1
+.PHONY: ./autogen/easyResponsiveTabs.js.urp
+./autogen/easyResponsiveTabs.js.urp: .fix-multy1
+.PHONY: ./autogen/easy-responsive-tabs.css.urp
+./autogen/easy-responsive-tabs.css.urp: .fix-multy1
+.PHONY: ./autogen/jquery-ui.js.urp
+./autogen/jquery-ui.js.urp: .fix-multy1
+.PHONY: ./autogen/jquery-ui.css.urp
+./autogen/jquery-ui.css.urp: .fix-multy1
+.PHONY: ./autogen/bootstrap.css.urp
+./autogen/bootstrap.css.urp: .fix-multy1
 .PHONY: ./autogen/jquery-1.9.1.js.urp
 ./autogen/jquery-1.9.1.js.urp: .fix-multy1
 .PHONY: ./Cakegen

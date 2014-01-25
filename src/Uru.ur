@@ -25,7 +25,7 @@ fun withBody [t] f r =
 
 fun run f : transaction page =
   f {
-    Tags = { } ,
+    Tags = {} ,
     Hdr = <xml/> ,
     Bdy_onload = return {}
     }

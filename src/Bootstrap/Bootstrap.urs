@@ -285,13 +285,12 @@ style icon_briefcase
 style icon_fullscreen
 
 
-con dpage = Page.dpage
+con dpage = Uru.dpage
 
 con need = [JQ=unit]
 con out = need ++ [BOOTSTRAP=unit]
 
-val add : t ::: {Type} -> x ::: {Type} -> [t ~ out]
-  => (record (dpage (t ++ out)) -> record (dpage x))
-  -> record (dpage (t ++ need))
-  -> record (dpage x)
+val add : t ::: {Type} -> [t ~ out]
+  => (record (dpage (t ++ out)) -> transaction page)
+  -> record (dpage (t ++ need)) -> transaction page
 

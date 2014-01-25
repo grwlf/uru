@@ -4,8 +4,22 @@ rewrite style Bootstrap/* [-]
 rewrite style Bootstrap/table_ table
 library ./../urscript
 library ./autogen/jquery-1.9.1.js
+library ./autogen/bootstrap.css
+library ./autogen/jquery-ui.css
+library ./autogen/jquery-ui.js
+library ./autogen/easy-responsive-tabs.css
+library ./autogen/easyResponsiveTabs.js
+library ./autogen/RespTabs.js
+library ./autogen/jquery.jcarousel.min.js
+library ./autogen/jquery.pikachoose.min.js
+library ./autogen/PikaChoose.css
+library ./autogen/PikaChoose.js
 
 $/list
 ./src/CSS
-./src/Page
+./src/Uru
 ./src/JQuery/JQuery
+./src/Bootstrap/Bootstrap
+./src/JQueryUI/JQueryUI
+./src/RespTabs/RespTabs
+./src/PikaChoose/PikaChoose

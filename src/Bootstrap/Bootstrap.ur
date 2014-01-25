@@ -291,13 +291,12 @@ style icon_fullscreen
 con need = [JQ=unit]
 con out = need ++ [BOOTSTRAP=unit]
 
-fun add [t] [x] [t~out] f r = 
+fun add [t] [t~out] f r = 
   let
     val h = <xml>
               <link rel="stylesheet" href={Bootstrap_css.geturl}/>
             </xml> 
-    val r' = Page.addHeader h (Page.addMark [#BOOTSTRAP] r)
   in
-    f r'
+    f (Uru.addHeader h (Uru.addTag [#BOOTSTRAP] {} r))
   end
 
