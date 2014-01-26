@@ -1,0 +1,9 @@
+include ./Zoom_js_c.h
+link ./Zoom_js_c.o
+ffi ./Zoom_js_c
+jsFunc Zoom_js_js.zoom_on = zoom_on__unit
+ffi ./Zoom_js_js
+safeGet Zoom_js/blobpage
+safeGet Zoom_js/blob
+
+./Zoom_js

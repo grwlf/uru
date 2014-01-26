@@ -1,0 +1,8 @@
+include ./Zoom_css_c.h
+link ./Zoom_css_c.o
+ffi ./Zoom_css_c
+ffi ./Zoom_css_js
+safeGet Zoom_css/blobpage
+safeGet Zoom_css/blob
+
+./Zoom_css

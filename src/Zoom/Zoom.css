@@ -1,0 +1,10 @@
+.Zoom_zoom {
+  display:inline-block;
+  position: relative;
+}
+
+.Zoom_zoom img {
+  display: block;
+}
+
+.Zoom_zoom img::selection { background-color: transparent; }

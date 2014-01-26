@@ -23,6 +23,9 @@ library ./autogen/nivo-default.css
 library ./autogen/nivo-loading.gif
 library ./autogen/nivo-slider.css
 library ./autogen/NivoSlider.js
+library ./autogen/jquery.zoom.min.js
+library ./autogen/Zoom.js
+library ./autogen/Zoom.css
 
 $/list
 ./src/CSS
@@ -34,3 +37,4 @@ $/list
 ./src/PikaChoose/PikaChoose
 ./src/MenuUI/Menu_jq
 ./src/NivoSlider/NivoSlider
+./src/Zoom/Zoom

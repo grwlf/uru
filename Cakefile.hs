@@ -18,6 +18,7 @@ project mode = do
 
   let collection d xs = mapM_ choose xs where
         choose x | (takeExtension x) == ".ur" = ur (pair (d</>x))
+                 | (takeExtension x) == ".urs" = return ()
                  | otherwise =
                     let un = file $ "autogen" </> ((takeFileName x) ++ ".urp")
                     in case mode of
@@ -89,6 +90,15 @@ project mode = do
       , "nivo-slider.css"
       , "NivoSlider.js"
       , "NivoSlider.ur"
+      , "NivoSlider.urs"
+      ]
+
+    collection "src/Zoom" [
+        "jquery.zoom.min.js"
+      , "Zoom.js"
+      , "Zoom.css"
+      , "Zoom.ur"
+      , "Zoom.urs"
       ]
 
 {-
@@ -108,6 +118,7 @@ project mode = do
             , "test/TestRespTabs.urp"
             , "test/TestPikaChoose.urp"
             , "test/Test1.urp"
+            , "test/TestZoom.urp"
             ] $ \t -> do
 
     uwapp "-dbms sqlite" t $ do
