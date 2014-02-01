@@ -1,0 +1,28 @@
+allow url http://code.jquery.com/ui/1.10.3/jquery-ui.js
+allow mime text/javascript
+allow mime text/css
+allow mime image/jpeg
+allow mime image/png
+allow mime image/gif
+safeGet TestMain/main
+library ../.
+debug
+library .././autogen/nemo.jpg
+library .././autogen/walle.jpg
+safeGet TestJQuery/main
+safeGet TestBootstrap/main
+safeGet TestJQUI/main
+safeGet TestRespTabs/main
+safeGet TestPikaChoose/main
+safeGet Test1/main
+safeGet TestZoom/main
+
+$/list
+.././test/TestJQuery
+.././test/TestBootstrap
+.././test/TestJQUI
+.././test/TestRespTabs
+.././test/TestPikaChoose
+.././test/Test1
+.././test/TestZoom
+.././test/TestMain

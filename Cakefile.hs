@@ -112,33 +112,56 @@ project mode = do
 
       -}
 
-  t <- forM [ "test/Test0.urp"
-            , "test/TestBootstrap.urp"
-            , "test/TestJQUI.urp"
-            , "test/TestRespTabs.urp"
-            , "test/TestPikaChoose.urp"
-            , "test/Test1.urp"
-            , "test/TestZoom.urp"
-            ] $ \t -> do
+  let tests = [ "test/TestJQuery.urp"
+              , "test/TestBootstrap.urp"
+              , "test/TestJQUI.urp"
+              , "test/TestRespTabs.urp"
+              , "test/TestPikaChoose.urp"
+              , "test/Test1.urp"
+              , "test/TestZoom.urp"
+              ]
 
+  t <- forM tests $ \t -> do
     uwapp "-dbms sqlite" t $ do
-    allow url "http://code.jquery.com/ui/1.10.3/jquery-ui.js";
-    allow mime "text/javascript";
-    allow mime "text/css";
-    allow mime "image/jpeg";
-    allow mime "image/png";
-    allow mime "image/gif";
-    safeGet (t.="ur") "main"
-    library u;
-    debug
+      allow url "http://code.jquery.com/ui/1.10.3/jquery-ui.js";
+      allow mime "text/javascript";
+      allow mime "text/css";
+      allow mime "image/jpeg";
+      allow mime "image/png";
+      allow mime "image/gif";
+      safeGet (t.="ur") "main"
+      library u;
+      debug
 
+      collection "test" [
+          "nemo.jpg"
+        , "walle.jpg"
+        ]
+     
+      ur (sys "list")
+      ur (single (t.="ur"))
+
+  tm <- uwapp "-dbms sqlite" "test/TestMain.urp" $ do
+    allow url "http://code.jquery.com/ui/1.10.3/jquery-ui.js"
+    allow mime "text/javascript"
+    allow mime "text/css"
+    allow mime "image/jpeg"
+    allow mime "image/png"
+    allow mime "image/gif"
+    safeGet "test/TestMain.ur" "main"
+    library u
+    debug
     collection "test" [
         "nemo.jpg"
       , "walle.jpg"
       ]
-     
     ur (sys "list")
-    ur (single (t.="ur"))
+    forM_ (map (.="ur") tests) $ \t -> do
+      ur (single t)
+      safeGet t "main"
+
+    ur (single "test/TestMain.ur")
+   
 
   rule $ do
     phony "clean"
@@ -148,6 +171,7 @@ project mode = do
     phony "all"
     depend u
     depend t
+    depend tm
 
 main = do
   writeMake (file "Makefile") (project User)

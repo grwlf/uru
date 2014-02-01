@@ -10,20 +10,26 @@ unexport MAIN
 
 URVERSION = $(shell urweb -version)
 .PHONY: all
-all: ./Makefile.devel ./lib.urp ./test/Test0.exe ./test/Test1.exe ./test/TestBootstrap.exe ./test/TestJQUI.exe ./test/TestPikaChoose.exe ./test/TestRespTabs.exe ./test/TestZoom.exe
+all: ./Makefile.devel ./lib.urp ./test/Test1.exe ./test/TestBootstrap.exe ./test/TestJQUI.exe ./test/TestJQuery.exe ./test/TestMain.exe ./test/TestPikaChoose.exe ./test/TestRespTabs.exe ./test/TestZoom.exe
 .PHONY: clean
 clean: ./Makefile.devel
 	rm -rf .cake3
+./test/TestMain.exe: ./Makefile.devel ./test/TestMain.urp $(call GUARD,URVERSION)
+	urweb -dbms sqlite ./test/TestMain
+./test/TestMain.urp: ./Makefile.devel ./test/TestMain.urp.in
+	cat ./test/TestMain.urp.in > ./test/TestMain.urp
+./test/TestMain.urp.in: ./Makefile.devel ./autogen/nemo.jpg.urp ./autogen/walle.jpg.urp ./lib.urp ./test/Test1.ur ./test/TestBootstrap.ur ./test/TestJQUI.ur ./test/TestJQuery.ur ./test/TestMain.ur ./test/TestPikaChoose.ur ./test/TestRespTabs.ur ./test/TestZoom.ur
+	touch ./test/TestMain.urp.in
+./autogen/walle.jpg.urp: ./Makefile.devel ./test/walle.jpg
+	urembed -o ./autogen/walle.jpg.urp ./test/walle.jpg
+./autogen/nemo.jpg.urp: ./Makefile.devel ./test/nemo.jpg
+	urembed -o ./autogen/nemo.jpg.urp ./test/nemo.jpg
 ./test/TestZoom.exe: ./Makefile.devel ./test/TestZoom.urp $(call GUARD,URVERSION)
 	urweb -dbms sqlite ./test/TestZoom
 ./test/TestZoom.urp: ./Makefile.devel ./test/TestZoom.urp.in
 	cat ./test/TestZoom.urp.in > ./test/TestZoom.urp
 ./test/TestZoom.urp.in: ./Makefile.devel ./autogen/nemo.jpg.urp ./autogen/walle.jpg.urp ./lib.urp ./test/TestZoom.ur
 	touch ./test/TestZoom.urp.in
-./autogen/walle.jpg.urp: ./Makefile.devel ./test/walle.jpg
-	urembed -o ./autogen/walle.jpg.urp ./test/walle.jpg
-./autogen/nemo.jpg.urp: ./Makefile.devel ./test/nemo.jpg
-	urembed -o ./autogen/nemo.jpg.urp ./test/nemo.jpg
 ./test/Test1.exe: ./Makefile.devel ./test/Test1.urp $(call GUARD,URVERSION)
 	urweb -dbms sqlite ./test/Test1
 ./test/Test1.urp: ./Makefile.devel ./test/Test1.urp.in
@@ -54,12 +60,12 @@ clean: ./Makefile.devel
 	cat ./test/TestBootstrap.urp.in > ./test/TestBootstrap.urp
 ./test/TestBootstrap.urp.in: ./Makefile.devel ./autogen/nemo.jpg.urp ./autogen/walle.jpg.urp ./lib.urp ./test/TestBootstrap.ur
 	touch ./test/TestBootstrap.urp.in
-./test/Test0.exe: ./Makefile.devel ./test/Test0.urp $(call GUARD,URVERSION)
-	urweb -dbms sqlite ./test/Test0
-./test/Test0.urp: ./Makefile.devel ./test/Test0.urp.in
-	cat ./test/Test0.urp.in > ./test/Test0.urp
-./test/Test0.urp.in: ./Makefile.devel ./autogen/nemo.jpg.urp ./autogen/walle.jpg.urp ./lib.urp ./test/Test0.ur
-	touch ./test/Test0.urp.in
+./test/TestJQuery.exe: ./Makefile.devel ./test/TestJQuery.urp $(call GUARD,URVERSION)
+	urweb -dbms sqlite ./test/TestJQuery
+./test/TestJQuery.urp: ./Makefile.devel ./test/TestJQuery.urp.in
+	cat ./test/TestJQuery.urp.in > ./test/TestJQuery.urp
+./test/TestJQuery.urp.in: ./Makefile.devel ./autogen/nemo.jpg.urp ./autogen/walle.jpg.urp ./lib.urp ./test/TestJQuery.ur
+	touch ./test/TestJQuery.urp.in
 ./lib.urp: ./Makefile.devel ./lib.urp.in
 	cat ./lib.urp.in > ./lib.urp
 ./lib.urp.in: ./../urscript/lib.urp ./Makefile.devel ./autogen/NivoSlider.js.urp ./autogen/PikaChoose.css.urp ./autogen/PikaChoose.js.urp ./autogen/RespTabs.js.urp ./autogen/Zoom.css.urp ./autogen/Zoom.js.urp ./autogen/bootstrap.css.urp ./autogen/easy-responsive-tabs.css.urp ./autogen/easyResponsiveTabs.js.urp ./autogen/jquery-1.9.1.js.urp ./autogen/jquery-ui.css.urp ./autogen/jquery-ui.js.urp ./autogen/jquery.jcarousel.min.js.urp ./autogen/jquery.nivo.slider.pack.js.urp ./autogen/jquery.pikachoose.min.js.urp ./autogen/jquery.zoom.min.js.urp ./autogen/menu_jq.css.urp ./autogen/menu_jq.js.urp ./autogen/nivo-arrows.png.urp ./autogen/nivo-bullets.png.urp ./autogen/nivo-default.css.urp ./autogen/nivo-loading.gif.urp ./autogen/nivo-slider.css.urp ./src/Bootstrap/Bootstrap.ur ./src/Bootstrap/Bootstrap.urs ./src/CSS.ur ./src/CSS.urs ./src/JQuery/JQuery.ur ./src/JQuery/JQuery.urs ./src/JQueryUI/JQueryUI.ur ./src/JQueryUI/JQueryUI.urs ./src/MenuUI/Menu_jq.ur ./src/MenuUI/Menu_jq.urs ./src/NivoSlider/NivoSlider.ur ./src/NivoSlider/NivoSlider.urs ./src/PikaChoose/PikaChoose.ur ./src/PikaChoose/PikaChoose.urs ./src/RespTabs/RespTabs.ur ./src/RespTabs/RespTabs.urs ./src/Uru.ur ./src/Uru.urs ./src/Zoom/Zoom.ur ./src/Zoom/Zoom.urs
@@ -128,16 +134,22 @@ export MAIN=1
 all: .fix-multy1
 .PHONY: clean
 clean: .fix-multy1
+.PHONY: ./test/TestMain.exe
+./test/TestMain.exe: .fix-multy1
+.PHONY: ./test/TestMain.urp
+./test/TestMain.urp: .fix-multy1
+.PHONY: ./test/TestMain.urp.in
+./test/TestMain.urp.in: .fix-multy1
+.PHONY: ./autogen/walle.jpg.urp
+./autogen/walle.jpg.urp: .fix-multy1
+.PHONY: ./autogen/nemo.jpg.urp
+./autogen/nemo.jpg.urp: .fix-multy1
 .PHONY: ./test/TestZoom.exe
 ./test/TestZoom.exe: .fix-multy1
 .PHONY: ./test/TestZoom.urp
 ./test/TestZoom.urp: .fix-multy1
 .PHONY: ./test/TestZoom.urp.in
 ./test/TestZoom.urp.in: .fix-multy1
-.PHONY: ./autogen/walle.jpg.urp
-./autogen/walle.jpg.urp: .fix-multy1
-.PHONY: ./autogen/nemo.jpg.urp
-./autogen/nemo.jpg.urp: .fix-multy1
 .PHONY: ./test/Test1.exe
 ./test/Test1.exe: .fix-multy1
 .PHONY: ./test/Test1.urp
@@ -168,12 +180,12 @@ clean: .fix-multy1
 ./test/TestBootstrap.urp: .fix-multy1
 .PHONY: ./test/TestBootstrap.urp.in
 ./test/TestBootstrap.urp.in: .fix-multy1
-.PHONY: ./test/Test0.exe
-./test/Test0.exe: .fix-multy1
-.PHONY: ./test/Test0.urp
-./test/Test0.urp: .fix-multy1
-.PHONY: ./test/Test0.urp.in
-./test/Test0.urp.in: .fix-multy1
+.PHONY: ./test/TestJQuery.exe
+./test/TestJQuery.exe: .fix-multy1
+.PHONY: ./test/TestJQuery.urp
+./test/TestJQuery.urp: .fix-multy1
+.PHONY: ./test/TestJQuery.urp.in
+./test/TestJQuery.urp.in: .fix-multy1
 .PHONY: ./lib.urp
 ./lib.urp: .fix-multy1
 .PHONY: ./lib.urp.in

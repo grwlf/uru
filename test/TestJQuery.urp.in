@@ -4,11 +4,11 @@ allow mime text/css
 allow mime image/jpeg
 allow mime image/png
 allow mime image/gif
-safeGet Test0/main
+safeGet TestJQuery/main
 library ../.
 debug
 library .././autogen/nemo.jpg
 library .././autogen/walle.jpg
 
 $/list
-.././test/Test0
+.././test/TestJQuery

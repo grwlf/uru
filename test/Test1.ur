@@ -37,10 +37,10 @@ fun main {} : transaction page =
         <div class={Bootstrap.container}>
           <h1>Hello, menu</h1>
           <ul class={cmenu}>
-            (* <li><a href={url (main {})}>Item1</a></li> *)
-            (* <li><a link={main {}}>Item2</a></li> *)
-            (* <li><a link={main {}}>Item3</a></li> *)
-            (* <li> <a link={main {}}>Item4</a> </li> *)
+            <li><a href={url (main {})}>Item1</a></li>
+            <li><a link={main {}}>Item2</a></li>
+            <li><a link={main {}}>Item3</a></li>
+            <li> <a link={main {}}>Item4</a> </li>
           </ul>
 
           <div class={Bootstrap.row_fluid}>
