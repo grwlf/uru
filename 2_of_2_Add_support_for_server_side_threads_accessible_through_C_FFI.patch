@@ -1,0 +1,652 @@
+# HG changeset patch
+# User Sergey Mironov <grrwlf@gmail.com>
+# Date 1393233068 0
+#      Mon Feb 24 09:11:08 2014 +0000
+# Node ID f3317b1c12ce7006b821fd3d3540f3a2e5b169d6
+# Parent  0b64990a384ef5816b55e80f04d787c7f3b1fd6d
+Add support for server-side threads accessible through C FFI
+
+In order to do this, I had to add more functionality to queues. Also, patch
+cleans up looging code. I didn't check cgi frontend with this
+modifications.
+
+diff --git a/include/urweb/queue.h b/include/urweb/queue.h
+--- a/include/urweb/queue.h
++++ b/include/urweb/queue.h
+@@ -1,7 +1,17 @@
+ #ifndef QUEUE_H
+ #define QUEUE_H
+ 
+-int uw_dequeue();
+-void uw_enqueue(int);
++typedef struct queue * queue;
++
++queue queue_init(void);
++
++int uw_dequeue(queue);
++void uw_enqueue(queue, int);
++
++/* User has to free the pointer returned*/
++char* uw_dequeue_url_or_fail(queue q, int *join);
++void uw_queue_awake(queue q);
++
++void uw_enqueue_alloc_url(queue q, const char* url);
+ 
+ #endif
+diff --git a/include/urweb/request.h b/include/urweb/request.h
+--- a/include/urweb/request.h
++++ b/include/urweb/request.h
+@@ -5,6 +5,14 @@
+ 
+ #include "types.h"
+ 
++#define MAX_RETRIES 5
++
++typedef struct loggers {
++  uw_app *app;
++  void *logger_data;
++  uw_logger log_error, log_debug;
++} loggers;
++
+ typedef struct uw_rc *uw_request_context;
+ 
+ void uw_request_init(uw_app *app, void *logger_data, uw_logger log_error, uw_logger log_debug);
+@@ -22,13 +30,7 @@
+                           int (*send)(int sockfd, const void *buf, ssize_t len),
+                           int (*close)(int fd));
+ 
+-uw_context uw_request_new_context(int id, uw_app*, void *logger_data, uw_logger log_error, uw_logger log_debug);
+-
+-typedef struct {
+-  uw_app *app;
+-  void *logger_data;
+-  uw_logger log_error, log_debug;
+-} loggers;
++uw_context uw_request_new_context(int id, uw_app*, loggers *);
+ 
+ void *client_pruner(void *data);
+ 
+diff --git a/include/urweb/urweb_cpp.h b/include/urweb/urweb_cpp.h
+--- a/include/urweb/urweb_cpp.h
++++ b/include/urweb/urweb_cpp.h
+@@ -5,6 +5,8 @@
+ 
+ #include "types_cpp.h"
+ 
++struct loggers;
++
+ int uw_really_send(int sock, const void *buf, ssize_t len);
+ int uw_really_write(int fd, const void *buf, size_t len);
+ 
+@@ -14,16 +16,17 @@
+ void uw_app_init(uw_app*);
+ 
+ void uw_client_connect(unsigned id, int pass, int sock,
+-                       int (*send)(int sockfd, const void *buf, size_t len),
++                       int (*send)(int sockfd, const void *buf, ssize_t len),
+                        int (*close)(int fd),
+                        void *logger_data, uw_logger log_error);
+ void uw_prune_clients(struct uw_context *);
+ failure_kind uw_initialize(struct uw_context *);
+ 
+-struct uw_context * uw_init(int id, void *logger_data, uw_logger log_debug);
++struct uw_context * uw_init(int id, struct loggers *ls);
+ void uw_close(struct uw_context *);
+ int uw_set_app(struct uw_context *, uw_app*);
+ uw_app *uw_get_app(struct uw_context *);
++struct loggers *uw_get_loggers(struct uw_context *ctx);
+ void uw_set_db(struct uw_context *, void*);
+ void *uw_get_db(struct uw_context *);
+ void uw_free(struct uw_context *);
+diff --git a/src/c/Makefile.am b/src/c/Makefile.am
+--- a/src/c/Makefile.am
++++ b/src/c/Makefile.am
+@@ -1,6 +1,6 @@
+ lib_LTLIBRARIES = liburweb.la liburweb_http.la liburweb_cgi.la liburweb_fastcgi.la liburweb_static.la
+ 
+-liburweb_la_SOURCES = memmem.c openssl.c urweb.c request.c queue.c
++liburweb_la_SOURCES = memmem.c openssl.c urweb.c request.c queue.c srvthread.c
+ liburweb_http_la_SOURCES = http.c
+ liburweb_cgi_la_SOURCES = cgi.c
+ liburweb_fastcgi_la_SOURCES = fastcgi.c fastcgi.h
+diff --git a/src/c/cgi.c b/src/c/cgi.c
+--- a/src/c/cgi.c
++++ b/src/c/cgi.c
+@@ -10,6 +10,7 @@
+ 
+ #include "urweb.h"
+ #include "request.h"
++#include "srvthread.h"
+ 
+ extern uw_app uw_application;
+ 
+@@ -60,8 +61,10 @@
+ static void log_debug(void *data, const char *fmt, ...) {
+ }
+ 
++static loggers ls = {&uw_application, NULL, log_error, log_debug};
++
+ int main(int argc, char *argv[]) {
+-  uw_context ctx = uw_request_new_context(0, &uw_application, NULL, log_error, log_debug);
++  uw_context ctx = uw_request_new_context(0, &uw_application, &ls);
+   uw_request_context rc = uw_new_request_context();
+   request_result rr;
+   char *method = getenv("REQUEST_METHOD"),
+@@ -105,6 +108,8 @@
+     exit(1);
+   }
+ 
++  st_init(1, &ls);
++
+   uw_set_on_success("");
+   uw_set_headers(ctx, get_header, NULL);
+   uw_set_env(ctx, get_env, NULL);
+@@ -117,6 +122,8 @@
+                   -1, NULL, NULL);
+   uw_print(ctx, 1);
+ 
++  st_join();
++
+   if (rr == SERVED)
+     return 0;
+   else
+diff --git a/src/c/fastcgi.c b/src/c/fastcgi.c
+--- a/src/c/fastcgi.c
++++ b/src/c/fastcgi.c
+@@ -17,11 +17,14 @@
+ #include "urweb.h"
+ #include "request.h"
+ #include "queue.h"
++#include "srvthread.h"
+ 
+ #include "fastcgi.h"
+ 
+ extern uw_app uw_application;
+ 
++queue q;
++
+ typedef struct {
+   unsigned char version;
+   unsigned char type;
+@@ -311,6 +314,8 @@
+   return fastcgi_close_with(&out, SERVED);
+ }
+ 
++static loggers ls = {&uw_application, NULL, log_error, log_debug};
++
+ int fastcgi_send_normal(int sock, const void *buf, ssize_t len) {
+   FCGI_Output out;
+   out.sock = sock;
+@@ -324,7 +329,7 @@
+ static void *worker(void *data) {
+   FCGI_Input *in = fastcgi_input();
+   FCGI_Output *out = fastcgi_output();
+-  uw_context ctx = uw_request_new_context(*(int *)data, &uw_application, out, log_error, log_debug);
++  uw_context ctx = uw_request_new_context(*(int *)data, &uw_application, &ls);
+   uw_request_context rc = uw_new_request_context();
+   headers hs;
+   size_t body_size = 0;
+@@ -348,7 +353,7 @@
+     char *s;
+     char *method, *path, *path_info, *query_string;
+ 
+-    in->sock = out->sock = uw_dequeue();
++    in->sock = out->sock = uw_dequeue(q);
+ 
+     if (!(r = fastcgi_recv(in))) {
+       fprintf(stderr, "Error receiving initial message\n");
+@@ -514,7 +519,6 @@
+   exit(0);
+ }
+ 
+-static loggers ls = {&uw_application, NULL, log_error, log_debug};
+ 
+ int main(int argc, char *argv[]) {
+   // The skeleton for this function comes from Beej's sockets tutorial.
+@@ -522,6 +526,7 @@
+   socklen_t sin_size;
+   int nthreads = 1, i, *names, opt;
+   char *fwsa = getenv("FCGI_WEB_SERVER_ADDRS"), *nthreads_s = getenv("URWEB_NUM_THREADS");
++  q = queue_init();
+  
+   if (nthreads_s) {
+     nthreads = atoi(nthreads_s);
+@@ -587,6 +592,8 @@
+     }
+   }
+ 
++  st_init(nthreads==1?1:2, &ls);
++
+   while (1) {
+     int new_fd = accept(FCGI_LISTENSOCK_FILENO, (struct sockaddr *)&their_addr, &sin_size);
+ 
+@@ -617,8 +624,10 @@
+       }
+     }
+ 
+-    uw_enqueue(new_fd);
++    uw_enqueue(q,new_fd);
+   }
++
++  st_join();
+ }
+ 
+ void *uw_init_client_data() {
+diff --git a/src/c/http.c b/src/c/http.c
+--- a/src/c/http.c
++++ b/src/c/http.c
+@@ -17,6 +17,9 @@
+ #include "urweb.h"
+ #include "request.h"
+ #include "queue.h"
++#include "srvthread.h"
++
++static queue q;
+ 
+ extern uw_app uw_application;
+ 
+@@ -70,9 +73,12 @@
+   }
+ }
+ 
++static loggers ls = {&uw_application, NULL, log_error, log_debug};
++
+ static void *worker(void *data) {
+   int me = *(int *)data;
+-  uw_context ctx = uw_request_new_context(me, &uw_application, NULL, log_error, log_debug);
++  // uw_context ctx = uw_request_new_context(me, &uw_application, NULL, log_error, log_debug);
++  uw_context ctx = uw_request_new_context(me, &uw_application, &ls);
+   size_t buf_size = 1024;
+   char *buf = malloc(buf_size), *back = buf;
+   uw_request_context rc = uw_new_request_context();
+@@ -81,7 +87,7 @@
+   while (1) {
+     if (sock == 0) {
+       back = buf;
+-      sock = uw_dequeue();
++      sock = uw_dequeue(q);
+     }
+ 
+     if (!quiet)
+@@ -271,7 +277,7 @@
+               // No pipelining going on here.
+               // We'd might as well try to switch to a different connection,
+               // while we wait for more input on this one.
+-              uw_enqueue(sock);
++              uw_enqueue(q,sock);
+               sock = 0;
+             } else {
+               // More input!  Move it to the front and continue in this loop.
+@@ -307,8 +313,6 @@
+   exit(0);
+ }
+ 
+-static loggers ls = {&uw_application, NULL, log_error, log_debug};
+-
+ int main(int argc, char *argv[]) {
+   // The skeleton for this function comes from Beej's sockets tutorial.
+   int sockfd;  // listen on sock_fd
+@@ -316,6 +320,7 @@
+   struct sockaddr_in their_addr; // connector's address information
+   socklen_t sin_size;
+   int yes = 1, uw_port = 8080, nthreads = 1, i, *names, opt;
++  q = queue_init();
+  
+   signal(SIGINT, sigint);
+   signal(SIGPIPE, SIG_IGN); 
+@@ -374,6 +379,8 @@
+     }
+   }
+ 
++  st_init(1, &ls);
++
+   uw_request_init(&uw_application, NULL, log_error, log_debug);
+ 
+   names = calloc(nthreads, sizeof(int));
+@@ -441,9 +448,12 @@
+         setsockopt(new_fd, IPPROTO_TCP, TCP_NODELAY, (char *) &flag, sizeof(int));
+       }
+ 
+-      uw_enqueue(new_fd);
++      // uw_enqueue(new_fd);
++      uw_enqueue(q,new_fd);
+     }
+   }
++
++  st_join();
+ }
+ 
+ void *uw_init_client_data() {
+diff --git a/src/c/queue.c b/src/c/queue.c
+--- a/src/c/queue.c
++++ b/src/c/queue.c
+@@ -1,63 +1,125 @@
+ #include "config.h"
+ 
+ #include <stdlib.h>
++#include <string.h>
+ 
+ #include <pthread.h>
+ 
++typedef long int data_t;
++
+ typedef struct node {
+-  int fd;
++  data_t data;
+   struct node *next;
+ } *node;
+ 
+-static node front = NULL, back = NULL;
+ 
+-static int empty() {
+-  return front == NULL;
++typedef struct queue {
++  struct node *front;
++  struct node *back;
++
++  pthread_mutex_t queue_mutex;
++  pthread_cond_t queue_cond;
++
++} *queue;
++
++queue queue_init(void) {
++  queue q = malloc(sizeof(struct queue));
++  q->front = NULL;
++  q->back = NULL;
++
++  pthread_mutex_init(&q->queue_mutex, NULL);
++  pthread_cond_init(&q->queue_cond, NULL);
++  return q;
+ }
+ 
+-static void enqueue(int fd) {
++static int empty(queue q) {
++  return q->front == NULL;
++}
++
++static void enqueue(struct queue *q, data_t p) {
+   node n = malloc(sizeof(struct node));
+ 
+-  n->fd = fd;
++  n->data = p;
+   n->next = NULL;
+-  if (back)
+-    back->next = n;
++  if (q->back)
++    q->back->next = n;
+   else
+-    front = n;
+-  back = n;
++    q->front = n;
++  q->back = n;
+ }
+ 
+-static int dequeue() {
+-  int ret = front->fd;
+-  node n = front->next;
+-  free(front);
++static data_t dequeue(queue q) {
++  data_t ret = q->front->data;
++  node n = q->front->next;
++  free(q->front);
+ 
+-  front = n;
++  q->front = n;
+ 
+-  if (!front)
+-    back = NULL;
++  if (!q->front)
++    q->back = NULL;
+ 
+   return ret;
+ }
+ 
+-static pthread_mutex_t queue_mutex = PTHREAD_MUTEX_INITIALIZER;
+-static pthread_cond_t queue_cond = PTHREAD_COND_INITIALIZER;
+-
+-int uw_dequeue() {
++int uw_dequeue(queue q) {
+   int sock;
+ 
+-  pthread_mutex_lock(&queue_mutex);
+-  while (empty())
+-    pthread_cond_wait(&queue_cond, &queue_mutex);
+-  sock = dequeue();
+-  pthread_mutex_unlock(&queue_mutex);
++  pthread_mutex_lock(&q->queue_mutex);
++  while (empty(q))
++    pthread_cond_wait(&q->queue_cond, &q->queue_mutex);
++  sock = (int)dequeue(q);
++  pthread_mutex_unlock(&q->queue_mutex);
+ 
+   return sock;
+ }
+ 
+-void uw_enqueue(int new_fd) {
+-  pthread_mutex_lock(&queue_mutex);
+-  enqueue(new_fd);
+-  pthread_cond_broadcast(&queue_cond);
+-  pthread_mutex_unlock(&queue_mutex);
++void uw_enqueue(queue q, int new_fd) {
++  pthread_mutex_lock(&q->queue_mutex);
++  enqueue(q, (data_t)new_fd);
++  pthread_cond_broadcast(&q->queue_cond);
++  pthread_mutex_unlock(&q->queue_mutex);
+ }
++
++/* User has to free the pointer returned, if non-NULL */
++char* uw_dequeue_url_or_fail(queue q, int *join) {
++  char *url;
++
++  pthread_mutex_lock(&q->queue_mutex);
++  while (1) {
++    if(*join) {
++      if(empty(q))
++        url = NULL;
++      else
++        url = (char*)dequeue(q);
++      break;
++    }
++    else {
++      if(empty(q))
++        pthread_cond_wait(&q->queue_cond, &q->queue_mutex);
++      else {
++        url = (char*)dequeue(q);
++        break;
++      }
++    }
++  }
++  pthread_mutex_unlock(&q->queue_mutex);
++
++  return url;
++}
++
++void uw_enqueue_alloc_url(queue q, const char* url) {
++  char* url_ = malloc(strlen(url)+1);
++  strcpy(url_, url);
++
++  pthread_mutex_lock(&q->queue_mutex);
++  enqueue(q, (data_t)url_);
++  pthread_cond_broadcast(&q->queue_cond);
++  pthread_mutex_unlock(&q->queue_mutex);
++}
++
++void uw_queue_awake(queue q) {
++  pthread_mutex_lock(&q->queue_mutex);
++  pthread_cond_broadcast(&q->queue_cond);
++  pthread_mutex_unlock(&q->queue_mutex);
++}
++
+diff --git a/src/c/request.c b/src/c/request.c
+--- a/src/c/request.c
++++ b/src/c/request.c
+@@ -12,8 +12,7 @@
+ #include <pthread.h>
+ 
+ #include "urweb.h"
+-
+-#define MAX_RETRIES 5
++#include "request.h"
+ 
+ void *memmem(const void *b1, size_t len1, const void *b2, size_t len2);
+ 
+@@ -32,8 +31,13 @@
+   return r;
+ }
+ 
+-uw_context uw_request_new_context(int id, uw_app *app, void *logger_data, uw_logger log_error, uw_logger log_debug) {
+-  uw_context ctx = uw_init(id, logger_data, log_debug);
++uw_context uw_request_new_context(int id, uw_app *app, loggers *ls) {
++
++  uw_logger log_debug = ls->log_debug;
++  uw_logger log_error = ls->log_error;
++  void *logger_data = ls -> logger_data;
++
++  uw_context ctx = uw_init(id, ls);
+   int retries_left = MAX_RETRIES;
+   uw_set_app(ctx, app);
+ 
+@@ -78,12 +82,6 @@
+ }
+ 
+ typedef struct {
+-  uw_app *app;
+-  void *logger_data;
+-  uw_logger log_error, log_debug;
+-} loggers;
+-
+-typedef struct {
+   int id;
+   loggers *ls;
+   uw_periodic pdic;
+@@ -91,7 +89,7 @@
+ 
+ static void *periodic_loop(void *data) {
+   periodic *p = (periodic *)data;
+-  uw_context ctx = uw_request_new_context(p->id, p->ls->app, p->ls->logger_data, p->ls->log_error, p->ls->log_debug);
++  uw_context ctx = uw_request_new_context(p->id, p->ls->app, p->ls);
+ 
+   if (!ctx)
+     exit(1);
+@@ -179,7 +177,7 @@
+     }
+   }
+ 
+-  ctx = uw_request_new_context(0, app, logger_data, log_error, log_debug);
++  ctx = uw_request_new_context(0, app, ls);
+ 
+   if (!ctx)
+     exit(1);
+@@ -240,7 +238,7 @@
+                           void (*on_success)(uw_context), void (*on_failure)(uw_context),
+                           void *logger_data, uw_logger log_error, uw_logger log_debug,
+                           int sock,
+-                          int (*send)(int sockfd, const void *buf, size_t len),
++                          int (*send)(int sockfd, const void *buf, ssize_t len),
+                           int (*close)(int fd)) {
+   int retries_left = MAX_RETRIES;
+   failure_kind fk;
+@@ -589,7 +587,7 @@
+ 
+ void *client_pruner(void *data) {
+   loggers *ls = (loggers *)data;
+-  uw_context ctx = uw_request_new_context(0, ls->app, ls->logger_data, ls->log_error, ls->log_debug);
++  uw_context ctx = uw_request_new_context(0, ls->app, ls);
+ 
+   if (!ctx)
+     exit(1);
+diff --git a/src/c/static.c b/src/c/static.c
+--- a/src/c/static.c
++++ b/src/c/static.c
+@@ -4,6 +4,7 @@
+ #include <stdarg.h>
+ 
+ #include "urweb.h"
++#include "request.h"
+ 
+ extern uw_app uw_application;
+ 
+@@ -14,6 +15,8 @@
+   vprintf(fmt, ap);
+ }
+ 
++static loggers ls = {&uw_application, NULL, log_debug, log_debug};
++
+ int main(int argc, char *argv[]) {
+   uw_context ctx;
+   failure_kind fk;
+@@ -23,7 +26,7 @@
+     return 1;
+   }
+  
+-  ctx = uw_init(0, NULL, log_debug);
++  ctx = uw_init(0, &ls);
+   uw_set_app(ctx, &uw_application);
+   uw_initialize(ctx);
+ 
+diff --git a/src/c/urweb.c b/src/c/urweb.c
+--- a/src/c/urweb.c
++++ b/src/c/urweb.c
+@@ -21,10 +21,10 @@
+ #include <pthread.h>
+ 
+ #include "types.h"
++#include "request.h"
+ 
+ uw_unit uw_unit_v = 0;
+ 
+-
+ // Socket extras
+ 
+ int uw_really_send(int sock, const void *buf, ssize_t len) {
+@@ -460,8 +460,7 @@
+ 
+   void *client_data;
+ 
+-  void *logger_data;
+-  uw_logger log_debug;
++  loggers *loggers;
+ 
+   int isPost, hasPostBody;
+   uw_Basis_postBody postBody;
+@@ -484,7 +483,7 @@
+ size_t uw_heap_max = SIZE_MAX;
+ size_t uw_script_max = SIZE_MAX;
+ 
+-uw_context uw_init(int id, void *logger_data, uw_logger log_debug) {
++uw_context uw_init(int id, loggers *ls) {
+   uw_context ctx = malloc(sizeof(struct uw_context));
+ 
+   ctx->app = NULL;
+@@ -543,8 +542,7 @@
+ 
+   ctx->client_data = uw_init_client_data();
+ 
+-  ctx->logger_data = logger_data;
+-  ctx->log_debug = log_debug;
++  ctx->loggers = ls;
+ 
+   ctx->isPost = ctx->hasPostBody = 0;
+ 
+@@ -569,6 +567,10 @@
+   return ctx->app;
+ }
+ 
++loggers *uw_get_loggers(uw_context ctx) {
++  return ctx->loggers;
++}
++
+ int uw_set_app(uw_context ctx, uw_app *app) {
+   ctx->app = app;
+ 
+@@ -4103,8 +4105,8 @@
+ }
+ 
+ uw_Basis_unit uw_Basis_debug(uw_context ctx, uw_Basis_string s) {
+-  if (ctx->log_debug)
+-    ctx->log_debug(ctx->logger_data, "%s\n", s);
++  if (ctx->loggers && ctx->loggers->log_debug)
++    ctx->loggers->log_debug(ctx->loggers->logger_data, "%s\n", s);
+   else
+     fprintf(stderr, "%s\n", s);
+   return uw_unit_v;
