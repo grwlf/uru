@@ -1,0 +1,36 @@
+# HG changeset patch
+# User Sergey Mironov <grrwlf@gmail.com>
+# Date 1402000572 0
+#      Thu Jun 05 20:36:12 2014 +0000
+# Node ID 1d538e906c2bf9a03d9047f0d01f4d2889d20bbb
+# Parent  4a93f379c45221a48f0c9bbd080d079e23596936
+Allow '+' char in blessMime
+
+See this one [1] for an example
+
+[1] - http://www.w3.org/TR/SVGTiny12/mimereg.html
+
+diff --git a/src/c/urweb.c b/src/c/urweb.c
+--- a/src/c/urweb.c
++++ b/src/c/urweb.c
+@@ -3604,7 +3604,7 @@
+ 
+ static int mime_format(const char *s) {
+   for (; *s; ++s)
+-    if (!isalnum((int)*s) && *s != '/' && *s != '-' && *s != '.')
++    if (!isalnum((int)*s) && *s != '/' && *s != '-' && *s != '.' && *s != '+')
+       return 0;
+ 
+   return 1;
+diff --git a/src/settings.sml b/src/settings.sml
+--- a/src/settings.sml
++++ b/src/settings.sml
+@@ -465,7 +465,7 @@
+ 
+ val checkUrl = check (fn _ => true) url
+ 
+-val validMime = CharVector.all (fn ch => Char.isAlphaNum ch orelse ch = #"/" orelse ch = #"-" orelse ch = #".")
++val validMime = CharVector.all (fn ch => Char.isAlphaNum ch orelse ch = #"/" orelse ch = #"-" orelse ch = #"." orelse ch = #"+")
+ val validEnv = CharVector.all (fn ch => Char.isAlphaNum ch orelse ch = #"_" orelse ch = #".")
+ 
+ val checkMime = check validMime mime
