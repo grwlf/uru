@@ -1,12 +1,16 @@
 allow url http://code.jquery.com/ui/1.10.3/jquery-ui.js
+safeGet Test1/main
+library ../.
+debug
 allow mime text/javascript
 allow mime text/css
 allow mime image/jpeg
 allow mime image/png
 allow mime image/gif
-safeGet Test1/main
-library ../.
-debug
+allow mime application/font-woff
+allow mime application/x-font-ttf
+allow mime image/svg+xml
+allow mime application/vnd.ms-fontobject
 library .././autogen/nemo.jpg
 library .././autogen/walle.jpg
 

@@ -11,18 +11,29 @@ unexport MAIN
 URCC = $(shell $(shell urweb -print-ccompiler) -print-prog-name=gcc)
 URINCL = -I$(shell urweb -print-cinclude) 
 .PHONY: all
-all: ./jquery.nivo.slider.pack.js.urp
-./jquery.nivo.slider.pack.js.urp: ./jquery.nivo.slider.pack.js.urp.in
-	cat ./jquery.nivo.slider.pack.js.urp.in > ./jquery.nivo.slider.pack.js.urp
-./jquery.nivo.slider.pack.js.urp.in: ./Jquery_nivo_slider_pack_js.ur ./Jquery_nivo_slider_pack_js.urs ./Jquery_nivo_slider_pack_js_c.h ./Jquery_nivo_slider_pack_js_c.o
-	touch ./jquery.nivo.slider.pack.js.urp.in
-./Jquery_nivo_slider_pack_js_c.o: ./Jquery_nivo_slider_pack_js_c.c $(call GUARD,URCC) $(call GUARD,URINCL)
-	$(URCC) -c $(URINCL)  -o ./Jquery_nivo_slider_pack_js_c.o ./Jquery_nivo_slider_pack_js_c.c
+all: ./jquery.nivo.slider.pack.js.mk ./jquery.nivo.slider.pack.js.urp
+./jquery.nivo.slider.pack.js.urp: ./Jquery_nivo_slider_pack_js.ur ./Jquery_nivo_slider_pack_js.urs ./Jquery_nivo_slider_pack_js_c.h ./Jquery_nivo_slider_pack_js_c.o ./jquery.nivo.slider.pack.js.mk .cake3/tmp0
+	cat .cake3/tmp0 > ./jquery.nivo.slider.pack.js.urp
+.cake3/tmp0: ./jquery.nivo.slider.pack.js.mk
+	-rm -rf .cake3/tmp0
+	echo 'include ./Jquery_nivo_slider_pack_js_c.h' >> .cake3/tmp0
+	echo 'link ./Jquery_nivo_slider_pack_js_c.o' >> .cake3/tmp0
+	echo 'ffi ./Jquery_nivo_slider_pack_js_c' >> .cake3/tmp0
+	echo 'ffi ./Jquery_nivo_slider_pack_js_js' >> .cake3/tmp0
+	echo 'safeGet Jquery_nivo_slider_pack_js/blobpage' >> .cake3/tmp0
+	echo 'safeGet Jquery_nivo_slider_pack_js/blob' >> .cake3/tmp0
+	echo '' >> .cake3/tmp0
+	echo './Jquery_nivo_slider_pack_js' >> .cake3/tmp0
+./Jquery_nivo_slider_pack_js_c.o: ./Jquery_nivo_slider_pack_js_c.c ./jquery.nivo.slider.pack.js.mk $(call GUARD,URCC) $(call GUARD,URINCL) $(call GUARD,UR_CFLAGS)
+	$(URCC) -c $(URINCL) $(UR_CFLAGS)  -o ./Jquery_nivo_slider_pack_js_c.o ./Jquery_nivo_slider_pack_js_c.c
 $(call GUARD,URCC):
 	rm -f .cake3/GUARD_URCC_*
 	touch $@
 $(call GUARD,URINCL):
 	rm -f .cake3/GUARD_URINCL_*
+	touch $@
+$(call GUARD,UR_CFLAGS):
+	rm -f .cake3/GUARD_UR_CFLAGS_*
 	touch $@
 
 else
@@ -31,17 +42,25 @@ else
 
 export MAIN=1
 
+ifneq ($(MAKECMDGOALS),clean)
+
 .PHONY: all
 all: .fix-multy1
 .PHONY: ./jquery.nivo.slider.pack.js.urp
 ./jquery.nivo.slider.pack.js.urp: .fix-multy1
-.PHONY: ./jquery.nivo.slider.pack.js.urp.in
-./jquery.nivo.slider.pack.js.urp.in: .fix-multy1
+.PHONY: .cake3/tmp0
+.cake3/tmp0: .fix-multy1
 .PHONY: ./Jquery_nivo_slider_pack_js_c.o
 ./Jquery_nivo_slider_pack_js_c.o: .fix-multy1
 .INTERMEDIATE: .fix-multy1
 .fix-multy1: 
 	-mkdir .cake3
 	$(MAKE) -f ./jquery.nivo.slider.pack.js.mk $(MAKECMDGOALS)
+
+endif
+.PHONY: clean
+clean: 
+	-rm ./Jquery_nivo_slider_pack_js_c.o ./jquery.nivo.slider.pack.js.urp .cake3/tmp0
+	-rm -rf .cake3
 
 endif

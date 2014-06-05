@@ -11,18 +11,29 @@ unexport MAIN
 URCC = $(shell $(shell urweb -print-ccompiler) -print-prog-name=gcc)
 URINCL = -I$(shell urweb -print-cinclude) 
 .PHONY: all
-all: ./jquery-ui.css.urp
-./jquery-ui.css.urp: ./jquery-ui.css.urp.in
-	cat ./jquery-ui.css.urp.in > ./jquery-ui.css.urp
-./jquery-ui.css.urp.in: ./Jquery_ui_css.ur ./Jquery_ui_css.urs ./Jquery_ui_css_c.h ./Jquery_ui_css_c.o
-	touch ./jquery-ui.css.urp.in
-./Jquery_ui_css_c.o: ./Jquery_ui_css_c.c $(call GUARD,URCC) $(call GUARD,URINCL)
-	$(URCC) -c $(URINCL)  -o ./Jquery_ui_css_c.o ./Jquery_ui_css_c.c
+all: ./jquery-ui.css.mk ./jquery-ui.css.urp
+./jquery-ui.css.urp: ./Jquery_ui_css.ur ./Jquery_ui_css.urs ./Jquery_ui_css_c.h ./Jquery_ui_css_c.o ./jquery-ui.css.mk .cake3/tmp0
+	cat .cake3/tmp0 > ./jquery-ui.css.urp
+.cake3/tmp0: ./jquery-ui.css.mk
+	-rm -rf .cake3/tmp0
+	echo 'include ./Jquery_ui_css_c.h' >> .cake3/tmp0
+	echo 'link ./Jquery_ui_css_c.o' >> .cake3/tmp0
+	echo 'ffi ./Jquery_ui_css_c' >> .cake3/tmp0
+	echo 'ffi ./Jquery_ui_css_js' >> .cake3/tmp0
+	echo 'safeGet Jquery_ui_css/blobpage' >> .cake3/tmp0
+	echo 'safeGet Jquery_ui_css/blob' >> .cake3/tmp0
+	echo '' >> .cake3/tmp0
+	echo './Jquery_ui_css' >> .cake3/tmp0
+./Jquery_ui_css_c.o: ./Jquery_ui_css_c.c ./jquery-ui.css.mk $(call GUARD,URCC) $(call GUARD,URINCL) $(call GUARD,UR_CFLAGS)
+	$(URCC) -c $(URINCL) $(UR_CFLAGS)  -o ./Jquery_ui_css_c.o ./Jquery_ui_css_c.c
 $(call GUARD,URCC):
 	rm -f .cake3/GUARD_URCC_*
 	touch $@
 $(call GUARD,URINCL):
 	rm -f .cake3/GUARD_URINCL_*
+	touch $@
+$(call GUARD,UR_CFLAGS):
+	rm -f .cake3/GUARD_UR_CFLAGS_*
 	touch $@
 
 else
@@ -31,17 +42,25 @@ else
 
 export MAIN=1
 
+ifneq ($(MAKECMDGOALS),clean)
+
 .PHONY: all
 all: .fix-multy1
 .PHONY: ./jquery-ui.css.urp
 ./jquery-ui.css.urp: .fix-multy1
-.PHONY: ./jquery-ui.css.urp.in
-./jquery-ui.css.urp.in: .fix-multy1
+.PHONY: .cake3/tmp0
+.cake3/tmp0: .fix-multy1
 .PHONY: ./Jquery_ui_css_c.o
 ./Jquery_ui_css_c.o: .fix-multy1
 .INTERMEDIATE: .fix-multy1
 .fix-multy1: 
 	-mkdir .cake3
 	$(MAKE) -f ./jquery-ui.css.mk $(MAKECMDGOALS)
+
+endif
+.PHONY: clean
+clean: 
+	-rm ./Jquery_ui_css_c.o ./jquery-ui.css.urp .cake3/tmp0
+	-rm -rf .cake3
 
 endif

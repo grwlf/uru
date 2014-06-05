@@ -11,18 +11,29 @@ unexport MAIN
 URCC = $(shell $(shell urweb -print-ccompiler) -print-prog-name=gcc)
 URINCL = -I$(shell urweb -print-cinclude) 
 .PHONY: all
-all: ./PikaChoose.css.urp
-./PikaChoose.css.urp: ./PikaChoose.css.urp.in
-	cat ./PikaChoose.css.urp.in > ./PikaChoose.css.urp
-./PikaChoose.css.urp.in: ./PikaChoose_css.ur ./PikaChoose_css.urs ./PikaChoose_css_c.h ./PikaChoose_css_c.o
-	touch ./PikaChoose.css.urp.in
-./PikaChoose_css_c.o: ./PikaChoose_css_c.c $(call GUARD,URCC) $(call GUARD,URINCL)
-	$(URCC) -c $(URINCL)  -o ./PikaChoose_css_c.o ./PikaChoose_css_c.c
+all: ./PikaChoose.css.mk ./PikaChoose.css.urp
+./PikaChoose.css.urp: ./PikaChoose.css.mk ./PikaChoose_css.ur ./PikaChoose_css.urs ./PikaChoose_css_c.h ./PikaChoose_css_c.o .cake3/tmp0
+	cat .cake3/tmp0 > ./PikaChoose.css.urp
+.cake3/tmp0: ./PikaChoose.css.mk
+	-rm -rf .cake3/tmp0
+	echo 'include ./PikaChoose_css_c.h' >> .cake3/tmp0
+	echo 'link ./PikaChoose_css_c.o' >> .cake3/tmp0
+	echo 'ffi ./PikaChoose_css_c' >> .cake3/tmp0
+	echo 'ffi ./PikaChoose_css_js' >> .cake3/tmp0
+	echo 'safeGet PikaChoose_css/blobpage' >> .cake3/tmp0
+	echo 'safeGet PikaChoose_css/blob' >> .cake3/tmp0
+	echo '' >> .cake3/tmp0
+	echo './PikaChoose_css' >> .cake3/tmp0
+./PikaChoose_css_c.o: ./PikaChoose.css.mk ./PikaChoose_css_c.c $(call GUARD,URCC) $(call GUARD,URINCL) $(call GUARD,UR_CFLAGS)
+	$(URCC) -c $(URINCL) $(UR_CFLAGS)  -o ./PikaChoose_css_c.o ./PikaChoose_css_c.c
 $(call GUARD,URCC):
 	rm -f .cake3/GUARD_URCC_*
 	touch $@
 $(call GUARD,URINCL):
 	rm -f .cake3/GUARD_URINCL_*
+	touch $@
+$(call GUARD,UR_CFLAGS):
+	rm -f .cake3/GUARD_UR_CFLAGS_*
 	touch $@
 
 else
@@ -31,17 +42,25 @@ else
 
 export MAIN=1
 
+ifneq ($(MAKECMDGOALS),clean)
+
 .PHONY: all
 all: .fix-multy1
 .PHONY: ./PikaChoose.css.urp
 ./PikaChoose.css.urp: .fix-multy1
-.PHONY: ./PikaChoose.css.urp.in
-./PikaChoose.css.urp.in: .fix-multy1
+.PHONY: .cake3/tmp0
+.cake3/tmp0: .fix-multy1
 .PHONY: ./PikaChoose_css_c.o
 ./PikaChoose_css_c.o: .fix-multy1
 .INTERMEDIATE: .fix-multy1
 .fix-multy1: 
 	-mkdir .cake3
 	$(MAKE) -f ./PikaChoose.css.mk $(MAKECMDGOALS)
+
+endif
+.PHONY: clean
+clean: 
+	-rm ./PikaChoose.css.urp ./PikaChoose_css_c.o .cake3/tmp0
+	-rm -rf .cake3
 
 endif

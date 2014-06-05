@@ -3,3 +3,5 @@ val text = RespTabs_js_c.text
 val rt_init = RespTabs_js_js.rt_init
 fun blobpage {} = b <- binary () ; returnBlob b (blessMime "text/javascript")
 val geturl = url(blobpage {})
+val propagated_urls = 
+    []

@@ -11,18 +11,29 @@ unexport MAIN
 URCC = $(shell $(shell urweb -print-ccompiler) -print-prog-name=gcc)
 URINCL = -I$(shell urweb -print-cinclude) 
 .PHONY: all
-all: ./jquery-1.9.1.js.urp
-./jquery-1.9.1.js.urp: ./jquery-1.9.1.js.urp.in
-	cat ./jquery-1.9.1.js.urp.in > ./jquery-1.9.1.js.urp
-./jquery-1.9.1.js.urp.in: ./Jquery_1_9_1_js.ur ./Jquery_1_9_1_js.urs ./Jquery_1_9_1_js_c.h ./Jquery_1_9_1_js_c.o
-	touch ./jquery-1.9.1.js.urp.in
-./Jquery_1_9_1_js_c.o: ./Jquery_1_9_1_js_c.c $(call GUARD,URCC) $(call GUARD,URINCL)
-	$(URCC) -c $(URINCL)  -o ./Jquery_1_9_1_js_c.o ./Jquery_1_9_1_js_c.c
+all: ./jquery-1.9.1.js.mk ./jquery-1.9.1.js.urp
+./jquery-1.9.1.js.urp: ./Jquery_1_9_1_js.ur ./Jquery_1_9_1_js.urs ./Jquery_1_9_1_js_c.h ./Jquery_1_9_1_js_c.o ./jquery-1.9.1.js.mk .cake3/tmp0
+	cat .cake3/tmp0 > ./jquery-1.9.1.js.urp
+.cake3/tmp0: ./jquery-1.9.1.js.mk
+	-rm -rf .cake3/tmp0
+	echo 'include ./Jquery_1_9_1_js_c.h' >> .cake3/tmp0
+	echo 'link ./Jquery_1_9_1_js_c.o' >> .cake3/tmp0
+	echo 'ffi ./Jquery_1_9_1_js_c' >> .cake3/tmp0
+	echo 'ffi ./Jquery_1_9_1_js_js' >> .cake3/tmp0
+	echo 'safeGet Jquery_1_9_1_js/blobpage' >> .cake3/tmp0
+	echo 'safeGet Jquery_1_9_1_js/blob' >> .cake3/tmp0
+	echo '' >> .cake3/tmp0
+	echo './Jquery_1_9_1_js' >> .cake3/tmp0
+./Jquery_1_9_1_js_c.o: ./Jquery_1_9_1_js_c.c ./jquery-1.9.1.js.mk $(call GUARD,URCC) $(call GUARD,URINCL) $(call GUARD,UR_CFLAGS)
+	$(URCC) -c $(URINCL) $(UR_CFLAGS)  -o ./Jquery_1_9_1_js_c.o ./Jquery_1_9_1_js_c.c
 $(call GUARD,URCC):
 	rm -f .cake3/GUARD_URCC_*
 	touch $@
 $(call GUARD,URINCL):
 	rm -f .cake3/GUARD_URINCL_*
+	touch $@
+$(call GUARD,UR_CFLAGS):
+	rm -f .cake3/GUARD_UR_CFLAGS_*
 	touch $@
 
 else
@@ -31,17 +42,25 @@ else
 
 export MAIN=1
 
+ifneq ($(MAKECMDGOALS),clean)
+
 .PHONY: all
 all: .fix-multy1
 .PHONY: ./jquery-1.9.1.js.urp
 ./jquery-1.9.1.js.urp: .fix-multy1
-.PHONY: ./jquery-1.9.1.js.urp.in
-./jquery-1.9.1.js.urp.in: .fix-multy1
+.PHONY: .cake3/tmp0
+.cake3/tmp0: .fix-multy1
 .PHONY: ./Jquery_1_9_1_js_c.o
 ./Jquery_1_9_1_js_c.o: .fix-multy1
 .INTERMEDIATE: .fix-multy1
 .fix-multy1: 
 	-mkdir .cake3
 	$(MAKE) -f ./jquery-1.9.1.js.mk $(MAKECMDGOALS)
+
+endif
+.PHONY: clean
+clean: 
+	-rm ./Jquery_1_9_1_js_c.o ./jquery-1.9.1.js.urp .cake3/tmp0
+	-rm -rf .cake3
 
 endif

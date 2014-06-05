@@ -11,18 +11,29 @@ unexport MAIN
 URCC = $(shell $(shell urweb -print-ccompiler) -print-prog-name=gcc)
 URINCL = -I$(shell urweb -print-cinclude) 
 .PHONY: all
-all: ./nivo-slider.css.urp
-./nivo-slider.css.urp: ./nivo-slider.css.urp.in
-	cat ./nivo-slider.css.urp.in > ./nivo-slider.css.urp
-./nivo-slider.css.urp.in: ./Nivo_slider_css.ur ./Nivo_slider_css.urs ./Nivo_slider_css_c.h ./Nivo_slider_css_c.o
-	touch ./nivo-slider.css.urp.in
-./Nivo_slider_css_c.o: ./Nivo_slider_css_c.c $(call GUARD,URCC) $(call GUARD,URINCL)
-	$(URCC) -c $(URINCL)  -o ./Nivo_slider_css_c.o ./Nivo_slider_css_c.c
+all: ./nivo-slider.css.mk ./nivo-slider.css.urp
+./nivo-slider.css.urp: ./Nivo_slider_css.ur ./Nivo_slider_css.urs ./Nivo_slider_css_c.h ./Nivo_slider_css_c.o ./nivo-slider.css.mk .cake3/tmp0
+	cat .cake3/tmp0 > ./nivo-slider.css.urp
+.cake3/tmp0: ./nivo-slider.css.mk
+	-rm -rf .cake3/tmp0
+	echo 'include ./Nivo_slider_css_c.h' >> .cake3/tmp0
+	echo 'link ./Nivo_slider_css_c.o' >> .cake3/tmp0
+	echo 'ffi ./Nivo_slider_css_c' >> .cake3/tmp0
+	echo 'ffi ./Nivo_slider_css_js' >> .cake3/tmp0
+	echo 'safeGet Nivo_slider_css/blobpage' >> .cake3/tmp0
+	echo 'safeGet Nivo_slider_css/blob' >> .cake3/tmp0
+	echo '' >> .cake3/tmp0
+	echo './Nivo_slider_css' >> .cake3/tmp0
+./Nivo_slider_css_c.o: ./Nivo_slider_css_c.c ./nivo-slider.css.mk $(call GUARD,URCC) $(call GUARD,URINCL) $(call GUARD,UR_CFLAGS)
+	$(URCC) -c $(URINCL) $(UR_CFLAGS)  -o ./Nivo_slider_css_c.o ./Nivo_slider_css_c.c
 $(call GUARD,URCC):
 	rm -f .cake3/GUARD_URCC_*
 	touch $@
 $(call GUARD,URINCL):
 	rm -f .cake3/GUARD_URINCL_*
+	touch $@
+$(call GUARD,UR_CFLAGS):
+	rm -f .cake3/GUARD_UR_CFLAGS_*
 	touch $@
 
 else
@@ -31,17 +42,25 @@ else
 
 export MAIN=1
 
+ifneq ($(MAKECMDGOALS),clean)
+
 .PHONY: all
 all: .fix-multy1
 .PHONY: ./nivo-slider.css.urp
 ./nivo-slider.css.urp: .fix-multy1
-.PHONY: ./nivo-slider.css.urp.in
-./nivo-slider.css.urp.in: .fix-multy1
+.PHONY: .cake3/tmp0
+.cake3/tmp0: .fix-multy1
 .PHONY: ./Nivo_slider_css_c.o
 ./Nivo_slider_css_c.o: .fix-multy1
 .INTERMEDIATE: .fix-multy1
 .fix-multy1: 
 	-mkdir .cake3
 	$(MAKE) -f ./nivo-slider.css.mk $(MAKECMDGOALS)
+
+endif
+.PHONY: clean
+clean: 
+	-rm ./Nivo_slider_css_c.o ./nivo-slider.css.urp .cake3/tmp0
+	-rm -rf .cake3
 
 endif

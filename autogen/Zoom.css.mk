@@ -11,18 +11,29 @@ unexport MAIN
 URCC = $(shell $(shell urweb -print-ccompiler) -print-prog-name=gcc)
 URINCL = -I$(shell urweb -print-cinclude) 
 .PHONY: all
-all: ./Zoom.css.urp
-./Zoom.css.urp: ./Zoom.css.urp.in
-	cat ./Zoom.css.urp.in > ./Zoom.css.urp
-./Zoom.css.urp.in: ./Zoom_css.ur ./Zoom_css.urs ./Zoom_css_c.h ./Zoom_css_c.o
-	touch ./Zoom.css.urp.in
-./Zoom_css_c.o: ./Zoom_css_c.c $(call GUARD,URCC) $(call GUARD,URINCL)
-	$(URCC) -c $(URINCL)  -o ./Zoom_css_c.o ./Zoom_css_c.c
+all: ./Zoom.css.mk ./Zoom.css.urp
+./Zoom.css.urp: ./Zoom.css.mk ./Zoom_css.ur ./Zoom_css.urs ./Zoom_css_c.h ./Zoom_css_c.o .cake3/tmp0
+	cat .cake3/tmp0 > ./Zoom.css.urp
+.cake3/tmp0: ./Zoom.css.mk
+	-rm -rf .cake3/tmp0
+	echo 'include ./Zoom_css_c.h' >> .cake3/tmp0
+	echo 'link ./Zoom_css_c.o' >> .cake3/tmp0
+	echo 'ffi ./Zoom_css_c' >> .cake3/tmp0
+	echo 'ffi ./Zoom_css_js' >> .cake3/tmp0
+	echo 'safeGet Zoom_css/blobpage' >> .cake3/tmp0
+	echo 'safeGet Zoom_css/blob' >> .cake3/tmp0
+	echo '' >> .cake3/tmp0
+	echo './Zoom_css' >> .cake3/tmp0
+./Zoom_css_c.o: ./Zoom.css.mk ./Zoom_css_c.c $(call GUARD,URCC) $(call GUARD,URINCL) $(call GUARD,UR_CFLAGS)
+	$(URCC) -c $(URINCL) $(UR_CFLAGS)  -o ./Zoom_css_c.o ./Zoom_css_c.c
 $(call GUARD,URCC):
 	rm -f .cake3/GUARD_URCC_*
 	touch $@
 $(call GUARD,URINCL):
 	rm -f .cake3/GUARD_URINCL_*
+	touch $@
+$(call GUARD,UR_CFLAGS):
+	rm -f .cake3/GUARD_UR_CFLAGS_*
 	touch $@
 
 else
@@ -31,17 +42,25 @@ else
 
 export MAIN=1
 
+ifneq ($(MAKECMDGOALS),clean)
+
 .PHONY: all
 all: .fix-multy1
 .PHONY: ./Zoom.css.urp
 ./Zoom.css.urp: .fix-multy1
-.PHONY: ./Zoom.css.urp.in
-./Zoom.css.urp.in: .fix-multy1
+.PHONY: .cake3/tmp0
+.cake3/tmp0: .fix-multy1
 .PHONY: ./Zoom_css_c.o
 ./Zoom_css_c.o: .fix-multy1
 .INTERMEDIATE: .fix-multy1
 .fix-multy1: 
 	-mkdir .cake3
 	$(MAKE) -f ./Zoom.css.mk $(MAKECMDGOALS)
+
+endif
+.PHONY: clean
+clean: 
+	-rm ./Zoom.css.urp ./Zoom_css_c.o .cake3/tmp0
+	-rm -rf .cake3
 
 endif

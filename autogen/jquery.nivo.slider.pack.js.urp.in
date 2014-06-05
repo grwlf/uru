@@ -1,8 +1,0 @@
-include ./Jquery_nivo_slider_pack_js_c.h
-link ./Jquery_nivo_slider_pack_js_c.o
-ffi ./Jquery_nivo_slider_pack_js_c
-ffi ./Jquery_nivo_slider_pack_js_js
-safeGet Jquery_nivo_slider_pack_js/blobpage
-safeGet Jquery_nivo_slider_pack_js/blob
-
-./Jquery_nivo_slider_pack_js

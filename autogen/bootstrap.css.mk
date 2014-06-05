@@ -11,18 +11,34 @@ unexport MAIN
 URCC = $(shell $(shell urweb -print-ccompiler) -print-prog-name=gcc)
 URINCL = -I$(shell urweb -print-cinclude) 
 .PHONY: all
-all: ./bootstrap.css.urp
-./bootstrap.css.urp: ./bootstrap.css.urp.in
-	cat ./bootstrap.css.urp.in > ./bootstrap.css.urp
-./bootstrap.css.urp.in: ./Bootstrap_css.ur ./Bootstrap_css.urs ./Bootstrap_css_c.h ./Bootstrap_css_c.o
-	touch ./bootstrap.css.urp.in
-./Bootstrap_css_c.o: ./Bootstrap_css_c.c $(call GUARD,URCC) $(call GUARD,URINCL)
-	$(URCC) -c $(URINCL)  -o ./Bootstrap_css_c.o ./Bootstrap_css_c.c
+all: ./bootstrap.css.mk ./bootstrap.css.urp
+./bootstrap.css.urp: ./Bootstrap_css.ur ./Bootstrap_css.urs ./Bootstrap_css_c.h ./Bootstrap_css_c.o ./bootstrap.css.mk .cake3/tmp0 Glyphicons_halflings_regular_eot.ur Glyphicons_halflings_regular_eot.urs Glyphicons_halflings_regular_svg.ur Glyphicons_halflings_regular_svg.urs Glyphicons_halflings_regular_ttf.ur Glyphicons_halflings_regular_ttf.urs Glyphicons_halflings_regular_woff.ur Glyphicons_halflings_regular_woff.urs
+	cat .cake3/tmp0 > ./bootstrap.css.urp
+.cake3/tmp0: ./bootstrap.css.mk
+	-rm -rf .cake3/tmp0
+	echo 'include ./Bootstrap_css_c.h' >> .cake3/tmp0
+	echo 'link ./Bootstrap_css_c.o' >> .cake3/tmp0
+	echo 'ffi ./Bootstrap_css_c' >> .cake3/tmp0
+	echo 'ffi ./Bootstrap_css_js' >> .cake3/tmp0
+	echo 'safeGet Bootstrap_css/blobpage' >> .cake3/tmp0
+	echo 'safeGet Bootstrap_css/blob' >> .cake3/tmp0
+	echo '' >> .cake3/tmp0
+	echo './Bootstrap_css' >> .cake3/tmp0
+	echo 'Glyphicons_halflings_regular_eot' >> .cake3/tmp0
+	echo 'Glyphicons_halflings_regular_eot' >> .cake3/tmp0
+	echo 'Glyphicons_halflings_regular_woff' >> .cake3/tmp0
+	echo 'Glyphicons_halflings_regular_ttf' >> .cake3/tmp0
+	echo 'Glyphicons_halflings_regular_svg' >> .cake3/tmp0
+./Bootstrap_css_c.o: ./Bootstrap_css_c.c ./bootstrap.css.mk $(call GUARD,URCC) $(call GUARD,URINCL) $(call GUARD,UR_CFLAGS)
+	$(URCC) -c $(URINCL) $(UR_CFLAGS)  -o ./Bootstrap_css_c.o ./Bootstrap_css_c.c
 $(call GUARD,URCC):
 	rm -f .cake3/GUARD_URCC_*
 	touch $@
 $(call GUARD,URINCL):
 	rm -f .cake3/GUARD_URINCL_*
+	touch $@
+$(call GUARD,UR_CFLAGS):
+	rm -f .cake3/GUARD_UR_CFLAGS_*
 	touch $@
 
 else
@@ -31,17 +47,25 @@ else
 
 export MAIN=1
 
+ifneq ($(MAKECMDGOALS),clean)
+
 .PHONY: all
 all: .fix-multy1
 .PHONY: ./bootstrap.css.urp
 ./bootstrap.css.urp: .fix-multy1
-.PHONY: ./bootstrap.css.urp.in
-./bootstrap.css.urp.in: .fix-multy1
+.PHONY: .cake3/tmp0
+.cake3/tmp0: .fix-multy1
 .PHONY: ./Bootstrap_css_c.o
 ./Bootstrap_css_c.o: .fix-multy1
 .INTERMEDIATE: .fix-multy1
 .fix-multy1: 
 	-mkdir .cake3
 	$(MAKE) -f ./bootstrap.css.mk $(MAKECMDGOALS)
+
+endif
+.PHONY: clean
+clean: 
+	-rm ./Bootstrap_css_c.o ./bootstrap.css.urp .cake3/tmp0
+	-rm -rf .cake3
 
 endif

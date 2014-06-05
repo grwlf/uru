@@ -11,18 +11,29 @@ unexport MAIN
 URCC = $(shell $(shell urweb -print-ccompiler) -print-prog-name=gcc)
 URINCL = -I$(shell urweb -print-cinclude) 
 .PHONY: all
-all: ./easyResponsiveTabs.js.urp
-./easyResponsiveTabs.js.urp: ./easyResponsiveTabs.js.urp.in
-	cat ./easyResponsiveTabs.js.urp.in > ./easyResponsiveTabs.js.urp
-./easyResponsiveTabs.js.urp.in: ./EasyResponsiveTabs_js.ur ./EasyResponsiveTabs_js.urs ./EasyResponsiveTabs_js_c.h ./EasyResponsiveTabs_js_c.o
-	touch ./easyResponsiveTabs.js.urp.in
-./EasyResponsiveTabs_js_c.o: ./EasyResponsiveTabs_js_c.c $(call GUARD,URCC) $(call GUARD,URINCL)
-	$(URCC) -c $(URINCL)  -o ./EasyResponsiveTabs_js_c.o ./EasyResponsiveTabs_js_c.c
+all: ./easyResponsiveTabs.js.mk ./easyResponsiveTabs.js.urp
+./easyResponsiveTabs.js.urp: ./EasyResponsiveTabs_js.ur ./EasyResponsiveTabs_js.urs ./EasyResponsiveTabs_js_c.h ./EasyResponsiveTabs_js_c.o ./easyResponsiveTabs.js.mk .cake3/tmp0
+	cat .cake3/tmp0 > ./easyResponsiveTabs.js.urp
+.cake3/tmp0: ./easyResponsiveTabs.js.mk
+	-rm -rf .cake3/tmp0
+	echo 'include ./EasyResponsiveTabs_js_c.h' >> .cake3/tmp0
+	echo 'link ./EasyResponsiveTabs_js_c.o' >> .cake3/tmp0
+	echo 'ffi ./EasyResponsiveTabs_js_c' >> .cake3/tmp0
+	echo 'ffi ./EasyResponsiveTabs_js_js' >> .cake3/tmp0
+	echo 'safeGet EasyResponsiveTabs_js/blobpage' >> .cake3/tmp0
+	echo 'safeGet EasyResponsiveTabs_js/blob' >> .cake3/tmp0
+	echo '' >> .cake3/tmp0
+	echo './EasyResponsiveTabs_js' >> .cake3/tmp0
+./EasyResponsiveTabs_js_c.o: ./EasyResponsiveTabs_js_c.c ./easyResponsiveTabs.js.mk $(call GUARD,URCC) $(call GUARD,URINCL) $(call GUARD,UR_CFLAGS)
+	$(URCC) -c $(URINCL) $(UR_CFLAGS)  -o ./EasyResponsiveTabs_js_c.o ./EasyResponsiveTabs_js_c.c
 $(call GUARD,URCC):
 	rm -f .cake3/GUARD_URCC_*
 	touch $@
 $(call GUARD,URINCL):
 	rm -f .cake3/GUARD_URINCL_*
+	touch $@
+$(call GUARD,UR_CFLAGS):
+	rm -f .cake3/GUARD_UR_CFLAGS_*
 	touch $@
 
 else
@@ -31,17 +42,25 @@ else
 
 export MAIN=1
 
+ifneq ($(MAKECMDGOALS),clean)
+
 .PHONY: all
 all: .fix-multy1
 .PHONY: ./easyResponsiveTabs.js.urp
 ./easyResponsiveTabs.js.urp: .fix-multy1
-.PHONY: ./easyResponsiveTabs.js.urp.in
-./easyResponsiveTabs.js.urp.in: .fix-multy1
+.PHONY: .cake3/tmp0
+.cake3/tmp0: .fix-multy1
 .PHONY: ./EasyResponsiveTabs_js_c.o
 ./EasyResponsiveTabs_js_c.o: .fix-multy1
 .INTERMEDIATE: .fix-multy1
 .fix-multy1: 
 	-mkdir .cake3
 	$(MAKE) -f ./easyResponsiveTabs.js.mk $(MAKECMDGOALS)
+
+endif
+.PHONY: clean
+clean: 
+	-rm ./EasyResponsiveTabs_js_c.o ./easyResponsiveTabs.js.urp .cake3/tmp0
+	-rm -rf .cake3
 
 endif

@@ -11,18 +11,30 @@ unexport MAIN
 URCC = $(shell $(shell urweb -print-ccompiler) -print-prog-name=gcc)
 URINCL = -I$(shell urweb -print-cinclude) 
 .PHONY: all
-all: ./RespTabs.js.urp
-./RespTabs.js.urp: ./RespTabs.js.urp.in
-	cat ./RespTabs.js.urp.in > ./RespTabs.js.urp
-./RespTabs.js.urp.in: ./RespTabs_js.ur ./RespTabs_js.urs ./RespTabs_js_c.h ./RespTabs_js_c.o
-	touch ./RespTabs.js.urp.in
-./RespTabs_js_c.o: ./RespTabs_js_c.c $(call GUARD,URCC) $(call GUARD,URINCL)
-	$(URCC) -c $(URINCL)  -o ./RespTabs_js_c.o ./RespTabs_js_c.c
+all: ./RespTabs.js.mk ./RespTabs.js.urp
+./RespTabs.js.urp: ./RespTabs.js.mk ./RespTabs_js.ur ./RespTabs_js.urs ./RespTabs_js_c.h ./RespTabs_js_c.o .cake3/tmp0
+	cat .cake3/tmp0 > ./RespTabs.js.urp
+.cake3/tmp0: ./RespTabs.js.mk
+	-rm -rf .cake3/tmp0
+	echo 'include ./RespTabs_js_c.h' >> .cake3/tmp0
+	echo 'link ./RespTabs_js_c.o' >> .cake3/tmp0
+	echo 'ffi ./RespTabs_js_c' >> .cake3/tmp0
+	echo 'jsFunc RespTabs_js_js.rt_init = rt_init__unit' >> .cake3/tmp0
+	echo 'ffi ./RespTabs_js_js' >> .cake3/tmp0
+	echo 'safeGet RespTabs_js/blobpage' >> .cake3/tmp0
+	echo 'safeGet RespTabs_js/blob' >> .cake3/tmp0
+	echo '' >> .cake3/tmp0
+	echo './RespTabs_js' >> .cake3/tmp0
+./RespTabs_js_c.o: ./RespTabs.js.mk ./RespTabs_js_c.c $(call GUARD,URCC) $(call GUARD,URINCL) $(call GUARD,UR_CFLAGS)
+	$(URCC) -c $(URINCL) $(UR_CFLAGS)  -o ./RespTabs_js_c.o ./RespTabs_js_c.c
 $(call GUARD,URCC):
 	rm -f .cake3/GUARD_URCC_*
 	touch $@
 $(call GUARD,URINCL):
 	rm -f .cake3/GUARD_URINCL_*
+	touch $@
+$(call GUARD,UR_CFLAGS):
+	rm -f .cake3/GUARD_UR_CFLAGS_*
 	touch $@
 
 else
@@ -31,17 +43,25 @@ else
 
 export MAIN=1
 
+ifneq ($(MAKECMDGOALS),clean)
+
 .PHONY: all
 all: .fix-multy1
 .PHONY: ./RespTabs.js.urp
 ./RespTabs.js.urp: .fix-multy1
-.PHONY: ./RespTabs.js.urp.in
-./RespTabs.js.urp.in: .fix-multy1
+.PHONY: .cake3/tmp0
+.cake3/tmp0: .fix-multy1
 .PHONY: ./RespTabs_js_c.o
 ./RespTabs_js_c.o: .fix-multy1
 .INTERMEDIATE: .fix-multy1
 .fix-multy1: 
 	-mkdir .cake3
 	$(MAKE) -f ./RespTabs.js.mk $(MAKECMDGOALS)
+
+endif
+.PHONY: clean
+clean: 
+	-rm ./RespTabs.js.urp ./RespTabs_js_c.o .cake3/tmp0
+	-rm -rf .cake3
 
 endif

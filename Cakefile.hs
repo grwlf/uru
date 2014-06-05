@@ -49,8 +49,12 @@ project mode = do
       , "JQuery.ur"
       ]
 
-    collection "src/Bootstrap" [
-        "bootstrap.css"
+    collection "src/Bootstrap-v3.2" [
+        "css/bootstrap.css"
+      , "fonts/glyphicons-halflings-regular.eot"
+      , "fonts/glyphicons-halflings-regular.svg"
+      , "fonts/glyphicons-halflings-regular.ttf"
+      , "fonts/glyphicons-halflings-regular.woff"
       , "Bootstrap.ur"
       ]
 
@@ -101,7 +105,7 @@ project mode = do
       , "Zoom.urs"
       ]
 
-{-
+    {-
 
     collection "src/MegaMenu2" [
         "MegaMenu2.css"
@@ -112,7 +116,8 @@ project mode = do
 
       -}
 
-  let tests = [ "test/TestJQuery.urp"
+  let tests = [
+                "test/TestJQuery.urp"
               , "test/TestBootstrap.urp"
               , "test/TestJQUI.urp"
               , "test/TestRespTabs.urp"
@@ -121,17 +126,24 @@ project mode = do
               , "test/TestZoom.urp"
               ]
 
+  let mimes = do
+        allow mime "text/javascript";
+        allow mime "text/css";
+        allow mime "image/jpeg";
+        allow mime "image/png";
+        allow mime "image/gif";
+        allow mime "application/font-woff"
+        allow mime "application/x-font-ttf"
+        allow mime "image/svg+xml"
+        allow mime "application/vnd.ms-fontobject"
+
   t <- forM tests $ \t -> do
     uwapp "-dbms sqlite" t $ do
       allow url "http://code.jquery.com/ui/1.10.3/jquery-ui.js";
-      allow mime "text/javascript";
-      allow mime "text/css";
-      allow mime "image/jpeg";
-      allow mime "image/png";
-      allow mime "image/gif";
       safeGet (t.="ur") "main"
-      library u;
+      library u
       debug
+      mimes
 
       collection "test" [
           "nemo.jpg"
@@ -143,12 +155,8 @@ project mode = do
 
   tm <- uwapp "-dbms sqlite" "test/TestMain.urp" $ do
     allow url "http://code.jquery.com/ui/1.10.3/jquery-ui.js"
-    allow mime "text/javascript"
-    allow mime "text/css"
-    allow mime "image/jpeg"
-    allow mime "image/png"
-    allow mime "image/gif"
     safeGet "test/TestMain.ur" "main"
+    mimes
     library u
     debug
     collection "test" [

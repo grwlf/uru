@@ -1,8 +1,0 @@
-include ./Menu_jq_css_c.h
-link ./Menu_jq_css_c.o
-ffi ./Menu_jq_css_c
-ffi ./Menu_jq_css_js
-safeGet Menu_jq_css/blobpage
-safeGet Menu_jq_css/blob
-
-./Menu_jq_css

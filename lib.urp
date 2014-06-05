@@ -5,6 +5,10 @@ rewrite style Bootstrap/table_ table
 library ./../urscript
 library ./autogen/jquery-1.9.1.js
 library ./autogen/bootstrap.css
+library ./autogen/glyphicons-halflings-regular.eot
+library ./autogen/glyphicons-halflings-regular.svg
+library ./autogen/glyphicons-halflings-regular.ttf
+library ./autogen/glyphicons-halflings-regular.woff
 library ./autogen/jquery-ui.css
 library ./autogen/jquery-ui.js
 library ./autogen/easy-responsive-tabs.css
@@ -31,7 +35,7 @@ $/list
 ./src/CSS
 ./src/Uru
 ./src/JQuery/JQuery
-./src/Bootstrap/Bootstrap
+./src/Bootstrap-v3.2/Bootstrap
 ./src/JQueryUI/JQueryUI
 ./src/RespTabs/RespTabs
 ./src/PikaChoose/PikaChoose

@@ -11,18 +11,29 @@ unexport MAIN
 URCC = $(shell $(shell urweb -print-ccompiler) -print-prog-name=gcc)
 URINCL = -I$(shell urweb -print-cinclude) 
 .PHONY: all
-all: ./nemo.jpg.urp
-./nemo.jpg.urp: ./nemo.jpg.urp.in
-	cat ./nemo.jpg.urp.in > ./nemo.jpg.urp
-./nemo.jpg.urp.in: ./Nemo_jpg.ur ./Nemo_jpg.urs ./Nemo_jpg_c.h ./Nemo_jpg_c.o
-	touch ./nemo.jpg.urp.in
-./Nemo_jpg_c.o: ./Nemo_jpg_c.c $(call GUARD,URCC) $(call GUARD,URINCL)
-	$(URCC) -c $(URINCL)  -o ./Nemo_jpg_c.o ./Nemo_jpg_c.c
+all: ./nemo.jpg.mk ./nemo.jpg.urp
+./nemo.jpg.urp: ./Nemo_jpg.ur ./Nemo_jpg.urs ./Nemo_jpg_c.h ./Nemo_jpg_c.o ./nemo.jpg.mk .cake3/tmp0
+	cat .cake3/tmp0 > ./nemo.jpg.urp
+.cake3/tmp0: ./nemo.jpg.mk
+	-rm -rf .cake3/tmp0
+	echo 'include ./Nemo_jpg_c.h' >> .cake3/tmp0
+	echo 'link ./Nemo_jpg_c.o' >> .cake3/tmp0
+	echo 'ffi ./Nemo_jpg_c' >> .cake3/tmp0
+	echo 'ffi ./Nemo_jpg_js' >> .cake3/tmp0
+	echo 'safeGet Nemo_jpg/blobpage' >> .cake3/tmp0
+	echo 'safeGet Nemo_jpg/blob' >> .cake3/tmp0
+	echo '' >> .cake3/tmp0
+	echo './Nemo_jpg' >> .cake3/tmp0
+./Nemo_jpg_c.o: ./Nemo_jpg_c.c ./nemo.jpg.mk $(call GUARD,URCC) $(call GUARD,URINCL) $(call GUARD,UR_CFLAGS)
+	$(URCC) -c $(URINCL) $(UR_CFLAGS)  -o ./Nemo_jpg_c.o ./Nemo_jpg_c.c
 $(call GUARD,URCC):
 	rm -f .cake3/GUARD_URCC_*
 	touch $@
 $(call GUARD,URINCL):
 	rm -f .cake3/GUARD_URINCL_*
+	touch $@
+$(call GUARD,UR_CFLAGS):
+	rm -f .cake3/GUARD_UR_CFLAGS_*
 	touch $@
 
 else
@@ -31,17 +42,25 @@ else
 
 export MAIN=1
 
+ifneq ($(MAKECMDGOALS),clean)
+
 .PHONY: all
 all: .fix-multy1
 .PHONY: ./nemo.jpg.urp
 ./nemo.jpg.urp: .fix-multy1
-.PHONY: ./nemo.jpg.urp.in
-./nemo.jpg.urp.in: .fix-multy1
+.PHONY: .cake3/tmp0
+.cake3/tmp0: .fix-multy1
 .PHONY: ./Nemo_jpg_c.o
 ./Nemo_jpg_c.o: .fix-multy1
 .INTERMEDIATE: .fix-multy1
 .fix-multy1: 
 	-mkdir .cake3
 	$(MAKE) -f ./nemo.jpg.mk $(MAKECMDGOALS)
+
+endif
+.PHONY: clean
+clean: 
+	-rm ./Nemo_jpg_c.o ./nemo.jpg.urp .cake3/tmp0
+	-rm -rf .cake3
 
 endif

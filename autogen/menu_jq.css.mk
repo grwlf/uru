@@ -11,18 +11,29 @@ unexport MAIN
 URCC = $(shell $(shell urweb -print-ccompiler) -print-prog-name=gcc)
 URINCL = -I$(shell urweb -print-cinclude) 
 .PHONY: all
-all: ./menu_jq.css.urp
-./menu_jq.css.urp: ./menu_jq.css.urp.in
-	cat ./menu_jq.css.urp.in > ./menu_jq.css.urp
-./menu_jq.css.urp.in: ./Menu_jq_css.ur ./Menu_jq_css.urs ./Menu_jq_css_c.h ./Menu_jq_css_c.o
-	touch ./menu_jq.css.urp.in
-./Menu_jq_css_c.o: ./Menu_jq_css_c.c $(call GUARD,URCC) $(call GUARD,URINCL)
-	$(URCC) -c $(URINCL)  -o ./Menu_jq_css_c.o ./Menu_jq_css_c.c
+all: ./menu_jq.css.mk ./menu_jq.css.urp
+./menu_jq.css.urp: ./Menu_jq_css.ur ./Menu_jq_css.urs ./Menu_jq_css_c.h ./Menu_jq_css_c.o ./menu_jq.css.mk .cake3/tmp0
+	cat .cake3/tmp0 > ./menu_jq.css.urp
+.cake3/tmp0: ./menu_jq.css.mk
+	-rm -rf .cake3/tmp0
+	echo 'include ./Menu_jq_css_c.h' >> .cake3/tmp0
+	echo 'link ./Menu_jq_css_c.o' >> .cake3/tmp0
+	echo 'ffi ./Menu_jq_css_c' >> .cake3/tmp0
+	echo 'ffi ./Menu_jq_css_js' >> .cake3/tmp0
+	echo 'safeGet Menu_jq_css/blobpage' >> .cake3/tmp0
+	echo 'safeGet Menu_jq_css/blob' >> .cake3/tmp0
+	echo '' >> .cake3/tmp0
+	echo './Menu_jq_css' >> .cake3/tmp0
+./Menu_jq_css_c.o: ./Menu_jq_css_c.c ./menu_jq.css.mk $(call GUARD,URCC) $(call GUARD,URINCL) $(call GUARD,UR_CFLAGS)
+	$(URCC) -c $(URINCL) $(UR_CFLAGS)  -o ./Menu_jq_css_c.o ./Menu_jq_css_c.c
 $(call GUARD,URCC):
 	rm -f .cake3/GUARD_URCC_*
 	touch $@
 $(call GUARD,URINCL):
 	rm -f .cake3/GUARD_URINCL_*
+	touch $@
+$(call GUARD,UR_CFLAGS):
+	rm -f .cake3/GUARD_UR_CFLAGS_*
 	touch $@
 
 else
@@ -31,17 +42,25 @@ else
 
 export MAIN=1
 
+ifneq ($(MAKECMDGOALS),clean)
+
 .PHONY: all
 all: .fix-multy1
 .PHONY: ./menu_jq.css.urp
 ./menu_jq.css.urp: .fix-multy1
-.PHONY: ./menu_jq.css.urp.in
-./menu_jq.css.urp.in: .fix-multy1
+.PHONY: .cake3/tmp0
+.cake3/tmp0: .fix-multy1
 .PHONY: ./Menu_jq_css_c.o
 ./Menu_jq_css_c.o: .fix-multy1
 .INTERMEDIATE: .fix-multy1
 .fix-multy1: 
 	-mkdir .cake3
 	$(MAKE) -f ./menu_jq.css.mk $(MAKECMDGOALS)
+
+endif
+.PHONY: clean
+clean: 
+	-rm ./Menu_jq_css_c.o ./menu_jq.css.urp .cake3/tmp0
+	-rm -rf .cake3
 
 endif

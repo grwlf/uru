@@ -11,18 +11,31 @@ unexport MAIN
 URCC = $(shell $(shell urweb -print-ccompiler) -print-prog-name=gcc)
 URINCL = -I$(shell urweb -print-cinclude) 
 .PHONY: all
-all: ./PikaChoose.js.urp
-./PikaChoose.js.urp: ./PikaChoose.js.urp.in
-	cat ./PikaChoose.js.urp.in > ./PikaChoose.js.urp
-./PikaChoose.js.urp.in: ./PikaChoose_js.ur ./PikaChoose_js.urs ./PikaChoose_js_c.h ./PikaChoose_js_c.o
-	touch ./PikaChoose.js.urp.in
-./PikaChoose_js_c.o: ./PikaChoose_js_c.c $(call GUARD,URCC) $(call GUARD,URINCL)
-	$(URCC) -c $(URINCL)  -o ./PikaChoose_js_c.o ./PikaChoose_js_c.c
+all: ./PikaChoose.js.mk ./PikaChoose.js.urp
+./PikaChoose.js.urp: ./PikaChoose.js.mk ./PikaChoose_js.ur ./PikaChoose_js.urs ./PikaChoose_js_c.h ./PikaChoose_js_c.o .cake3/tmp0
+	cat .cake3/tmp0 > ./PikaChoose.js.urp
+.cake3/tmp0: ./PikaChoose.js.mk
+	-rm -rf .cake3/tmp0
+	echo 'include ./PikaChoose_js_c.h' >> .cake3/tmp0
+	echo 'link ./PikaChoose_js_c.o' >> .cake3/tmp0
+	echo 'ffi ./PikaChoose_js_c' >> .cake3/tmp0
+	echo 'jsFunc PikaChoose_js_js.pkch_init = pkch_init__unit' >> .cake3/tmp0
+	echo 'jsFunc PikaChoose_js_js.pkch_style = pkch_style__unit' >> .cake3/tmp0
+	echo 'ffi ./PikaChoose_js_js' >> .cake3/tmp0
+	echo 'safeGet PikaChoose_js/blobpage' >> .cake3/tmp0
+	echo 'safeGet PikaChoose_js/blob' >> .cake3/tmp0
+	echo '' >> .cake3/tmp0
+	echo './PikaChoose_js' >> .cake3/tmp0
+./PikaChoose_js_c.o: ./PikaChoose.js.mk ./PikaChoose_js_c.c $(call GUARD,URCC) $(call GUARD,URINCL) $(call GUARD,UR_CFLAGS)
+	$(URCC) -c $(URINCL) $(UR_CFLAGS)  -o ./PikaChoose_js_c.o ./PikaChoose_js_c.c
 $(call GUARD,URCC):
 	rm -f .cake3/GUARD_URCC_*
 	touch $@
 $(call GUARD,URINCL):
 	rm -f .cake3/GUARD_URINCL_*
+	touch $@
+$(call GUARD,UR_CFLAGS):
+	rm -f .cake3/GUARD_UR_CFLAGS_*
 	touch $@
 
 else
@@ -31,17 +44,25 @@ else
 
 export MAIN=1
 
+ifneq ($(MAKECMDGOALS),clean)
+
 .PHONY: all
 all: .fix-multy1
 .PHONY: ./PikaChoose.js.urp
 ./PikaChoose.js.urp: .fix-multy1
-.PHONY: ./PikaChoose.js.urp.in
-./PikaChoose.js.urp.in: .fix-multy1
+.PHONY: .cake3/tmp0
+.cake3/tmp0: .fix-multy1
 .PHONY: ./PikaChoose_js_c.o
 ./PikaChoose_js_c.o: .fix-multy1
 .INTERMEDIATE: .fix-multy1
 .fix-multy1: 
 	-mkdir .cake3
 	$(MAKE) -f ./PikaChoose.js.mk $(MAKECMDGOALS)
+
+endif
+.PHONY: clean
+clean: 
+	-rm ./PikaChoose.js.urp ./PikaChoose_js_c.o .cake3/tmp0
+	-rm -rf .cake3
 
 endif

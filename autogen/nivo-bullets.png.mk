@@ -11,18 +11,29 @@ unexport MAIN
 URCC = $(shell $(shell urweb -print-ccompiler) -print-prog-name=gcc)
 URINCL = -I$(shell urweb -print-cinclude) 
 .PHONY: all
-all: ./nivo-bullets.png.urp
-./nivo-bullets.png.urp: ./nivo-bullets.png.urp.in
-	cat ./nivo-bullets.png.urp.in > ./nivo-bullets.png.urp
-./nivo-bullets.png.urp.in: ./Nivo_bullets_png.ur ./Nivo_bullets_png.urs ./Nivo_bullets_png_c.h ./Nivo_bullets_png_c.o
-	touch ./nivo-bullets.png.urp.in
-./Nivo_bullets_png_c.o: ./Nivo_bullets_png_c.c $(call GUARD,URCC) $(call GUARD,URINCL)
-	$(URCC) -c $(URINCL)  -o ./Nivo_bullets_png_c.o ./Nivo_bullets_png_c.c
+all: ./nivo-bullets.png.mk ./nivo-bullets.png.urp
+./nivo-bullets.png.urp: ./Nivo_bullets_png.ur ./Nivo_bullets_png.urs ./Nivo_bullets_png_c.h ./Nivo_bullets_png_c.o ./nivo-bullets.png.mk .cake3/tmp0
+	cat .cake3/tmp0 > ./nivo-bullets.png.urp
+.cake3/tmp0: ./nivo-bullets.png.mk
+	-rm -rf .cake3/tmp0
+	echo 'include ./Nivo_bullets_png_c.h' >> .cake3/tmp0
+	echo 'link ./Nivo_bullets_png_c.o' >> .cake3/tmp0
+	echo 'ffi ./Nivo_bullets_png_c' >> .cake3/tmp0
+	echo 'ffi ./Nivo_bullets_png_js' >> .cake3/tmp0
+	echo 'safeGet Nivo_bullets_png/blobpage' >> .cake3/tmp0
+	echo 'safeGet Nivo_bullets_png/blob' >> .cake3/tmp0
+	echo '' >> .cake3/tmp0
+	echo './Nivo_bullets_png' >> .cake3/tmp0
+./Nivo_bullets_png_c.o: ./Nivo_bullets_png_c.c ./nivo-bullets.png.mk $(call GUARD,URCC) $(call GUARD,URINCL) $(call GUARD,UR_CFLAGS)
+	$(URCC) -c $(URINCL) $(UR_CFLAGS)  -o ./Nivo_bullets_png_c.o ./Nivo_bullets_png_c.c
 $(call GUARD,URCC):
 	rm -f .cake3/GUARD_URCC_*
 	touch $@
 $(call GUARD,URINCL):
 	rm -f .cake3/GUARD_URINCL_*
+	touch $@
+$(call GUARD,UR_CFLAGS):
+	rm -f .cake3/GUARD_UR_CFLAGS_*
 	touch $@
 
 else
@@ -31,17 +42,25 @@ else
 
 export MAIN=1
 
+ifneq ($(MAKECMDGOALS),clean)
+
 .PHONY: all
 all: .fix-multy1
 .PHONY: ./nivo-bullets.png.urp
 ./nivo-bullets.png.urp: .fix-multy1
-.PHONY: ./nivo-bullets.png.urp.in
-./nivo-bullets.png.urp.in: .fix-multy1
+.PHONY: .cake3/tmp0
+.cake3/tmp0: .fix-multy1
 .PHONY: ./Nivo_bullets_png_c.o
 ./Nivo_bullets_png_c.o: .fix-multy1
 .INTERMEDIATE: .fix-multy1
 .fix-multy1: 
 	-mkdir .cake3
 	$(MAKE) -f ./nivo-bullets.png.mk $(MAKECMDGOALS)
+
+endif
+.PHONY: clean
+clean: 
+	-rm ./Nivo_bullets_png_c.o ./nivo-bullets.png.urp .cake3/tmp0
+	-rm -rf .cake3
 
 endif

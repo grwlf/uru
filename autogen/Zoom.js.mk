@@ -11,18 +11,30 @@ unexport MAIN
 URCC = $(shell $(shell urweb -print-ccompiler) -print-prog-name=gcc)
 URINCL = -I$(shell urweb -print-cinclude) 
 .PHONY: all
-all: ./Zoom.js.urp
-./Zoom.js.urp: ./Zoom.js.urp.in
-	cat ./Zoom.js.urp.in > ./Zoom.js.urp
-./Zoom.js.urp.in: ./Zoom_js.ur ./Zoom_js.urs ./Zoom_js_c.h ./Zoom_js_c.o
-	touch ./Zoom.js.urp.in
-./Zoom_js_c.o: ./Zoom_js_c.c $(call GUARD,URCC) $(call GUARD,URINCL)
-	$(URCC) -c $(URINCL)  -o ./Zoom_js_c.o ./Zoom_js_c.c
+all: ./Zoom.js.mk ./Zoom.js.urp
+./Zoom.js.urp: ./Zoom.js.mk ./Zoom_js.ur ./Zoom_js.urs ./Zoom_js_c.h ./Zoom_js_c.o .cake3/tmp0
+	cat .cake3/tmp0 > ./Zoom.js.urp
+.cake3/tmp0: ./Zoom.js.mk
+	-rm -rf .cake3/tmp0
+	echo 'include ./Zoom_js_c.h' >> .cake3/tmp0
+	echo 'link ./Zoom_js_c.o' >> .cake3/tmp0
+	echo 'ffi ./Zoom_js_c' >> .cake3/tmp0
+	echo 'jsFunc Zoom_js_js.zoom_on = zoom_on__unit' >> .cake3/tmp0
+	echo 'ffi ./Zoom_js_js' >> .cake3/tmp0
+	echo 'safeGet Zoom_js/blobpage' >> .cake3/tmp0
+	echo 'safeGet Zoom_js/blob' >> .cake3/tmp0
+	echo '' >> .cake3/tmp0
+	echo './Zoom_js' >> .cake3/tmp0
+./Zoom_js_c.o: ./Zoom.js.mk ./Zoom_js_c.c $(call GUARD,URCC) $(call GUARD,URINCL) $(call GUARD,UR_CFLAGS)
+	$(URCC) -c $(URINCL) $(UR_CFLAGS)  -o ./Zoom_js_c.o ./Zoom_js_c.c
 $(call GUARD,URCC):
 	rm -f .cake3/GUARD_URCC_*
 	touch $@
 $(call GUARD,URINCL):
 	rm -f .cake3/GUARD_URINCL_*
+	touch $@
+$(call GUARD,UR_CFLAGS):
+	rm -f .cake3/GUARD_UR_CFLAGS_*
 	touch $@
 
 else
@@ -31,17 +43,25 @@ else
 
 export MAIN=1
 
+ifneq ($(MAKECMDGOALS),clean)
+
 .PHONY: all
 all: .fix-multy1
 .PHONY: ./Zoom.js.urp
 ./Zoom.js.urp: .fix-multy1
-.PHONY: ./Zoom.js.urp.in
-./Zoom.js.urp.in: .fix-multy1
+.PHONY: .cake3/tmp0
+.cake3/tmp0: .fix-multy1
 .PHONY: ./Zoom_js_c.o
 ./Zoom_js_c.o: .fix-multy1
 .INTERMEDIATE: .fix-multy1
 .fix-multy1: 
 	-mkdir .cake3
 	$(MAKE) -f ./Zoom.js.mk $(MAKECMDGOALS)
+
+endif
+.PHONY: clean
+clean: 
+	-rm ./Zoom.js.urp ./Zoom_js_c.o .cake3/tmp0
+	-rm -rf .cake3
 
 endif
